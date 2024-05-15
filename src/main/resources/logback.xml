@@ -1,0 +1,13 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy年MM月dd日 HH:mm:ss(SSS)} [%X{pid}] [%-15thread] [%level] %logger{16}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.serliunx.ddns" level="DEBUG"/>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

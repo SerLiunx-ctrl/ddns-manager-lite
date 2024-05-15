@@ -1,0 +1,26 @@
+package com.serliunx.ddns.config;
+
+/**
+ * 配置文件键常量信息
+ * @author SerLiunx
+ * @since 1.0
+ */
+public final class ConfigurationKeys {
+
+    private ConfigurationKeys(){throw new UnsupportedOperationException();}
+
+    /**
+     * 线程池核心线程数量
+     */
+    public static final String KEY_THREAD_POOL_CORE_SIZE = "system.pool.core.size";
+
+    /**
+     * 启动时是否输出配置信息
+     */
+    public static final String KEY_CFG_LOG_ONSTART = "system.cfg.log.onstart";
+
+    /**
+     * 定时任务周期: 获取最新IP
+     */
+    public static final String KEY_TASK_REFRESH_INTERVAL_IP = "system.task.refresh.interval.ip";
+}
