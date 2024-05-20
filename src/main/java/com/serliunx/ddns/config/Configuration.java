@@ -3,6 +3,7 @@ package com.serliunx.ddns.config;
 import com.serliunx.ddns.support.Refreshable;
 
 /**
+ * 配置信息逻辑定义
  * @author SerLiunx
  * @since 1.0
  */
@@ -68,5 +69,24 @@ public interface Configuration extends Refreshable {
      */
     Boolean getBoolean(String key, Boolean defaultValue);
 
-    <T extends Enum<?>> Enum<?> getEnum(Class<T> clazz, String key);
+    /**
+     * 获取枚举值
+     * @param clazz 枚举类
+     * @param key 键
+     * @return 枚举值
+     * @param <T> 枚举类型参数
+     */
+    @SuppressWarnings("rawtypes")
+    <T extends Enum> T getEnum(Class<T> clazz, String key);
+
+    /**
+     * 获取枚举值
+     * @param clazz 枚举类
+     * @param key 键
+     * @param defaultValue 默认值
+     * @return 枚举值
+     * @param <T> 枚举类型参数
+     */
+    @SuppressWarnings("rawtypes")
+    <T extends Enum> T getEnum(Class<T> clazz, String key, T defaultValue);
 }

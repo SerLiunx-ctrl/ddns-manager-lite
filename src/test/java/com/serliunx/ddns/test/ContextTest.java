@@ -14,7 +14,7 @@ import org.junit.Test;
 public class ContextTest {
 
     @Test
-    public void testContext(){
+    public void testContext() {
         GenericInstanceContext genericInstanceContext = new GenericInstanceContext();
 
         genericInstanceContext.addListableInstanceFactory(new XmlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));

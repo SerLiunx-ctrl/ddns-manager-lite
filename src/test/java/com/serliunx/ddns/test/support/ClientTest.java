@@ -10,7 +10,7 @@ import org.junit.Test;
 public class ClientTest {
 
     @Test
-    public void test(){
+    public void test() {
         IPAddressClient client = IPAddressClient.instance;
         System.out.println(client.getIPAddress().getQuery());
     }

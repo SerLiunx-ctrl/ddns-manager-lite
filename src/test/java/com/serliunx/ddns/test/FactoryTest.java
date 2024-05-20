@@ -11,7 +11,7 @@ import org.junit.Test;
 public class FactoryTest {
 
     @Test
-    public void testYamlFileFactory(){
+    public void testYamlFileFactory() {
         YamlFileInstanceFactory factory = new YamlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR);
         factory.refresh();
         factory.getInstances().forEach(System.out::println);

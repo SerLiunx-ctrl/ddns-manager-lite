@@ -86,8 +86,21 @@ public abstract class AbstractConfiguration implements Configuration {
     }
 
     @Override
-    public <T extends Enum<?>> Enum<?> getEnum(Class<T> clazz, String key) {
-        return null;
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <T extends Enum> T getEnum(Class<T> clazz, String key) {
+        String rawValue = getString(key);
+        Assert.notNull(rawValue);
+        return (T)Enum.valueOf(clazz, rawValue);
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes"})
+    public <T extends Enum> T getEnum(Class<T> clazz, String key, T defaultValue) {
+        T value = null;
+        try {
+            value = getEnum(clazz, key);
+        }catch (Exception ignored){}
+        return value == null ? defaultValue : value;
     }
 
     /**
