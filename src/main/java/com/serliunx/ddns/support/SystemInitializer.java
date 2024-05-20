@@ -30,7 +30,7 @@ import static com.serliunx.ddns.config.ConfigurationKeys.KEY_THREAD_POOL_CORE_SI
  * @author SerLiunx
  * @since 1.0
  */
-public final class SystemInitializer implements Refreshable{
+public final class SystemInitializer implements Refreshable {
 
     private static final Logger log = LoggerFactory.getLogger(SystemInitializer.class);
 

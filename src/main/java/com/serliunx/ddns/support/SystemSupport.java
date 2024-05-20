@@ -10,13 +10,13 @@ public final class SystemSupport {
 
     private static final String PID;
 
-    static{
+    static {
         PID = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
     }
 
     private SystemSupport(){throw new UnsupportedOperationException();}
 
-    public static String getPid(){
+    public static String getPid() {
         return PID;
     }
 }

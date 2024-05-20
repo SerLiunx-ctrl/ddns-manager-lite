@@ -38,7 +38,7 @@ public class JacksonDecoder implements Decoder {
         this.mapper = mapper;
     }
 
-    public static Decoder getInstance(){
+    public static Decoder getInstance() {
         return decoder;
     }
 

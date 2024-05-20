@@ -16,18 +16,18 @@ public final class InstanceClasses {
     private InstanceClasses(){throw new UnsupportedOperationException();}
 
     private static final Map<InstanceType, Class<? extends Instance>> instanceTypeMap =
-            new HashMap<InstanceType, Class<? extends Instance>>(){
+            new HashMap<InstanceType, Class<? extends Instance>>() {
                 {
                     put(InstanceType.ALI_YUN, AliyunInstance.class);
                     put(InstanceType.TENCENT_CLOUD, TencentInstance.class);
                 }
             };
 
-    public static Class<? extends Instance> match(InstanceType type){
+    public static Class<? extends Instance> match(InstanceType type) {
         return instanceTypeMap.get(type);
     }
 
-    public static Class<? extends Instance> match(String type){
+    public static Class<? extends Instance> match(String type) {
         return instanceTypeMap.get(InstanceType.valueOf(type));
     }
 }

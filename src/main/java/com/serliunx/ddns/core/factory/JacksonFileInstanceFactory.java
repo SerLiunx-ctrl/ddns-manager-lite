@@ -18,7 +18,7 @@ import static com.serliunx.ddns.constant.InstanceClasses.match;
  * @see com.fasterxml.jackson.dataformat.xml.XmlMapper
  * @see com.fasterxml.jackson.databind.json.JsonMapper
  */
-public abstract class JacksonFileInstanceFactory extends FileInstanceFactory{
+public abstract class JacksonFileInstanceFactory extends FileInstanceFactory {
 
     private final ObjectMapper objectMapper;
 

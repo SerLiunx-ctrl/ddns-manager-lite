@@ -14,16 +14,16 @@ import org.slf4j.MDC;
  */
 public final class BootStrap {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         beforeInit();
         init();
     }
 
-    private static void beforeInit(){
+    private static void beforeInit() {
         MDC.put("pid", SystemSupport.getPid());
     }
 
-    private static void init(){
+    private static void init() {
         SystemInitializer systemInitializer = SystemInitializer
                 .configurer()
                 .configuration(new PropertiesConfiguration(SystemConstants.USER_SETTINGS_PROPERTIES_PATH))

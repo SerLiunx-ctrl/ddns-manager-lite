@@ -9,7 +9,7 @@ import com.serliunx.ddns.core.instance.Instance;
  * @author SerLiunx
  * @since 1.0
  */
-public class JsonFileInstanceFactory extends JacksonFileInstanceFactory{
+public class JsonFileInstanceFactory extends JacksonFileInstanceFactory {
 
     public JsonFileInstanceFactory(String instanceDir, JsonMapper jsonMapper) {
         super(instanceDir, jsonMapper);

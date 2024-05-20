@@ -39,7 +39,7 @@ public class JacksonEncoder implements Encoder {
         this.mapper = mapper;
     }
 
-    public static Encoder getInstance(){
+    public static Encoder getInstance() {
         return encoder;
     }
 

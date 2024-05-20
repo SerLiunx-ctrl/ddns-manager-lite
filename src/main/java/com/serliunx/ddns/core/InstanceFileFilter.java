@@ -19,10 +19,10 @@ public final class InstanceFileFilter implements FileFilter {
 
     @Override
     public boolean accept(File pathname) {
-        if(!pathname.isFile())
+        if (!pathname.isFile())
             return false;
         for (String suffix : fileSuffix) {
-            if(pathname.getName().endsWith(suffix)){
+            if (pathname.getName().endsWith(suffix)) {
                 return true;
             }
         }

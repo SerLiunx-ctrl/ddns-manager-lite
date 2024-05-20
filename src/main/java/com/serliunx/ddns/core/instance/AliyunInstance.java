@@ -115,9 +115,9 @@ public class AliyunInstance extends AbstractInstance {
         CompletableFuture<UpdateDomainRecordResponse> requestResponse = client.updateDomainRecord(request);
         try {
             requestResponse.whenComplete((v, t) -> {
-                if(t != null){ //出现异常
+                if (t != null) { //出现异常
                     handleThrowable(t);
-                }else{
+                } else {
                     String result = null;
                     try {
                         result = jsonMapper.writeValueAsString(v.getBody());
@@ -141,7 +141,7 @@ public class AliyunInstance extends AbstractInstance {
         try {
             DescribeDomainRecordInfoResponse response = responseCompletableFuture.get(5, TimeUnit.SECONDS);
             DescribeDomainRecordInfoResponseBody body = response.getBody();
-            if(body != null){
+            if (body != null) {
                 return body.getValue();
             }
             return null;
@@ -241,17 +241,17 @@ public class AliyunInstance extends AbstractInstance {
     }
 
     @SuppressWarnings("all")
-    private void log(String msg, Object...params){
+    private void log(String msg, Object...params) {
         log.info("[实例活动][" + name + "]" + msg, params);
     }
 
     @SuppressWarnings("all")
-    private void debug(String msg, Object...params){
+    private void debug(String msg, Object...params) {
         log.debug("[实例活动][" + name + "]" + msg, params);
     }
 
     @SuppressWarnings("all")
-    private void error(String msg, Object...params){
+    private void error(String msg, Object...params) {
         log.error("[实例异常][" + name + "]" + msg, params);
     }
 }

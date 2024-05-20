@@ -39,7 +39,7 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
 
     @Override
     public void refresh() {
-        if(listableInstanceFactories.isEmpty())
+        if (listableInstanceFactories.isEmpty())
             return;
 
         // 初始化所有实例工厂
@@ -68,7 +68,7 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
     public boolean addInstance(Instance instance, boolean override) {
         validateInstance(instance);
         Instance i = instanceMap.get(instance.getName());
-        if(override && i != null){
+        if (override && i != null) {
             return false;
         }
         instanceMap.put(instance.getName(), instance);
@@ -120,8 +120,8 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
     /**
      * 缓存清理
      */
-    protected void clearCache(){
-        if(cacheInstanceMap != null
+    protected void clearCache() {
+        if (cacheInstanceMap != null
                 && !cacheInstanceMap.isEmpty()){
             int size = cacheInstanceMap.size();
             cacheInstanceMap.clear();
@@ -136,15 +136,15 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
      * @param instances 实例信息
      * @return 属性设置完整的实例
      */
-    private Set<Instance> buildInstances(Collection<Instance> instances){
+    private Set<Instance> buildInstances(Collection<Instance> instances) {
         //设置实例信息, 如果需要从父类继承
         return instances.stream()
                 .filter(i -> !InstanceType.INHERITED.equals(i.getType()))
                 .peek(i -> {
                     String fatherName = i.getFatherName();
-                    if(fatherName != null && !fatherName.isEmpty()){
+                    if (fatherName != null && !fatherName.isEmpty()) {
                         Instance fatherInstance = cacheInstanceMap.get(fatherName);
-                        if(fatherInstance != null){
+                        if (fatherInstance != null) {
                             try {
                                 ReflectionUtils.copyField(fatherInstance, i, true);
                             } catch (Exception e) {

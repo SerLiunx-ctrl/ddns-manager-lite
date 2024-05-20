@@ -14,19 +14,19 @@ public final class Configurer {
 
     Configurer(){}
 
-    public Configurer configuration(Configuration configuration){
+    public Configurer configuration(Configuration configuration) {
         Assert.notNull(configuration);
         this.configuration = configuration;
         return this;
     }
 
-    public Configurer instanceContext(MultipleSourceInstanceContext instanceContext){
+    public Configurer instanceContext(MultipleSourceInstanceContext instanceContext) {
         Assert.notNull(instanceContext);
         this.instanceContext = instanceContext;
         return this;
     }
 
-    public SystemInitializer done(){
+    public SystemInitializer done() {
         Assert.notNull(configuration, instanceContext);
         return new SystemInitializer(configuration, instanceContext);
     }

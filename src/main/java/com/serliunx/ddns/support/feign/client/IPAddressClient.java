@@ -28,7 +28,7 @@ public interface IPAddressClient {
     @RequestLine("GET /json")
     IPAddressResponse getIPAddress();
 
-    static IPAddressClient getInstance(){
+    static IPAddressClient getInstance() {
         return Feign.builder()
                 .encoder(JacksonEncoder.getInstance())
                 .decoder(JacksonDecoder.getInstance())

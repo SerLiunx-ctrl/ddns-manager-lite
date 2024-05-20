@@ -78,7 +78,7 @@ public class YamlFileInstanceFactory extends FileInstanceFactory {
     }
 
     @SuppressWarnings(value = {"unchecked", "rawtypes"})
-    protected Instance buildInstance(Instance instance, Map<String, Object> valueMap){
+    protected Instance buildInstance(Instance instance, Map<String, Object> valueMap) {
         Field[] declaredFields = ReflectionUtils.getDeclaredFields(instance.getClass(), true);
         for (Field f : declaredFields) {
             if (Modifier.isStatic(f.getModifiers())) {

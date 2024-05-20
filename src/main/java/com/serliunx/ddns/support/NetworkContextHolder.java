@@ -25,7 +25,7 @@ public final class NetworkContextHolder {
 
     private NetworkContextHolder(){throw new UnsupportedOperationException();}
 
-    public static void setIpAddress(String i){
+    public static void setIpAddress(String i) {
         try {
             IP_LOCK.lock();
             IP_ADDRESS = i;
@@ -37,11 +37,11 @@ public final class NetworkContextHolder {
         }
     }
 
-    public static String getIpAddress(){
+    public static String getIpAddress() {
         if(IP_ADDRESS != null)
             return IP_ADDRESS;
         try {
-            if(!IP_CONTEXT_WAIT_LATCH.await(IP_CONTEXT_TIME_OUT, TimeUnit.SECONDS)){
+            if(!IP_CONTEXT_WAIT_LATCH.await(IP_CONTEXT_TIME_OUT, TimeUnit.SECONDS)) {
                 log.error("IP地址获取超时.");
                 return null;
             }

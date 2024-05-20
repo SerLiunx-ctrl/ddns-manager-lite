@@ -9,7 +9,7 @@ import com.serliunx.ddns.core.instance.Instance;
  * @author SerLiunx
  * @since 1.0
  */
-public class XmlFileInstanceFactory extends JacksonFileInstanceFactory{
+public class XmlFileInstanceFactory extends JacksonFileInstanceFactory {
 
     public XmlFileInstanceFactory(String instanceDir, XmlMapper xmlMapper) {
         super(instanceDir, xmlMapper);

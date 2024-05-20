@@ -81,7 +81,7 @@ public abstract class AbstractConfiguration implements Configuration {
         // 刷新配置信息
         refresh0();
         final Boolean needPrint = getBoolean(ConfigurationKeys.KEY_CFG_LOG_ONSTART);
-        if(needPrint)
+        if (needPrint)
             printDetails();
     }
 
@@ -106,7 +106,7 @@ public abstract class AbstractConfiguration implements Configuration {
     /**
      * 载入配置信息请加锁
      */
-    protected void load(){
+    protected void load() {
         try {
             loadLock.lock();
             // 清空原有的配置信息

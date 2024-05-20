@@ -10,7 +10,7 @@ import java.util.Set;
  * @author SerLiunx
  * @since 1.0
  */
-public abstract class DatabaseInstanceFactory extends AbstractInstanceFactory{
+public abstract class DatabaseInstanceFactory extends AbstractInstanceFactory {
 
     @Override
     protected Set<Instance> load() {

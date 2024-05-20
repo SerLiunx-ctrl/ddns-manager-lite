@@ -71,9 +71,9 @@ public abstract class AbstractInstance implements Instance {
             }
             value = ipAddress;
             run0();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
-        }finally {
+        } finally {
             this.value = null;
         }
     }

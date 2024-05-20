@@ -50,7 +50,7 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
     public boolean addInstance(Instance instance, boolean override) {
         validateInstance(instance);
         Instance i = instanceMap.get(instance.getName());
-        if(override && i != null){
+        if (override && i != null) {
             return false;
         }
         instanceMap.put(instance.getName(), instance);
@@ -65,7 +65,7 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
     @Override
     public void refresh() {
         Set<Instance> instances = load();
-        if(instances != null && !instances.isEmpty())
+        if (instances != null && !instances.isEmpty())
             instanceMap = new HashMap<>(instances.stream()
                     .collect(Collectors.toMap(Instance::getName, i -> i)));
     }
@@ -77,7 +77,7 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
 
     @Override
     public void afterRefresh() {
-        if(instanceMap != null
+        if (instanceMap != null
                 && !instanceMap.isEmpty()){
             int size = instanceMap.size();
             instanceMap.clear();

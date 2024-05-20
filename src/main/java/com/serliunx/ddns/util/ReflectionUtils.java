@@ -20,7 +20,7 @@ public final class ReflectionUtils {
      * @param setAccessible 是否将字段的可访问性
      * @return 字段列表
      */
-    public static Field[] getDeclaredFields(Class<?> clazz, boolean setAccessible){
+    public static Field[] getDeclaredFields(Class<?> clazz, boolean setAccessible) {
         if(clazz == null){
             return null;
         }
@@ -47,7 +47,7 @@ public final class ReflectionUtils {
      * @param setAccessible 是否将字段的可访问性
      * @return 字段列表
      */
-    public static List<Field> getDeclaredFieldList(Class<?> clazz, boolean setAccessible){
+    public static List<Field> getDeclaredFieldList(Class<?> clazz, boolean setAccessible) {
         return Arrays.asList(getDeclaredFields(clazz, setAccessible));
     }
 
@@ -57,7 +57,7 @@ public final class ReflectionUtils {
      * @param dest 目标对象
      * @param onlyNull 是否仅复制源对象不为空的属性
      */
-    public static void copyField(Object src, Object dest,boolean onlyNull){
+    public static void copyField(Object src, Object dest,boolean onlyNull) {
         Class<?> srcClass = src.getClass();
         Class<?> destClass = dest.getClass();
         List<Field> srcField = getDeclaredFieldList(srcClass, true);

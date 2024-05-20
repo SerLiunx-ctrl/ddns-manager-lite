@@ -25,7 +25,7 @@ public abstract class FileInstanceFactory extends AbstractInstanceFactory {
     @Override
     protected Set<Instance> load() {
         Set<File> files = loadFiles();
-        if(files != null && !files.isEmpty()){
+        if (files != null && !files.isEmpty()) {
             return files.stream()
                     .map(this::loadInstance)
                     .filter(Objects::nonNull)
@@ -56,19 +56,19 @@ public abstract class FileInstanceFactory extends AbstractInstanceFactory {
     /**
      * 载入目录下所有符合条件的文件
      */
-    private Set<File> loadFiles(){
+    private Set<File> loadFiles() {
         File pathFile = new File(instanceDir);
-        if(!pathFile.exists()){
+        if (!pathFile.exists()) {
             boolean result = pathFile.mkdirs();
-            if(!result){
+            if (!result) {
                 throw new IllegalArgumentException("create path failed");
             }
         }
-        if(!pathFile.isDirectory()){
+        if (!pathFile.isDirectory()) {
             throw new IllegalArgumentException("path is not a directory");
         }
         File[] files = pathFile.listFiles(new InstanceFileFilter(fileSuffix()));
-        if(files == null || files.length == 0){
+        if (files == null || files.length == 0) {
             return Collections.emptySet();
         }
         return Arrays.stream(files).collect(Collectors.toCollection(HashSet::new));
