@@ -38,7 +38,6 @@ public final class NetworkContextHolder {
     }
 
     public static String getIpAddress(){
-        log.debug("正在尝试获取最新的IP地址.");
         if(IP_ADDRESS != null)
             return IP_ADDRESS;
         try {
@@ -46,7 +45,6 @@ public final class NetworkContextHolder {
                 log.error("IP地址获取超时.");
                 return null;
             }
-            log.debug("最新的IP地址获取成功.");
             return IP_ADDRESS;
         } catch (InterruptedException e) {
             log.error("IP地址获取出现异常 => {}", e.getMessage());

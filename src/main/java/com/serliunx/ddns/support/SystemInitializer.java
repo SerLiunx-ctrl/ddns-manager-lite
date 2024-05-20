@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +39,7 @@ public final class SystemInitializer implements Refreshable{
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
     private Set<Instance> instances;
+    private Map<String, Instance> runningInstances;
 
     SystemInitializer(Configuration configuration, MultipleSourceInstanceContext instanceContext) {
         this.configuration = configuration;

@@ -48,9 +48,11 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
                 .forEach(ListableInstanceFactory::refresh);
         // 加载、过滤所有实例
         Set<Instance> instances = new HashSet<>();
-        listableInstanceFactories.forEach(f -> instances.addAll(f.getInstances()));
 
-        // TODO 加载实例, 按照实例工厂的优先级从低到高优先级排, 高优先级的实例会覆盖低优先级的实例信息(如果存在重复的实例信息)
+        // 高优先级的实例工厂会覆盖低优先级实例工厂所加载的实例
+        listableInstanceFactories.stream()
+                .sorted()
+                .forEach(f -> instances.addAll(f.getInstances()));
 
         // 初次载入
         cacheInstanceMap = new HashMap<>(instances.stream().collect(Collectors.toMap(Instance::getName, i -> i)));
@@ -119,9 +121,12 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
      * 缓存清理
      */
     protected void clearCache(){
-        int size = cacheInstanceMap.size();
-        cacheInstanceMap.clear();
-        log.debug("缓存信息清理 => {} 条", size);
+        if(cacheInstanceMap != null
+                && !cacheInstanceMap.isEmpty()){
+            int size = cacheInstanceMap.size();
+            cacheInstanceMap.clear();
+            log.debug("缓存信息清理 => {} 条", size);
+        }
         // 清理实例工厂的缓存信息
         listableInstanceFactories.forEach(Refreshable::afterRefresh);
     }

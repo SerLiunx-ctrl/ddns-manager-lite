@@ -3,13 +3,11 @@ package com.serliunx.ddns.core.instance;
 import com.aliyun.auth.credentials.Credential;
 import com.aliyun.auth.credentials.provider.StaticCredentialProvider;
 import com.aliyun.sdk.service.alidns20150109.AsyncClient;
-import com.aliyun.sdk.service.alidns20150109.models.DescribeDomainRecordInfoRequest;
-import com.aliyun.sdk.service.alidns20150109.models.DescribeDomainRecordInfoResponse;
-import com.aliyun.sdk.service.alidns20150109.models.DescribeDomainRecordInfoResponseBody;
+import com.aliyun.sdk.service.alidns20150109.models.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.serliunx.ddns.support.NetworkContextHolder;
 import darabonba.core.client.ClientOverrideConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,12 +105,34 @@ public class AliyunInstance extends AbstractInstance {
 
     @Override
     protected void run0() {
-        log("test");
+        UpdateDomainRecordRequest request = UpdateDomainRecordRequest.builder()
+                .recordId(recordId)
+                .rr(rr)
+                .type(recordType)
+                .value(value)
+                .build();
+        debug("正在更新解析记录.");
+        CompletableFuture<UpdateDomainRecordResponse> requestResponse = client.updateDomainRecord(request);
+        try {
+            requestResponse.whenComplete((v, t) -> {
+                if(t != null){ //出现异常
+                    handleThrowable(t);
+                }else{
+                    String result = null;
+                    try {
+                        result = jsonMapper.writeValueAsString(v.getBody());
+                    } catch (JsonProcessingException ignored) {} finally {
+                        debug("操作结束, 结果: {}", result == null ? v : result);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    protected boolean query() {
-        debug("正在校验是否需要更新记录.");
+    protected String query() {
         DescribeDomainRecordInfoRequest describeDomainRecordInfoRequest = DescribeDomainRecordInfoRequest.builder()
                 .recordId(recordId)
                 .build();
@@ -122,24 +142,15 @@ public class AliyunInstance extends AbstractInstance {
             DescribeDomainRecordInfoResponse response = responseCompletableFuture.get(5, TimeUnit.SECONDS);
             DescribeDomainRecordInfoResponseBody body = response.getBody();
             if(body != null){
-                String recordValue = body.getValue();
-                String ipAddress = NetworkContextHolder.getIpAddress();
-                debug("当前记录值 => {}", recordValue);
-                boolean result = !(recordValue != null && !recordValue.isEmpty()
-                        && recordValue.equals(ipAddress));
-                if(result)
-                    debug("需要更新IP地址: {} => {}", recordValue, ipAddress);
-                else
-                    debug("无需更新.");
-                return result;
+                return body.getValue();
             }
-            return false;
+            return null;
         } catch (InterruptedException | ExecutionException e) {
             error("出现了不应该出现的异常 => {}", e);
-            return false;
+            return null;
         } catch (TimeoutException e) {
-            error("记录查询超时! 将跳过查询直接执行更新操作.");
-            return true;
+            error("记录查询超时!");
+            return null;
         }
     }
 
@@ -204,6 +215,25 @@ public class AliyunInstance extends AbstractInstance {
 
     public void setJsonMapper(JsonMapper jsonMapper) {
         this.jsonMapper = jsonMapper;
+    }
+
+    @Override
+    public String toString() {
+        return "AliyunInstance{" +
+                "accessKeyId='" + accessKeyId + '\'' +
+                ", accessKeySecret='" + accessKeySecret + '\'' +
+                ", recordId='" + recordId + '\'' +
+                ", rr='" + rr + '\'' +
+                ", recordType='" + recordType + '\'' +
+                ", client=" + client +
+                ", jsonMapper=" + jsonMapper +
+                ", name='" + name + '\'' +
+                ", fatherName='" + fatherName + '\'' +
+                ", interval=" + interval +
+                ", type=" + type +
+                ", source=" + source +
+                ", value='" + value + '\'' +
+                '}';
     }
 
     private void handleThrowable(Throwable t){

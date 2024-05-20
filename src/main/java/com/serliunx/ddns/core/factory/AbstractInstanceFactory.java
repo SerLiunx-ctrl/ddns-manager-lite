@@ -77,9 +77,12 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
 
     @Override
     public void afterRefresh() {
-        int size = instanceMap.size();
-        instanceMap.clear();
-        log.debug("缓存信息清理 => {} 条", size);
+        if(instanceMap != null
+                && !instanceMap.isEmpty()){
+            int size = instanceMap.size();
+            instanceMap.clear();
+            log.debug("缓存信息清理 => {} 条", size);
+        }
     }
 
     /**

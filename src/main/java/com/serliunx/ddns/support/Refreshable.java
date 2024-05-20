@@ -16,7 +16,5 @@ public interface Refreshable {
     /**
      * 刷新后逻辑定义, 一般用于资源清理
      */
-    default void afterRefresh(){
-
-    }
+    default void afterRefresh(){}
 }

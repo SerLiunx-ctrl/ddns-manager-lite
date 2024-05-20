@@ -5,10 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.serliunx.ddns.constant.InstanceSource;
 import com.serliunx.ddns.constant.InstanceType;
+import com.serliunx.ddns.support.NetworkContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 
 /**
+ * 实例抽象实现
  * @author SerLiunx
  * @since 1.0
  */
@@ -17,6 +21,7 @@ import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 @JacksonXmlRootElement(localName = XML_ROOT_INSTANCE_NAME)
 public abstract class AbstractInstance implements Instance {
 
+    private static final Logger log = LoggerFactory.getLogger(AbstractInstance.class);
     /**
      * 实例名称
      * <li> 全局唯一
@@ -56,8 +61,30 @@ public abstract class AbstractInstance implements Instance {
 
     @Override
     public void run() {
-        if(query())
+        value = query();
+        final String ipAddress = NetworkContextHolder.getIpAddress();
+        try {
+            if (value != null && !value.isEmpty()
+                    && ipAddress != null && !ipAddress.isEmpty()) {
+                if (value.equals(ipAddress))
+                    return;
+            }
+            value = ipAddress;
             run0();
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }finally {
+            this.value = null;
+        }
+    }
+
+    @Override
+    public boolean validate() {
+        // 校验通用参数, 具体子类的参数交由子类校验
+        if(name == null || name.isEmpty() || interval <= 0 || type == null){
+            return false;
+        }
+        return validate0();
     }
 
     @Override
@@ -105,15 +132,6 @@ public abstract class AbstractInstance implements Instance {
         return source;
     }
 
-    @Override
-    public boolean validate() {
-        // 校验通用参数, 具体子类的参数交由子类校验
-        if(name == null || name.isEmpty() || interval <= 0 || type == null){
-            return false;
-        }
-        return validate0();
-    }
-
     /**
      * 具体的初始化逻辑
      */
@@ -125,10 +143,14 @@ public abstract class AbstractInstance implements Instance {
     protected abstract boolean validate0();
 
     /**
-     * 更新前检查是否需要更新
-     * @return 无需更新返回假, 否则返回真
+     * 获取解析当前的ip地址
+     * <li> 由子类完成具体逻辑
+     * @return 返回当前解析记录的ip地址, 由子类决定.
+     * @see AliyunInstance
+     * @see TencentInstance
+     * @see HuaweiInstance
      */
-    protected abstract boolean query();
+    protected abstract String query();
 
     /**
      * 具体执行逻辑

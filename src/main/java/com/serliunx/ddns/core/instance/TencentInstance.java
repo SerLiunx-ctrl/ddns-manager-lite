@@ -1,6 +1,7 @@
 package com.serliunx.ddns.core.instance;
 
 /**
+ * 腾讯云实例定义
  * @author SerLiunx
  * @since 1.0
  */
@@ -17,8 +18,8 @@ public class TencentInstance extends AbstractInstance {
     }
 
     @Override
-    protected boolean query() {
-        return false;
+    protected String query() {
+        return null;
     }
 
     @Override
