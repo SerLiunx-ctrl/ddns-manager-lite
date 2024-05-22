@@ -23,6 +23,10 @@ public class TaskThreadFactory implements ThreadFactory {
             MDC.put("pid", SystemSupport.getPid());
             r.run();
         };
-        return new Thread(runnable, String.format("ddns-task-%s", count.getAndIncrement()));
+        return new Thread(runnable, String.format(getNamePattern(), count.getAndIncrement()));
+    }
+
+    protected String getNamePattern() {
+        return "ddns-task-%s";
     }
 }

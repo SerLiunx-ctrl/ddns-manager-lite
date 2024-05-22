@@ -17,8 +17,11 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -39,14 +42,14 @@ public final class SystemInitializer implements Refreshable {
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
     private Set<Instance> instances;
-    private Map<String, Instance> runningInstances;
+    private final Map<String, ScheduledFuture<?>> runningInstances = new HashMap<>(64);
 
     SystemInitializer(Configuration configuration, MultipleSourceInstanceContext instanceContext) {
         this.configuration = configuration;
         this.instanceContext = instanceContext;
     }
 
-    public static Configurer configurer(){
+    public static Configurer configurer() {
         return new Configurer();
     }
 
@@ -56,6 +59,8 @@ public final class SystemInitializer implements Refreshable {
 
         // 释放配置文件
         releaseResource(SystemConstants.PROPERTIES_FILE);
+        // 释放日志文件
+        releaseResource(SystemConstants.LOG_CONFIG_FILE);
 
         // 刷新配置信息
         configuration.refresh();
@@ -65,6 +70,9 @@ public final class SystemInitializer implements Refreshable {
 
         // 初始化线程池
         initThreadPool(coreSize);
+
+        // 尝试链接dashboard
+        registerToDashboard();
 
         // 加载实例(不同的容器加载时机不同)
         loadInstances();
@@ -92,7 +100,7 @@ public final class SystemInitializer implements Refreshable {
         log.info("载入 {} 个实例.", instances.size());
     }
 
-    private void releaseResource(String resourceName){
+    private void releaseResource(String resourceName) {
         ClassLoader classLoader = SystemConstants.class.getClassLoader();
         Path path = Paths.get(SystemConstants.USER_DIR + File.separator + resourceName);
         // 检查文件是否已存在
@@ -106,13 +114,13 @@ public final class SystemInitializer implements Refreshable {
             OutputStream outputStream = Files.newOutputStream(path);
             byte[] buffer = new byte[1024];
             int bytesRead;
-            if(inputStream != null){
+            if(inputStream != null) {
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             }
             outputStream.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("文件 {} 解压失败!, 原因: {}", resourceName, e.getMessage());
         }
     }
@@ -122,18 +130,20 @@ public final class SystemInitializer implements Refreshable {
         Assert.notNull(instances);
 
         for (Instance i : instances) {
-            if(!i.validate()){
+            if (!i.validate()) {
                 log.error("实例{}({})参数校验不通过, 将不会被运行.", i.getName(), i.getType());
                 continue;
             }
             // 初始化实例
             i.refresh();
-            scheduledThreadPoolExecutor.scheduleWithFixedDelay(i, 0, i.getInterval(), TimeUnit.SECONDS);
+            ScheduledFuture<?> future = scheduledThreadPoolExecutor.scheduleWithFixedDelay(i, 0,
+                    i.getInterval(), TimeUnit.SECONDS);
+            runningInstances.put(i.getName(), future);
             log.info("{}({})已启动, 运行周期 {} 秒.", i.getName(), i.getType(), i.getInterval());
         }
     }
 
-    private void initThreadPool(int coreSize){
+    private void initThreadPool(int coreSize) {
         Assert.isLargerThan(coreSize, 1);
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(coreSize, new TaskThreadFactory());
 
@@ -146,7 +156,7 @@ public final class SystemInitializer implements Refreshable {
             IPAddressResponse response = IPAddressClient.instance.getIPAddress();
             String ip;
             if(response != null
-                    && (ip = response.getQuery()) != null){
+                    && (ip = response.getQuery()) != null) {
                 NetworkContextHolder.setIpAddress(ip);
                 log.info("本机最新公网IP地址 => {}", ip);
             }
@@ -160,5 +170,13 @@ public final class SystemInitializer implements Refreshable {
             scheduledThreadPoolExecutor.shutdown();
             log.info("已关闭.");
         }, "DDNS-ShutDownHook"));
+    }
+
+    private void registerToDashboard() {
+        CompletableFuture.runAsync(() -> {
+
+        }, scheduledThreadPoolExecutor).whenComplete((r, t) -> {
+
+        });
     }
 }

@@ -42,6 +42,11 @@ public final class SystemConstants {
     public static final String PROPERTIES_FILE = "settings.properties";
 
     /**
+     * 日志配置文件名称
+     */
+    public static final String LOG_CONFIG_FILE = "logback.xml";
+
+    /**
      * sqlite
      */
     public static final String DATABASE_SQLITE = "sqlite";
