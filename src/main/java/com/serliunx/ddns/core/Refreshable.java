@@ -1,4 +1,4 @@
-package com.serliunx.ddns.support;
+package com.serliunx.ddns.core;
 
 /**
  * 刷新逻辑
@@ -12,9 +12,4 @@ public interface Refreshable {
      * 刷新(初始化)
      */
     void refresh();
-
-    /**
-     * 刷新后逻辑定义, 一般用于资源清理
-     */
-    default void afterRefresh(){}
 }

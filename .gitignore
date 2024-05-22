@@ -12,6 +12,7 @@ target/
 ### 测试数据 ###
 instances/
 settings.properties
+logback.xml
 
 ### Eclipse ###
 .apt_generated

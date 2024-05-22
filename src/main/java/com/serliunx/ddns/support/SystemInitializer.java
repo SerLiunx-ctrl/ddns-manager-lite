@@ -2,6 +2,8 @@ package com.serliunx.ddns.support;
 
 import com.serliunx.ddns.config.Configuration;
 import com.serliunx.ddns.constant.SystemConstants;
+import com.serliunx.ddns.core.Clearable;
+import com.serliunx.ddns.core.Refreshable;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.core.instance.Instance;
 import com.serliunx.ddns.support.feign.client.IPAddressClient;
@@ -33,7 +35,7 @@ import static com.serliunx.ddns.config.ConfigurationKeys.KEY_THREAD_POOL_CORE_SI
  * @author SerLiunx
  * @since 1.0
  */
-public final class SystemInitializer implements Refreshable {
+public final class SystemInitializer implements Refreshable, Clearable {
 
     private static final Logger log = LoggerFactory.getLogger(SystemInitializer.class);
 
@@ -79,7 +81,16 @@ public final class SystemInitializer implements Refreshable {
 
         // 运行实例
         runInstances();
+
+        // 实例提交后, 清理实例、配置缓存, 因为读取一次就不需要了
+        clear();
         log.info("初始化完成!");
+    }
+
+    @Override
+    public void clear() {
+        instanceContext.clear();
+        instances.clear();
     }
 
     public MultipleSourceInstanceContext getInstanceContext() {
@@ -88,11 +99,6 @@ public final class SystemInitializer implements Refreshable {
 
     public Set<Instance> getInstances() {
         return instances;
-    }
-
-    @Override
-    public void afterRefresh() {
-        // TODO
     }
 
     private void loadInstances() {
@@ -166,7 +172,6 @@ public final class SystemInitializer implements Refreshable {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             MDC.put("pid", SystemSupport.getPid());
             log.info("程序正在关闭中, 可能需要一定时间.");
-            afterRefresh();
             scheduledThreadPoolExecutor.shutdown();
             log.info("已关闭.");
         }, "DDNS-ShutDownHook"));

@@ -7,8 +7,13 @@ package com.serliunx.ddns.core.context;
  */
 public class GenericInstanceContext extends AbstractInstanceContext {
 
-    @Override
-    public void afterRefresh() {
-        clearCache();
-    }
+	@Override
+	protected void clear0() {
+		clearCache();
+	}
+
+	@Override
+	public boolean isClearable() {
+		return false;
+	}
 }

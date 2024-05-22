@@ -1,14 +1,15 @@
 package com.serliunx.ddns.core.factory;
 
+import com.serliunx.ddns.core.Clearable;
 import com.serliunx.ddns.core.Priority;
 import com.serliunx.ddns.core.instance.Instance;
-import com.serliunx.ddns.support.Refreshable;
+import com.serliunx.ddns.core.Refreshable;
 
 /**
  * @author SerLiunx
  * @since 1.0
  */
-public interface InstanceFactory extends Priority, Comparable<InstanceFactory>, Refreshable {
+public interface InstanceFactory extends Priority, Comparable<InstanceFactory>, Refreshable, Clearable {
 
     /**
      * 添加实例

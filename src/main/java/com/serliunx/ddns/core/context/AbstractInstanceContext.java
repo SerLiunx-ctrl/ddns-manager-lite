@@ -1,10 +1,11 @@
 package com.serliunx.ddns.core.context;
 
 import com.serliunx.ddns.constant.InstanceType;
+import com.serliunx.ddns.core.Clearable;
 import com.serliunx.ddns.core.factory.ListableInstanceFactory;
 import com.serliunx.ddns.core.instance.Instance;
 import com.serliunx.ddns.support.Assert;
-import com.serliunx.ddns.support.Refreshable;
+import com.serliunx.ddns.core.Refreshable;
 import com.serliunx.ddns.util.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,9 +60,6 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
         Set<Instance> builtInstances = buildInstances(instances);
 
         instanceMap = builtInstances.stream().collect(Collectors.toMap(Instance::getName, i -> i));
-
-        // 调用善后处理钩子函数
-        afterRefresh();
     }
 
     @Override
@@ -112,10 +110,16 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
         return listableInstanceFactories;
     }
 
+    @Override
+    public void clear() {
+        if(isClearable())
+            clear0();
+    }
+
     /**
-     * 善后工作
+     * 子类清理逻辑
      */
-    public abstract void afterRefresh();
+    protected abstract void clear0();
 
     /**
      * 缓存清理
@@ -125,10 +129,11 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
                 && !cacheInstanceMap.isEmpty()){
             int size = cacheInstanceMap.size();
             cacheInstanceMap.clear();
-            log.debug("缓存信息清理 => {} 条", size);
+            // 清理实例工厂的缓存信息
+            listableInstanceFactories.forEach(Clearable::clear);
+            listableInstanceFactories.clear();
+            log.info("共清理缓存信息 => {} 条", size);
         }
-        // 清理实例工厂的缓存信息
-        listableInstanceFactories.forEach(Refreshable::afterRefresh);
     }
 
     /**

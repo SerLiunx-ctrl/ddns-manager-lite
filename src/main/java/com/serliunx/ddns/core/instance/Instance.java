@@ -2,7 +2,7 @@ package com.serliunx.ddns.core.instance;
 
 import com.serliunx.ddns.constant.InstanceSource;
 import com.serliunx.ddns.constant.InstanceType;
-import com.serliunx.ddns.support.Refreshable;
+import com.serliunx.ddns.core.Refreshable;
 
 /**
  * @author SerLiunx

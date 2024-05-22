@@ -17,12 +17,12 @@ import static com.serliunx.ddns.util.InstanceUtils.validateInstance;
  */
 public abstract class AbstractInstanceFactory implements InstanceFactory, ListableInstanceFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractInstanceFactory.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 实例信息
      */
-    private Map<String, Instance> instanceMap;
+    protected Map<String, Instance> instanceMap;
 
     @Override
     public Instance getInstance(String instanceName) {
@@ -76,13 +76,9 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
     }
 
     @Override
-    public void afterRefresh() {
-        if (instanceMap != null
-                && !instanceMap.isEmpty()){
-            int size = instanceMap.size();
-            instanceMap.clear();
-            log.debug("缓存信息清理 => {} 条", size);
-        }
+    public final void clear() {
+        if(isClearable() && instanceMap != null)
+            clear0();
     }
 
     /**
@@ -90,4 +86,13 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
      * @return 实例信息
      */
     protected abstract Set<Instance> load();
+
+    /**
+     * 清理逻辑
+     */
+    protected void clear0(){
+        final int size = instanceMap.size();
+        instanceMap.clear();
+        log.info("缓存信息清理 => {} 条", size);
+    }
 }

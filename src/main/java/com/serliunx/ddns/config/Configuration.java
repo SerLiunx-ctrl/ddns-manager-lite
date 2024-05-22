@@ -1,6 +1,6 @@
 package com.serliunx.ddns.config;
 
-import com.serliunx.ddns.support.Refreshable;
+import com.serliunx.ddns.core.Refreshable;
 
 /**
  * 配置信息逻辑定义

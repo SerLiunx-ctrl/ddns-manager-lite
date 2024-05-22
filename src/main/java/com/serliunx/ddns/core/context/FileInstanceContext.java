@@ -21,7 +21,7 @@ public class FileInstanceContext extends AbstractInstanceContext {
     }
 
     @Override
-    public void afterRefresh() {
+    protected void clear0() {
         clearCache();
     }
 }
