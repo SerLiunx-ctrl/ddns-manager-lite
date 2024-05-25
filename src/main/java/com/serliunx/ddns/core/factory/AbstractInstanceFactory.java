@@ -47,19 +47,9 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
     }
 
     @Override
-    public boolean addInstance(Instance instance, boolean override) {
-        validateInstance(instance);
-        Instance i = instanceMap.get(instance.getName());
-        if (override && i != null) {
-            return false;
-        }
-        instanceMap.put(instance.getName(), instance);
-        return true;
-    }
-
-    @Override
     public void addInstance(Instance instance) {
-        addInstance(instance, false);
+        validateInstance(instance);
+        instanceMap.put(instance.getName(), instance);
     }
 
     @Override

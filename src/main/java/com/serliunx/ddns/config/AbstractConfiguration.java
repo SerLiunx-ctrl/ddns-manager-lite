@@ -77,15 +77,6 @@ public abstract class AbstractConfiguration implements Configuration {
     }
 
     @Override
-    public void refresh() {
-        // 刷新配置信息
-        refresh0();
-        final Boolean needPrint = getBoolean(ConfigurationKeys.KEY_CFG_LOG_ONSTART);
-        if (needPrint)
-            printDetails();
-    }
-
-    @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public <T extends Enum> T getEnum(Class<T> clazz, String key) {
         String rawValue = getString(key);
@@ -101,6 +92,15 @@ public abstract class AbstractConfiguration implements Configuration {
             value = getEnum(clazz, key);
         }catch (Exception ignored){}
         return value == null ? defaultValue : value;
+    }
+
+    @Override
+    public void refresh() {
+        // 刷新配置信息
+        refresh0();
+        final Boolean needPrint = getBoolean(ConfigurationKeys.KEY_CFG_LOG_ONSTART);
+        if (needPrint)
+            printDetails();
     }
 
     /**

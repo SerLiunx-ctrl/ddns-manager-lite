@@ -15,5 +15,6 @@ public class FactoryTest {
         YamlFileInstanceFactory factory = new YamlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR);
         factory.refresh();
         factory.getInstances().forEach(System.out::println);
+        factory.clear();
     }
 }

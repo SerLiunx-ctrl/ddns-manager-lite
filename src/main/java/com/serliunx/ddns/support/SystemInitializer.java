@@ -110,7 +110,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
         ClassLoader classLoader = SystemConstants.class.getClassLoader();
         Path path = Paths.get(SystemConstants.USER_DIR + File.separator + resourceName);
         // 检查文件是否已存在
-        if(Files.exists(path)){
+        if (Files.exists(path)) {
             log.debug("文件 {} 已存在, 无需解压.", resourceName);
             return;
         }
@@ -120,10 +120,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
             OutputStream outputStream = Files.newOutputStream(path);
             byte[] buffer = new byte[1024];
             int bytesRead;
-            if(inputStream != null) {
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
+            if (inputStream != null) {
+                while ((bytesRead = inputStream.read(buffer)) != -1)
                     outputStream.write(buffer, 0, bytesRead);
-                }
             }
             outputStream.close();
         } catch (Exception e) {

@@ -7,6 +7,16 @@ package com.serliunx.ddns.core.context;
  */
 public class GenericInstanceContext extends AbstractInstanceContext {
 
+	private final boolean clearable;
+
+	public GenericInstanceContext(boolean clearable) {
+		this.clearable = clearable;
+	}
+
+	public GenericInstanceContext() {
+		this(false);
+	}
+
 	@Override
 	protected void clear0() {
 		clearCache();
@@ -14,6 +24,6 @@ public class GenericInstanceContext extends AbstractInstanceContext {
 
 	@Override
 	public boolean isClearable() {
-		return false;
+		return clearable;
 	}
 }

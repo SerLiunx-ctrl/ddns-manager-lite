@@ -2,8 +2,8 @@ package com.serliunx.ddns.core.factory;
 
 import com.serliunx.ddns.core.Clearable;
 import com.serliunx.ddns.core.Priority;
-import com.serliunx.ddns.core.instance.Instance;
 import com.serliunx.ddns.core.Refreshable;
+import com.serliunx.ddns.core.instance.Instance;
 
 /**
  * @author SerLiunx
@@ -17,14 +17,6 @@ public interface InstanceFactory extends Priority, Comparable<InstanceFactory>, 
      * @param instance 实例信息
      */
     void addInstance(Instance instance);
-
-    /**
-     * 添加实例
-     * @param instance 实例信息
-     * @param override 是否覆盖原有的同名实例
-     * @return 成功添加返回真, 否则返回假
-     */
-    boolean addInstance(Instance instance, boolean override);
 
     /**
      * 根据实例名称获取实例
