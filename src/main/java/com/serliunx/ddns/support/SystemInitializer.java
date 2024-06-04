@@ -61,8 +61,6 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         // 释放配置文件
         releaseResource(SystemConstants.PROPERTIES_FILE);
-        // 释放日志文件
-        releaseResource(SystemConstants.LOG_CONFIG_FILE);
 
         // 刷新配置信息
         configuration.refresh();

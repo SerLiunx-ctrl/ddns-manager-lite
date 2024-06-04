@@ -5,7 +5,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.serliunx.ddns" level="DEBUG"/>
+    <logger name="com.serliunx.ddns" level="INFO"/>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT" />
