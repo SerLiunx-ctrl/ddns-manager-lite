@@ -103,6 +103,11 @@ public abstract class AbstractConfiguration implements Configuration {
             printDetails();
     }
 
+    @Override
+    public int getPriority() {
+        return Integer.MAX_VALUE;
+    }
+
     /**
      * 载入配置信息请加锁
      */

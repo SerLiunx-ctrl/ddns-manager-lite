@@ -60,7 +60,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
         log.info("程序正在初始化, 请稍候.");
 
         // 释放配置文件
-        releaseResource(SystemConstants.PROPERTIES_FILE);
+        releaseResource(SystemConstants.CONFIG_PROPERTIES_FILE);
 
         // 刷新配置信息
         configuration.refresh();

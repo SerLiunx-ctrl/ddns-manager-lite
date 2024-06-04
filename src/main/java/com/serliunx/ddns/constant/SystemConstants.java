@@ -39,7 +39,12 @@ public final class SystemConstants {
     /**
      * properties配置文件名称
      */
-    public static final String PROPERTIES_FILE = "settings.properties";
+    public static final String CONFIG_PROPERTIES_FILE = "settings.properties";
+
+    /**
+     * yaml配置文件名称
+     */
+    public static final String CONFIG_YAML_FILE = "settings.yml";
 
     /**
      * 日志配置文件名称
@@ -69,5 +74,10 @@ public final class SystemConstants {
     /**
      * 用户目录下的.properties配置文件
      */
-    public static final String USER_SETTINGS_PROPERTIES_PATH = USER_DIR + File.separator + PROPERTIES_FILE;
+    public static final String USER_SETTINGS_PROPERTIES_PATH = USER_DIR + File.separator + CONFIG_PROPERTIES_FILE;
+
+    /**
+     * 用户目录下的.yml配置文件
+     */
+    public static final String USER_SETTINGS_YAML_PATH = USER_DIR + File.separator + CONFIG_YAML_FILE;
 }

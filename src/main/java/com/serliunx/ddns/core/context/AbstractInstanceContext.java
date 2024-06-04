@@ -71,9 +71,9 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
             Set<Instance> builtInstances = buildInstances(instances);
 
             instanceMap = builtInstances.stream().collect(Collectors.toMap(Instance::getName, i -> i));
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             instanceLock.unlock();
         }
     }

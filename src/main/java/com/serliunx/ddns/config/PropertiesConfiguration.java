@@ -16,15 +16,19 @@ import java.util.Set;
  * @author SerLiunx
  * @since 1.0
  */
-public class PropertiesConfiguration extends AbstractConfiguration {
+public class PropertiesConfiguration extends FileConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesConfiguration.class);
 
-    private final String path;
     private Properties properties;
 
     public PropertiesConfiguration(String path) {
-        this.path = path;
+        super(path);
+    }
+
+    @Override
+    public int getPriority() {
+        return 1;
     }
 
     @Override

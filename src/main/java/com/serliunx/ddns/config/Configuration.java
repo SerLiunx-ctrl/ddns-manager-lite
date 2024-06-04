@@ -1,5 +1,6 @@
 package com.serliunx.ddns.config;
 
+import com.serliunx.ddns.core.Priority;
 import com.serliunx.ddns.core.Refreshable;
 
 /**
@@ -7,7 +8,7 @@ import com.serliunx.ddns.core.Refreshable;
  * @author SerLiunx
  * @since 1.0
  */
-public interface Configuration extends Refreshable {
+public interface Configuration extends Refreshable, Priority {
 
     /**
      * 获取整数
