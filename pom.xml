@@ -81,7 +81,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.serliunx.ddns.BootStrap</mainClass>
+                            <mainClass>com.serliunx.ddns.ManagerLite</mainClass>
                         </configuration>
                     </execution>
                 </executions>
