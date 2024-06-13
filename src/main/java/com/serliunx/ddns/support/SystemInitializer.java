@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +60,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
     public void refresh() {
         log.info("程序正在初始化, 请稍候.");
 
+        // 检查正在运行的实例信息, 安全的停止(手动刷新时需要执行的逻辑, 初始化不需要)
+        checkAndCloseSafely();
+
         // 释放配置文件
         releaseResource(SystemConstants.CONFIG_PROPERTIES_FILE);
 
@@ -88,7 +92,6 @@ public final class SystemInitializer implements Refreshable, Clearable {
     @Override
     public void clear() {
         instanceContext.clear();
-        instances.clear();
     }
 
     public MultipleSourceInstanceContext getInstanceContext() {
@@ -104,6 +107,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
         log.info("载入 {} 个实例.", instances.size());
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void releaseResource(String resourceName) {
         ClassLoader classLoader = SystemConstants.class.getClassLoader();
         Path path = Paths.get(SystemConstants.USER_DIR + File.separator + resourceName);
@@ -181,4 +185,25 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         });
     }
+
+    private void checkAndCloseSafely() {
+        if (scheduledThreadPoolExecutor == null)
+            return;
+
+        scheduledThreadPoolExecutor.shutdown();
+		try {
+			boolean result = scheduledThreadPoolExecutor.awaitTermination(5, TimeUnit.SECONDS);
+            if (result) {
+                log.error("线程池无法在正常的时间范围内关闭, 将强制关闭线程池!");
+                if (!scheduledThreadPoolExecutor.isShutdown())
+                    scheduledThreadPoolExecutor.shutdownNow();
+            }
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+        instances.clear();
+
+        runningInstances.clear();
+	}
 }
