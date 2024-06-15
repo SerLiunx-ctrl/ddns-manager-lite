@@ -1,11 +1,12 @@
 <configuration>
     <conversionRule conversionWord="pid" converterClass="com.serliunx.ddns.support.log.ProcessIdConverter"/>
     <conversionRule conversionWord="instance" converterClass="com.serliunx.ddns.support.log.InstanceNameConverter"/>
+    <conversionRule conversionWord="highlight" converterClass="com.serliunx.ddns.support.log.HighlightingCompositeConverter"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %boldGreen(%d{yyyy年MM月dd日 HH:mm:ss(SSS)}) %cyan([%pid]) %magenta([%15.15thread]) %yellow([%16.16instance]) %highlight([%-6level]) %boldYellow(%-36logger{32}): %msg%n
+                %boldGreen(%d{yyyy-MM-dd HH:mm:ss(SSS)}) %cyan([%pid]) %magenta([%15.15thread]) %yellow([%16.16instance]) %highlight([%-6level]) %boldYellow(%-36logger{32}): %msg%n
             </pattern>
         </encoder>
     </appender>

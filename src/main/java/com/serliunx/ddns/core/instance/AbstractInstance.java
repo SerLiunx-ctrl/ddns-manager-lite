@@ -63,8 +63,10 @@ public abstract class AbstractInstance implements Instance {
 
     @Override
     public void refresh() {
+        InstanceContextHolder.setInstance(this);
         // 调用子类的初始化逻辑
         init();
+        InstanceContextHolder.clear();
     }
 
     @Override
@@ -102,11 +104,14 @@ public abstract class AbstractInstance implements Instance {
 
     @Override
     public boolean validate() {
+        InstanceContextHolder.setInstance(this);
         // 校验通用参数, 具体子类的参数交由子类校验
         if(name == null || name.isEmpty() || interval <= 0 || type == null){
             return false;
         }
-        return validate0();
+        boolean result = validate0();
+        InstanceContextHolder.clear();
+        return result;
     }
 
     @Override

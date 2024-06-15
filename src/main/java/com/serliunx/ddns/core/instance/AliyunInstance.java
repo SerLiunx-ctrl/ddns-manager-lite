@@ -100,7 +100,7 @@ public class AliyunInstance extends AbstractInstance {
                                 .setEndpointOverride("alidns.cn-hangzhou.aliyuncs.com")
                 )
                 .build();
-        log.debug("初始化完成.");
+        log.debug(getName() + ": 初始化完成.");
     }
 
     @Override
