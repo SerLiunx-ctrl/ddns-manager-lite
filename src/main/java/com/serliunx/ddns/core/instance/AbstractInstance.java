@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.serliunx.ddns.constant.InstanceSource;
 import com.serliunx.ddns.constant.InstanceType;
+import com.serliunx.ddns.support.InstanceContextHolder;
 import com.serliunx.ddns.support.NetworkContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 public abstract class AbstractInstance implements Instance {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractInstance.class);
+
     /**
      * 实例名称
      * <li> 全局唯一
@@ -69,20 +71,28 @@ public abstract class AbstractInstance implements Instance {
     public void run() {
         if (isPause()) // 暂停态检查, 已暂停则不继续进行.
             return;
+        // 设置实例信息
+        InstanceContextHolder.setInstance(this);
+        log.debug("正在尝试查询IP信息.");
         value = query();
         final String ipAddress = NetworkContextHolder.getIpAddress();
         try {
             if (value != null && !value.isEmpty()
                     && ipAddress != null && !ipAddress.isEmpty()) {
-                if (value.equals(ipAddress))
+                if (value.equals(ipAddress)) {
+                    log.debug("最新记录的IP与当前IP地址一致, 无需更新.");
                     return;
+                }
             }
+            log.debug("正在尝试将记录旧IP: {} 更新为: {}", value, ipAddress);
             value = ipAddress;
             run0();
         } catch (Exception e) {
             log.error(e.getMessage());
         } finally {
             this.value = null;
+            // 移除实例信息
+            InstanceContextHolder.clear();
         }
     }
 

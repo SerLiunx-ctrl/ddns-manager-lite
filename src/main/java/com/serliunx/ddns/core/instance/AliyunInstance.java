@@ -100,7 +100,7 @@ public class AliyunInstance extends AbstractInstance {
                                 .setEndpointOverride("alidns.cn-hangzhou.aliyuncs.com")
                 )
                 .build();
-        debug("初始化完成.");
+        log.debug("初始化完成.");
     }
 
     @Override
@@ -111,18 +111,18 @@ public class AliyunInstance extends AbstractInstance {
                 .type(recordType)
                 .value(value)
                 .build();
-        debug("正在更新解析记录.");
+        log.debug("正在更新解析记录.");
         CompletableFuture<UpdateDomainRecordResponse> requestResponse = client.updateDomainRecord(request);
         try {
             requestResponse.whenComplete((v, t) -> {
                 if (t != null) { //出现异常
-                    handleThrowable(t);
+                    log.error("出现异常 {}:", t.getCause(), t.getMessage());
                 } else {
                     String result = null;
                     try {
                         result = jsonMapper.writeValueAsString(v.getBody());
                     } catch (JsonProcessingException ignored) {} finally {
-                        debug("操作结束, 结果: {}", result == null ? v : result);
+                        log.debug("操作结束, 结果: {}", result == null ? v : result);
                     }
                 }
             });
@@ -146,10 +146,10 @@ public class AliyunInstance extends AbstractInstance {
             }
             return null;
         } catch (InterruptedException | ExecutionException e) {
-            error("出现了不应该出现的异常 => {}", e);
+            log.error("出现了不应该出现的异常 => {}", e);
             return null;
         } catch (TimeoutException e) {
-            error("记录查询超时!");
+            log.error("记录查询超时!");
             return null;
         }
     }
@@ -234,24 +234,5 @@ public class AliyunInstance extends AbstractInstance {
                 ", source=" + source +
                 ", value='" + value + '\'' +
                 '}';
-    }
-
-    private void handleThrowable(Throwable t){
-        error("出现异常 {}:", t.getCause(), t.getMessage());
-    }
-
-    @SuppressWarnings("all")
-    private void log(String msg, Object...params) {
-        log.info("[实例活动][" + name + "]" + msg, params);
-    }
-
-    @SuppressWarnings("all")
-    private void debug(String msg, Object...params) {
-        log.debug("[实例活动][" + name + "]" + msg, params);
-    }
-
-    @SuppressWarnings("all")
-    private void error(String msg, Object...params) {
-        log.error("[实例异常][" + name + "]" + msg, params);
     }
 }
