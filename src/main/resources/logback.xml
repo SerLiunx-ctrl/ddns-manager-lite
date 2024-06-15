@@ -1,13 +1,15 @@
 <configuration>
+    <conversionRule conversionWord="pid" converterClass="com.serliunx.ddns.support.log.ProcessIdConverter"/>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy年MM月dd日 HH:mm:ss(SSS)} [%X{pid}] [%-15thread] [%level] %logger{16}: %msg%n</pattern>
+            <pattern>%boldGreen(%d{yyyy年MM月dd日 HH:mm:ss(SSS)}) %cyan([%pid]) %magenta([%15.15thread]) %highlight([%-6level]) %boldYellow(%-45logger{32}): %highlight(%msg%n)</pattern>
         </encoder>
     </appender>
 
     <logger name="com.serliunx.ddns" level="INFO"/>
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

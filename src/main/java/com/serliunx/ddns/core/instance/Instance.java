@@ -75,4 +75,20 @@ public interface Instance extends Runnable, Refreshable {
      * @return 通过校验返回真, 否则返回假
      */
     boolean validate();
+
+    /**
+     * 设置实例是否暂停
+     * <li> 暂停之后实力不会进行下一次活动, 不影响正在更新的实力。
+     * <li> 暂停态目前只有一个检查点, 详情见{@link AbstractInstance#run()}
+     * @param pause 暂停状态
+     */
+    void setPause(boolean pause);
+
+    /**
+     * 判断实例是否处于暂停状态
+     * @return 暂停中返回真, 否则返回假
+     */
+    default boolean isPause() {
+        return false;
+    }
 }

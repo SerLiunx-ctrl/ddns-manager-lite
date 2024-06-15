@@ -53,6 +53,12 @@ public abstract class AbstractInstance implements Instance {
      */
     protected String value;
 
+    /**
+     * 暂停状态
+     * <li> 默认为非暂停状态
+     */
+    protected volatile boolean pause = false;
+
     @Override
     public void refresh() {
         // 调用子类的初始化逻辑
@@ -61,6 +67,8 @@ public abstract class AbstractInstance implements Instance {
 
     @Override
     public void run() {
+        if (isPause()) // 暂停态检查, 已暂停则不继续进行.
+            return;
         value = query();
         final String ipAddress = NetworkContextHolder.getIpAddress();
         try {
@@ -97,18 +105,22 @@ public abstract class AbstractInstance implements Instance {
         this.name = name;
     }
 
+    @Override
     public String getFatherName() {
         return fatherName;
     }
 
+    @Override
     public void setFatherName(String fatherName) {
         this.fatherName = fatherName;
     }
 
+    @Override
     public Long getInterval() {
         return interval;
     }
 
+    @Override
     public void setInterval(Long interval) {
         this.interval = interval;
     }
@@ -128,8 +140,19 @@ public abstract class AbstractInstance implements Instance {
         this.source = instanceSource;
     }
 
+    @Override
     public InstanceSource getSource() {
         return source;
+    }
+
+    @Override
+    public void setPause(boolean pause) {
+        this.pause = pause;
+    }
+
+    @Override
+    public boolean isPause() {
+        return pause;
     }
 
     /**

@@ -171,7 +171,6 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         // 添加进程结束钩子函数
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            MDC.put("pid", SystemSupport.getPid());
             log.info("程序正在关闭中, 可能需要一定时间.");
             scheduledThreadPoolExecutor.shutdown();
             log.info("已关闭.");

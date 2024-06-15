@@ -4,12 +4,8 @@ import com.serliunx.ddns.config.PropertiesConfiguration;
 import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.context.FileInstanceContext;
 import com.serliunx.ddns.support.SystemInitializer;
-import com.serliunx.ddns.support.SystemSupport;
 import com.serliunx.ddns.support.command.CommandManager;
-import com.serliunx.ddns.support.command.cmd.ExitCommand;
-import com.serliunx.ddns.support.command.cmd.HelpCommand;
-import com.serliunx.ddns.support.command.cmd.IpCommand;
-import org.slf4j.MDC;
+import com.serliunx.ddns.support.command.cmd.*;
 
 import java.util.Scanner;
 
@@ -21,21 +17,8 @@ import java.util.Scanner;
 public final class ManagerLite {
 
     public static void main(String[] args) {
-        // 日志参数调整
-        beforeInit();
-
         // 容器初始化
-        SystemInitializer initializer = init();
-
-        // 指令注册
-        CommandManager commandManager = registerCommand(initializer);
-
-        // 指令监听
-        handleCommand(commandManager, initializer);
-    }
-
-    private static void beforeInit() {
-        MDC.put("pid", SystemSupport.getPid());
+        init();
     }
 
     private static SystemInitializer init() {
@@ -48,14 +31,18 @@ public final class ManagerLite {
         return systemInitializer;
     }
 
+    @Deprecated
     private static CommandManager registerCommand(SystemInitializer systemInitializer) {
         CommandManager commandManager = new CommandManager(systemInitializer);
         commandManager.register(new HelpCommand(commandManager));
         commandManager.register(new IpCommand(commandManager));
         commandManager.register(new ExitCommand(commandManager));
+        commandManager.register(new InstanceCommand(commandManager));
+        commandManager.register(new RefreshCommand(commandManager));
         return commandManager;
     }
 
+    @Deprecated
     @SuppressWarnings("all")
     private static void handleCommand(CommandManager commandManager, SystemInitializer systemInitializer) {
         Scanner scanner = new Scanner(System.in);
