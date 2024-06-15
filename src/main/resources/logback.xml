@@ -11,6 +11,7 @@
     </appender>
 
     <logger name="com.serliunx.ddns" level="DEBUG"/>
+    <logger name="feign" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />

@@ -84,6 +84,10 @@ public abstract class AbstractInstance implements Instance {
                     return;
                 }
             }
+            if (ipAddress == null) {
+                log.error("IP地址获取失败, 无法继续更新记录!");
+                return;
+            }
             log.debug("正在尝试将记录旧IP: {} 更新为: {}", value, ipAddress);
             value = ipAddress;
             run0();

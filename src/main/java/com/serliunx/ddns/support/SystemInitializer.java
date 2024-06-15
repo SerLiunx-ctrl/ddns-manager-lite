@@ -11,7 +11,6 @@ import com.serliunx.ddns.support.feign.client.entity.IPAddressResponse;
 import com.serliunx.ddns.thread.TaskThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import java.io.File;
 import java.io.InputStream;
@@ -19,11 +18,9 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -74,9 +71,6 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         // 初始化线程池
         initThreadPool(coreSize);
-
-        // 尝试链接dashboard
-        registerToDashboard();
 
         // 加载实例(不同的容器加载时机不同)
         loadInstances();
@@ -175,14 +169,6 @@ public final class SystemInitializer implements Refreshable, Clearable {
             scheduledThreadPoolExecutor.shutdown();
             log.info("已关闭.");
         }, "DDNS-ShutDownHook"));
-    }
-
-    private void registerToDashboard() {
-        CompletableFuture.runAsync(() -> {
-
-        }, scheduledThreadPoolExecutor).whenComplete((r, t) -> {
-
-        });
     }
 
     private void checkAndCloseSafely() {

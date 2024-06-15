@@ -4,10 +4,10 @@ import com.serliunx.ddns.support.feign.JacksonDecoder;
 import com.serliunx.ddns.support.feign.JacksonEncoder;
 import com.serliunx.ddns.support.feign.client.entity.IPAddressResponse;
 import feign.Feign;
-import feign.Request;
+import feign.Logger;
 import feign.RequestLine;
-
-import java.util.concurrent.TimeUnit;
+import feign.Retryer;
+import feign.slf4j.Slf4jLogger;
 
 /**
  * 本机外网IP地址获取
@@ -30,11 +30,11 @@ public interface IPAddressClient {
 
     static IPAddressClient getInstance() {
         return Feign.builder()
+                .logger(new Slf4jLogger())
+                .logLevel(Logger.Level.BASIC)
+                .retryer(Retryer.NEVER_RETRY)
                 .encoder(JacksonEncoder.getInstance())
                 .decoder(JacksonDecoder.getInstance())
-                .options(new Request.Options(10,
-                        TimeUnit.SECONDS, 10,
-                        TimeUnit.SECONDS, true))
                 .target(IPAddressClient.class, url);
     }
 }
