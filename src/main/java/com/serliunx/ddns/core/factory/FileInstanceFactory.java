@@ -8,8 +8,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author SerLiunx
- * @since 1.0
+ * 文件相关实例工厂, 定义所有来源为文件的实例工厂通用逻辑
+ * @see JacksonFileInstanceFactory 使用Jackson序列化、反序列化的实例
+ * @see YamlFileInstanceFactory 使用SankeYaml序列化、反序列化的实例
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public abstract class FileInstanceFactory extends AbstractInstanceFactory {
 

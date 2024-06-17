@@ -5,7 +5,8 @@ import com.serliunx.ddns.core.instance.Instance;
 /**
  * 异常信息, 实例已存在
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
- * @since 1.0
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public class InstanceExistsException extends InstanceException {
 

@@ -14,8 +14,9 @@ import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 
 /**
  * 实例抽象实现
- * @author SerLiunx
- * @since 1.0
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)

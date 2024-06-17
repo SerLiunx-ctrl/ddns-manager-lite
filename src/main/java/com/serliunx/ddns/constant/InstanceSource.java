@@ -4,8 +4,9 @@ import static com.serliunx.ddns.constant.SystemConstants.*;
 
 /**
  * 实例来源
- * @author SerLiunx
- * @since 1.0
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public enum InstanceSource {
     FILE_JSON(JSON_FILE),

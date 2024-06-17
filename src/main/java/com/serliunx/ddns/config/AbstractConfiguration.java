@@ -11,8 +11,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 配置信息的抽象实现, 定义公共逻辑
- * @author SerLiunx
- * @since 1.0
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public abstract class AbstractConfiguration implements Configuration {
 

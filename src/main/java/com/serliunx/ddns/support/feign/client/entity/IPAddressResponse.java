@@ -2,8 +2,9 @@ package com.serliunx.ddns.support.feign.client.entity;
 
 /**
  * IP地址查询响应
- * @author SerLiunx
- * @since 1.0
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 @SuppressWarnings("all")
 public class IPAddressResponse {

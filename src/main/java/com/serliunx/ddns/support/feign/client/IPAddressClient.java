@@ -11,8 +11,9 @@ import feign.slf4j.Slf4jLogger;
 
 /**
  * 本机外网IP地址获取
- * @author SerLiunx
- * @since 1.0
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 @SuppressWarnings("all")
 public interface IPAddressClient {

@@ -20,8 +20,11 @@ import java.util.Map;
 import static com.serliunx.ddns.constant.SystemConstants.TYPE_FIELD;
 
 /**
- * @author SerLiunx
- * @since 1.0
+ * Yaml文件实例工厂, 使用SnakeYaml来反序列化实例. 属于文件型实例工厂.
+ * @see FileInstanceFactory
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public class YamlFileInstanceFactory extends FileInstanceFactory {
 

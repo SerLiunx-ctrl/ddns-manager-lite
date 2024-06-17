@@ -5,8 +5,10 @@ import com.serliunx.ddns.constant.InstanceType;
 import com.serliunx.ddns.core.Refreshable;
 
 /**
- * @author SerLiunx
- * @since 1.0
+ * 实例行为、参数定义接口
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public interface Instance extends Runnable, Refreshable {
 

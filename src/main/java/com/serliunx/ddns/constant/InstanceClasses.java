@@ -9,8 +9,9 @@ import java.util.Map;
 
 /**
  * 实例类型集合
- * @author SerLiunx
- * @since 1.0
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public final class InstanceClasses {
     private InstanceClasses(){throw new UnsupportedOperationException();}

@@ -4,8 +4,11 @@ import com.serliunx.ddns.config.Configuration;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 
 /**
- * @author SerLiunx
- * @since 1.0
+ * 系统启动配置器
+ * @see SystemInitializer
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public final class Configurer {
 

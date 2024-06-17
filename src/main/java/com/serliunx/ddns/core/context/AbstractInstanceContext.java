@@ -19,8 +19,9 @@ import static com.serliunx.ddns.util.InstanceUtils.validateInstance;
 
 /**
  * 实例容器的抽象实现, 定义大部分公共逻辑
- * @author SerLiunx
- * @since 1.0
+ * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
+ * @version 1.0.0
+ * @since 2024/5/15
  */
 public abstract class AbstractInstanceContext implements InstanceContext, MultipleSourceInstanceContext {
 
