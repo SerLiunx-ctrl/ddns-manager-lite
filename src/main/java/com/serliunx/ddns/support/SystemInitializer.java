@@ -56,6 +56,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
     @Override
     public void refresh() {
+        InstanceContextHolder.setAdditional("main-refreshing");
         log.info("程序正在初始化, 请稍候.");
 
         // 检查正在运行的实例信息, 安全的停止(手动刷新时需要执行的逻辑, 初始化不需要)
@@ -82,6 +83,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
         // 实例提交后, 清理实例、配置缓存, 因为读取一次就不需要了
         clear();
         log.info("初始化完成!");
+        InstanceContextHolder.clearAdditional();
     }
 
     @Override
@@ -133,7 +135,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         for (Instance i : instances) {
             if (!i.validate()) {
-                log.error("实例{}({})参数校验不通过, 将不会被运行.", i.getName(), i.getType());
+                log.warn("实例{}({})参数校验不通过, 将不会被运行.", i.getName(), i.getType());
                 continue;
             }
             // 初始化实例
@@ -154,6 +156,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         // 提交定时获取网络IP的定时任务
         scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
+            InstanceContextHolder.setAdditional("ip-update");
             log.info("正在尝试获取本机最新的IP地址.");
             IPAddressResponse response = IPAddressClient.instance.getIPAddress();
             String ip;
@@ -162,13 +165,16 @@ public final class SystemInitializer implements Refreshable, Clearable {
                 NetworkContextHolder.setIpAddress(ip);
                 log.info("本机最新公网IP地址 => {}", ip);
             }
+            InstanceContextHolder.clearAdditional();
         }, 0, configuration.getLong(KEY_TASK_REFRESH_INTERVAL_IP, 300L), TimeUnit.SECONDS);
 
         // 添加进程结束钩子函数
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            InstanceContextHolder.setAdditional("stopping");
             log.info("程序正在关闭中, 可能需要一定时间.");
             scheduledThreadPoolExecutor.shutdown();
             log.info("已关闭.");
+            InstanceContextHolder.clearAdditional();
         }, "DDNS-ShutDownHook"));
     }
 

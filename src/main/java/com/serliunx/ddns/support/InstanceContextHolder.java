@@ -10,7 +10,14 @@ import com.serliunx.ddns.core.instance.Instance;
  */
 public final class InstanceContextHolder {
 
+	/**
+	 * 当前线程所涉及的实例信息
+	 */
 	private static final ThreadLocal<Instance> INSTANCE_THREAD_LOCAL = new ThreadLocal<>();
+	/**
+	 * 当前线程所需要的附加信息
+	 */
+	private static final ThreadLocal<String> ADDITIONAL_INFORMATION_THREAD_LOCAL = new ThreadLocal<>();
 
 	private InstanceContextHolder() {throw new UnsupportedOperationException();}
 
@@ -31,9 +38,32 @@ public final class InstanceContextHolder {
 	}
 
 	/**
+	 * 设置附加信息
+	 * @param additional 附加信息
+	 */
+	public static void setAdditional(String additional) {
+		ADDITIONAL_INFORMATION_THREAD_LOCAL.set(additional);
+	}
+
+	/**
+	 * 获取附加信息
+	 * @return 附加信息
+	 */
+	public static String getAdditional() {
+		return ADDITIONAL_INFORMATION_THREAD_LOCAL.get();
+	}
+
+	/**
 	 * 清除当前线程的实例信息
 	 */
-	public static void clear() {
+	public static void clearInstance() {
 		INSTANCE_THREAD_LOCAL.remove();
+	}
+
+	/**
+	 * 清除当前线程的附加信息
+	 */
+	public static void clearAdditional() {
+		ADDITIONAL_INFORMATION_THREAD_LOCAL.remove();
 	}
 }
