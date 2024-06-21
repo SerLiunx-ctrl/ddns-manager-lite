@@ -67,7 +67,7 @@ public abstract class AbstractInstance implements Instance {
         InstanceContextHolder.setInstance(this);
         // 调用子类的初始化逻辑
         init();
-        InstanceContextHolder.clear();
+        InstanceContextHolder.clearInstance();
     }
 
     @Override
@@ -99,7 +99,7 @@ public abstract class AbstractInstance implements Instance {
         } finally {
             this.value = null;
             // 移除实例信息
-            InstanceContextHolder.clear();
+            InstanceContextHolder.clearInstance();
         }
     }
 
@@ -111,7 +111,7 @@ public abstract class AbstractInstance implements Instance {
             return false;
         }
         boolean result = validate0();
-        InstanceContextHolder.clear();
+        InstanceContextHolder.clearInstance();
         return result;
     }
 

@@ -14,4 +14,8 @@ public abstract class FileConfiguration extends AbstractConfiguration {
 	public FileConfiguration(String path) {
 		this.path = path;
 	}
+
+	public String getPath() {
+		return path;
+	}
 }

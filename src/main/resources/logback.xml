@@ -6,7 +6,7 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %boldGreen(%d{yyyy-MM-dd HH:mm:ss(SSS)}) %cyan([%pid]) %magenta([%15.15thread]) %yellow([%16.16instance]) %highlight([%-6level]) %boldYellow(%-36logger{32}): %msg%n
+                %boldGreen(%d{yyyy-MM-dd HH:mm:ss(SSS)}) %cyan([%pid]) %magenta([%15.15thread]) %green([%16.16instance]) %highlight([%-6level]) %boldCyan(%-36logger{32}): %msg%n
             </pattern>
         </encoder>
     </appender>

@@ -3,6 +3,8 @@ package com.serliunx.ddns.config;
 import com.serliunx.ddns.core.Priority;
 import com.serliunx.ddns.core.Refreshable;
 
+import java.util.Map;
+
 /**
  * 配置信息逻辑定义
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
@@ -91,4 +93,10 @@ public interface Configuration extends Refreshable, Priority {
      */
     @SuppressWarnings("rawtypes")
     <T extends Enum> T getEnum(Class<T> clazz, String key, T defaultValue);
+
+    /**
+     * 获取所有的键值对
+     * @return 配置文件所有成功加载的键值对
+     */
+    Map<String, String> getAllKeyAndValue();
 }

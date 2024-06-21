@@ -99,9 +99,14 @@ public abstract class AbstractConfiguration implements Configuration {
     public void refresh() {
         // 刷新配置信息
         refresh0();
-        final Boolean needPrint = getBoolean(ConfigurationKeys.KEY_CFG_LOG_ONSTART);
+        final Boolean needPrint = getBoolean(ConfigurationKeys.KEY_CFG_LOG_ONSTART, false);
         if (needPrint)
             printDetails();
+    }
+
+    @Override
+    public Map<String, String> getAllKeyAndValue() {
+        return valueMap;
     }
 
     @Override
