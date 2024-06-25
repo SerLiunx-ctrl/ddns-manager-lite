@@ -14,7 +14,6 @@ import static com.serliunx.ddns.util.InstanceUtils.validateInstance;
 /**
  * 实例工厂抽象实现, 定义通用逻辑及实例存储.
  * @see FileInstanceFactory
- * @see DatabaseInstanceFactory
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15
