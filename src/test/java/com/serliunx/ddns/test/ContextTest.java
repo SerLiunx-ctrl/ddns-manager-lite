@@ -34,9 +34,8 @@ public class ContextTest {
 
     @Test
     public void testFileContext(){
-        MultipleSourceInstanceContext context = new FileInstanceContext();
-
-        context.getInstances().forEach(System.out::println);
+        FileInstanceContext context = new FileInstanceContext();
+        context.getSortedListableInstanceFactories().forEach(System.out::println);
     }
 
     @Test

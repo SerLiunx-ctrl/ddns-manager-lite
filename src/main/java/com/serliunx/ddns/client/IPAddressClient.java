@@ -1,8 +1,8 @@
-package com.serliunx.ddns.support.feign.client;
+package com.serliunx.ddns.client;
 
+import com.serliunx.ddns.client.entity.IPAddressResponse;
 import com.serliunx.ddns.support.feign.JacksonDecoder;
 import com.serliunx.ddns.support.feign.JacksonEncoder;
-import com.serliunx.ddns.support.feign.client.entity.IPAddressResponse;
 import feign.Feign;
 import feign.Logger;
 import feign.RequestLine;
@@ -27,7 +27,7 @@ public interface IPAddressClient {
      * @return IPAddressResponse
      */
     @RequestLine("GET /json")
-    IPAddressResponse getIPAddress();
+	IPAddressResponse getIPAddress();
 
     static IPAddressClient getInstance() {
         return Feign.builder()

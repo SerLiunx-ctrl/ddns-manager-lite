@@ -14,15 +14,15 @@ import java.util.Map;
  * @since 2024/5/15
  */
 public final class InstanceClasses {
+
     private InstanceClasses(){throw new UnsupportedOperationException();}
 
-    private static final Map<InstanceType, Class<? extends Instance>> instanceTypeMap =
-            new HashMap<InstanceType, Class<? extends Instance>>() {
-                {
-                    put(InstanceType.ALI_YUN, AliyunInstance.class);
-                    put(InstanceType.TENCENT_CLOUD, TencentInstance.class);
-                }
-            };
+    private static final Map<InstanceType, Class<? extends Instance>> instanceTypeMap = new HashMap<>();
+
+    static {
+        instanceTypeMap.put(InstanceType.ALI_YUN, AliyunInstance.class);
+        instanceTypeMap.put(InstanceType.TENCENT_CLOUD, TencentInstance.class);
+    }
 
     public static Class<? extends Instance> match(InstanceType type) {
         return instanceTypeMap.get(type);

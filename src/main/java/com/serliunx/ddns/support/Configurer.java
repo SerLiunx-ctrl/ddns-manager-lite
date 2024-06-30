@@ -14,6 +14,7 @@ public final class Configurer {
 
     private Configuration configuration;
     private MultipleSourceInstanceContext instanceContext;
+    private boolean clearCache;
 
     Configurer(){}
 
@@ -29,8 +30,13 @@ public final class Configurer {
         return this;
     }
 
+    public Configurer clearCache(boolean clearCache) {
+        this.clearCache = clearCache;
+        return this;
+    }
+
     public SystemInitializer done() {
         Assert.notNull(configuration, instanceContext);
-        return new SystemInitializer(configuration, instanceContext);
+        return new SystemInitializer(configuration, instanceContext, clearCache);
     }
 }

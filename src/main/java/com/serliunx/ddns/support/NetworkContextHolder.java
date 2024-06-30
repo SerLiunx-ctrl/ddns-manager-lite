@@ -39,8 +39,9 @@ public final class NetworkContextHolder {
     }
 
     public static String getIpAddress() {
-        if(IP_ADDRESS != null)
+        if(IP_ADDRESS != null) {
             return IP_ADDRESS;
+        }
         try {
             if(!IP_CONTEXT_WAIT_LATCH.await(IP_CONTEXT_TIME_OUT, TimeUnit.SECONDS)) {
                 log.error("IP地址获取超时.");

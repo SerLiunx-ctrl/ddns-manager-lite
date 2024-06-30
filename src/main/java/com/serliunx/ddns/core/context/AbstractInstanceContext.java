@@ -25,7 +25,7 @@ import static com.serliunx.ddns.util.InstanceUtils.validateInstance;
  */
 public abstract class AbstractInstanceContext implements InstanceContext, MultipleSourceInstanceContext {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractInstanceContext.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final Set<ListableInstanceFactory> listableInstanceFactories = new HashSet<>();
 
@@ -63,9 +63,7 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
             Set<Instance> instances = new HashSet<>();
 
             // 高优先级的实例工厂会覆盖低优先级实例工厂所加载的实例
-            listableInstanceFactories.stream()
-                    .sorted()
-                    .forEach(f -> instances.addAll(f.getInstances()));
+            getSortedListableInstanceFactories().forEach(f -> instances.addAll(f.getInstances()));
 
             // 初次载入
             cacheInstanceMap = new HashMap<>(instances.stream().collect(Collectors.toMap(Instance::getName, i -> i)));
@@ -86,10 +84,11 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
             instanceLock.lock();
             String name = instance.getName();
             Instance instanceExists = instanceMap.get(name);
-            if (instanceExists != null)
+            if (instanceExists != null) {
                 throw new InstanceExistsException("该实例已存在!", name, instanceExists);
-            else
+            } else {
                 instanceMap.put(name, instance);
+            }
         }catch (Exception e){
             throw new RuntimeException(e);
         }finally {
@@ -146,7 +145,7 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
     protected void clearCache() {
         if (cacheInstanceMap != null
                 && !cacheInstanceMap.isEmpty()){
-            int size = cacheInstanceMap.size();
+            final int size = cacheInstanceMap.size();
             cacheInstanceMap.clear();
             // 清理实例工厂的缓存信息
             listableInstanceFactories.forEach(Clearable::clear);

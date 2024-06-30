@@ -3,7 +3,10 @@ package com.serliunx.ddns.core.context;
 import com.serliunx.ddns.core.factory.InstanceFactory;
 import com.serliunx.ddns.core.factory.ListableInstanceFactory;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 多数据源的实例容器, 将多种实例来源汇聚到一起
@@ -26,4 +29,18 @@ public interface MultipleSourceInstanceContext extends InstanceContext, Listable
      * @return 实例工厂列表
      */
     Set<ListableInstanceFactory> getListableInstanceFactories();
+
+    /**
+     * 获取当前实例容器下所有实例工厂(已排序)
+     * @return 已排序的实例工厂
+     */
+    default List<ListableInstanceFactory> getSortedListableInstanceFactories() {
+        Set<ListableInstanceFactory> listableInstanceFactories = getListableInstanceFactories();
+        if (listableInstanceFactories == null || listableInstanceFactories.isEmpty())
+            return Collections.emptyList();
+
+        return listableInstanceFactories.stream()
+                .sorted()
+                .collect(Collectors.toList());
+    }
 }

@@ -6,8 +6,8 @@ import com.serliunx.ddns.core.Clearable;
 import com.serliunx.ddns.core.Refreshable;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.core.instance.Instance;
-import com.serliunx.ddns.support.feign.client.IPAddressClient;
-import com.serliunx.ddns.support.feign.client.entity.IPAddressResponse;
+import com.serliunx.ddns.client.IPAddressClient;
+import com.serliunx.ddns.client.entity.IPAddressResponse;
 import com.serliunx.ddns.thread.TaskThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,14 +40,20 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
     private final Configuration configuration;
     private final MultipleSourceInstanceContext instanceContext;
+    private final boolean clearCache;
 
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
     private Set<Instance> instances;
     private final Map<String, ScheduledFuture<?>> runningInstances = new HashMap<>(64);
 
-    SystemInitializer(Configuration configuration, MultipleSourceInstanceContext instanceContext) {
+    SystemInitializer(Configuration configuration, MultipleSourceInstanceContext instanceContext, boolean clearCache) {
         this.configuration = configuration;
         this.instanceContext = instanceContext;
+        this.clearCache = clearCache;
+    }
+
+    SystemInitializer(Configuration configuration, MultipleSourceInstanceContext instanceContext) {
+        this(configuration, instanceContext, true);
     }
 
     public static Configurer configurer() {
@@ -80,8 +86,10 @@ public final class SystemInitializer implements Refreshable, Clearable {
         // 运行实例
         runInstances();
 
-        // 实例提交后, 清理实例、配置缓存, 因为读取一次就不需要了
-        clear();
+        // 清理实例、配置缓存, 正常情况下读取一次就不需要了
+        if (clearCache) {
+            clear();
+        }
         log.info("初始化完成!");
         InstanceContextHolder.clearAdditional();
     }
@@ -120,8 +128,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
             byte[] buffer = new byte[1024];
             int bytesRead;
             if (inputStream != null) {
-                while ((bytesRead = inputStream.read(buffer)) != -1)
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
+                }
             }
             outputStream.close();
         } catch (Exception e) {
@@ -140,7 +149,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
             }
             // 初始化实例
             i.refresh();
-            ScheduledFuture<?> future = scheduledThreadPoolExecutor.scheduleWithFixedDelay(i, 0,
+            ScheduledFuture<?> future = scheduledThreadPoolExecutor.scheduleWithFixedDelay(i, 5,
                     i.getInterval(), TimeUnit.SECONDS);
             runningInstances.put(i.getName(), future);
             log.info("{}({})已启动, 运行周期 {} 秒.", i.getName(), i.getType(), i.getInterval());
@@ -187,15 +196,15 @@ public final class SystemInitializer implements Refreshable, Clearable {
 			boolean result = scheduledThreadPoolExecutor.awaitTermination(5, TimeUnit.SECONDS);
             if (result) {
                 log.error("线程池无法在正常的时间范围内关闭, 将强制关闭线程池!");
-                if (!scheduledThreadPoolExecutor.isShutdown())
+                if (!scheduledThreadPoolExecutor.isShutdown()) {
                     scheduledThreadPoolExecutor.shutdownNow();
+                }
             }
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
-		}
-
-        instances.clear();
-
-        runningInstances.clear();
+		} finally {
+            instances.clear();
+            runningInstances.clear();
+        }
 	}
 }

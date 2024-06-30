@@ -1,6 +1,6 @@
 package com.serliunx.ddns.test.support;
 
-import com.serliunx.ddns.support.feign.client.IPAddressClient;
+import com.serliunx.ddns.client.IPAddressClient;
 import org.junit.Test;
 
 /**

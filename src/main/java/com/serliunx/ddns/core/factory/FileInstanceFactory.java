@@ -27,6 +27,16 @@ public abstract class FileInstanceFactory extends AbstractInstanceFactory {
     }
 
     @Override
+    public int getPriority() {
+        return 256;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(instanceDir: " + instanceDir + ", priority: " + getPriority() + ")";
+    }
+
+    @Override
     protected Set<Instance> load() {
         Set<File> files = loadFiles();
         if (files != null && !files.isEmpty()) {
@@ -36,11 +46,6 @@ public abstract class FileInstanceFactory extends AbstractInstanceFactory {
                     .collect(Collectors.toCollection(HashSet::new));
         }
         return Collections.emptySet();
-    }
-
-    @Override
-    public int getPriority() {
-        return 256;
     }
 
     /**

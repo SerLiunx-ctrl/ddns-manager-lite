@@ -96,12 +96,14 @@ public class YamlFileInstanceFactory extends FileInstanceFactory {
                     f.set(instance, Enum.valueOf((Class<? extends Enum>) clazz, (String) value));
                     continue;
                 }
-                if (value != null)
+                if (value != null) {
                     f.set(instance, value);
+                }
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
+            } finally {
+                f.setAccessible(false);
             }
-            f.setAccessible(false);
         }
         return instance;
     }

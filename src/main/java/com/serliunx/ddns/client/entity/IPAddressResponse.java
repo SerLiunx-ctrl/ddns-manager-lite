@@ -1,4 +1,4 @@
-package com.serliunx.ddns.support.feign.client.entity;
+package com.serliunx.ddns.client.entity;
 
 /**
  * IP地址查询响应

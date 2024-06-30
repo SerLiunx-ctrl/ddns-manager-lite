@@ -23,7 +23,7 @@ import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 @JacksonXmlRootElement(localName = XML_ROOT_INSTANCE_NAME)
 public abstract class AbstractInstance implements Instance {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractInstance.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 实例名称

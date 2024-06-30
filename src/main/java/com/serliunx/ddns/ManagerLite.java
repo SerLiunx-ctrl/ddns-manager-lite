@@ -18,13 +18,13 @@ public final class ManagerLite {
         init();
     }
 
-    private static SystemInitializer init() {
+    private static void init() {
         SystemInitializer systemInitializer = SystemInitializer
                 .configurer()
+                .clearCache(false)
                 .configuration(new PropertiesConfiguration(SystemConstants.USER_SETTINGS_PROPERTIES_PATH))
                 .instanceContext(new FileInstanceContext())
                 .done();
         systemInitializer.refresh();
-        return systemInitializer;
     }
 }

@@ -74,6 +74,11 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
             clear0();
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(priority: " + getPriority() + ")";
+    }
+
     /**
      * 交由子类去加载实例信息
      * @return 实例信息
