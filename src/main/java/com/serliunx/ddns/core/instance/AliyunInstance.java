@@ -29,8 +29,6 @@ import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 @JacksonXmlRootElement(localName = XML_ROOT_INSTANCE_NAME)
 public class AliyunInstance extends AbstractInstance {
 
-    private static final Logger log = LoggerFactory.getLogger(AliyunInstance.class);
-
     /**
      * AccessKey ID
      */

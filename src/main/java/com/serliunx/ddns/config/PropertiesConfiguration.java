@@ -1,8 +1,5 @@
 package com.serliunx.ddns.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -18,8 +15,6 @@ import java.util.Set;
  * @since 2024/5/15
  */
 public class PropertiesConfiguration extends FileConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesConfiguration.class);
 
     private Properties properties;
 
@@ -42,13 +37,13 @@ public class PropertiesConfiguration extends FileConfiguration {
             // 载入配置信息
             load();
         } catch (IOException e) {
-            LOGGER.error("配置文件读取出现异常 => {}", e.toString());
+            log.error("配置文件读取出现异常 => {}", e.toString());
         }finally {
             if(inputStream != null){
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    LOGGER.error("配置文件资源释放出现异常 => {}", e.getMessage());
+                    log.error("配置文件资源释放出现异常 => {}", e.getMessage());
                 }
             }
         }

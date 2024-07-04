@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class AbstractConfiguration implements Configuration {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractConfiguration.class);
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     protected final Map<String, String> valueMap = new LinkedHashMap<>(16);
     private final Lock loadLock = new ReentrantLock();
 

@@ -25,7 +25,7 @@ import static com.serliunx.ddns.util.InstanceUtils.validateInstance;
  */
 public abstract class AbstractInstanceContext implements InstanceContext, MultipleSourceInstanceContext {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final Set<ListableInstanceFactory> listableInstanceFactories = new HashSet<>();
 

@@ -8,7 +8,7 @@ package com.serliunx.ddns.config;
  */
 public final class ConfigurationKeys {
 
-    private ConfigurationKeys(){throw new UnsupportedOperationException();}
+    private ConfigurationKeys() {throw new UnsupportedOperationException();}
 
     /**
      * 线程池核心线程数量

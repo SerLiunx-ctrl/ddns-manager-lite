@@ -24,26 +24,26 @@ public final class NetworkContextHolder {
     private static final Integer IP_CONTEXT_TIME_OUT = 5;
     private static volatile String IP_ADDRESS;
 
-    private NetworkContextHolder(){throw new UnsupportedOperationException();}
+    private NetworkContextHolder() {throw new UnsupportedOperationException();}
 
     public static void setIpAddress(String i) {
         try {
             IP_LOCK.lock();
             IP_ADDRESS = i;
-            if(IP_CONTEXT_WAIT_LATCH.getCount() > 0){
+            if (IP_CONTEXT_WAIT_LATCH.getCount() > 0) {
                 IP_CONTEXT_WAIT_LATCH.countDown();
             }
-        }finally {
+        } finally {
             IP_LOCK.unlock();
         }
     }
 
     public static String getIpAddress() {
-        if(IP_ADDRESS != null) {
+        if (IP_ADDRESS != null) {
             return IP_ADDRESS;
         }
         try {
-            if(!IP_CONTEXT_WAIT_LATCH.await(IP_CONTEXT_TIME_OUT, TimeUnit.SECONDS)) {
+            if (!IP_CONTEXT_WAIT_LATCH.await(IP_CONTEXT_TIME_OUT, TimeUnit.SECONDS)) {
                 log.error("IP地址获取超时.");
                 return null;
             }
