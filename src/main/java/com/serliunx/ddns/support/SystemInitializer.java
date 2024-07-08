@@ -73,6 +73,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         // 刷新配置信息
         configuration.refresh();
+        ConfigurationContextHolder.setConfiguration(configuration);
 
         // 获取核心线程数量, 默认为CPU核心数量
         int coreSize = configuration.getInteger(KEY_THREAD_POOL_CORE_SIZE, Runtime.getRuntime().availableProcessors());

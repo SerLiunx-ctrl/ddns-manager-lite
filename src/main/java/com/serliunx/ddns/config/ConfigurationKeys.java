@@ -24,4 +24,9 @@ public final class ConfigurationKeys {
      * 定时任务周期: 获取最新IP
      */
     public static final String KEY_TASK_REFRESH_INTERVAL_IP = "system.task.refresh.interval.ip";
+
+    /**
+     * 阿里云解析线路
+     */
+    public static final String KEY_ALIYUN_ENDPOINT = "instance.aliyun.endpoint.url";
 }

@@ -8,15 +8,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.serliunx.ddns.support.ConfigurationContextHolder;
 import darabonba.core.client.ClientOverrideConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static com.serliunx.ddns.config.ConfigurationKeys.KEY_ALIYUN_ENDPOINT;
 import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 
 /**
@@ -25,7 +25,6 @@ import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
  * @version 1.0.0
  * @since 2024/5/15
  */
-@SuppressWarnings("all")
 @JacksonXmlRootElement(localName = XML_ROOT_INSTANCE_NAME)
 public class AliyunInstance extends AbstractInstance {
 
@@ -96,10 +95,10 @@ public class AliyunInstance extends AbstractInstance {
                 .credentialsProvider(provider)
                 .overrideConfiguration(
                         ClientOverrideConfiguration.create()
-                                .setEndpointOverride("alidns.cn-hangzhou.aliyuncs.com")
+                                .setEndpointOverride(ConfigurationContextHolder.getConfiguration().getString(KEY_ALIYUN_ENDPOINT))
                 )
                 .build();
-        log.debug(getName() + ": 初始化完成.");
+		log.debug("{}: 初始化完成.", getName());
     }
 
     @Override
@@ -115,7 +114,7 @@ public class AliyunInstance extends AbstractInstance {
         try {
             requestResponse.whenComplete((v, t) -> {
                 if (t != null) { //出现异常
-                    log.error("出现异常 {}:", t.getCause(), t.getMessage());
+                    log.error("出现异常 {} : {}", t.getCause(), t.getMessage());
                 } else {
                     String result = null;
                     try {
@@ -145,7 +144,7 @@ public class AliyunInstance extends AbstractInstance {
             }
             return null;
         } catch (InterruptedException | ExecutionException e) {
-            log.error("出现了不应该出现的异常 => {}", e);
+            log.error("出现了不应该出现的异常 => {}", e.getMessage());
             return null;
         } catch (TimeoutException e) {
             log.error("记录查询超时!");
