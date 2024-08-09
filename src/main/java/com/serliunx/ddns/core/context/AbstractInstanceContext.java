@@ -52,8 +52,10 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
     public void refresh() {
         try {
             instanceLock.lock();
-            if (listableInstanceFactories.isEmpty())
+            if (listableInstanceFactories.isEmpty()) {
+                log.error("启动失败, 未找到任何有效的实例工厂!");
                 return;
+            }
 
             // 初始化所有实例工厂
             listableInstanceFactories.stream()

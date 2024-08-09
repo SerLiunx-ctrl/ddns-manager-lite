@@ -11,12 +11,12 @@ import com.serliunx.ddns.support.Assert;
  */
 public final class InstanceUtils {
 
-    private InstanceUtils(){throw new UnsupportedOperationException();}
+    private InstanceUtils() {throw new UnsupportedOperationException();}
 
     public static void validateInstance(Instance instance) {
         Assert.notNull(instance);
         String instanceName = instance.getName();
-        if(instanceName == null || instanceName.isEmpty()){
+        if (instanceName == null || instanceName.isEmpty()) {
             throw new NullPointerException();
         }
     }

@@ -1,5 +1,6 @@
 package com.serliunx.ddns.core.factory;
 
+import com.serliunx.ddns.core.FileAttachment;
 import com.serliunx.ddns.core.InstanceFileFilter;
 import com.serliunx.ddns.core.instance.Instance;
 
@@ -9,21 +10,45 @@ import java.util.stream.Collectors;
 
 /**
  * 文件相关实例工厂, 定义所有来源为文件的实例工厂通用逻辑
+ *
  * @see JacksonFileInstanceFactory 使用Jackson序列化、反序列化的实例
  * @see YamlFileInstanceFactory 使用SankeYaml序列化、反序列化的实例
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15
  */
-public abstract class FileInstanceFactory extends AbstractInstanceFactory {
+public abstract class FileInstanceFactory extends AbstractInstanceFactory implements FileAttachment {
 
     /**
      * 存储实例信息的文件夹路径
      */
     protected String instanceDir;
+    protected Set<File> filesAttachments;
 
     public FileInstanceFactory(String instanceDir) {
         this.instanceDir = instanceDir;
+    }
+
+    @Override
+    public boolean exists(File file) {
+        return filesAttachments.contains(file);
+    }
+
+    @Override
+    public boolean detach(File file) {
+        if (!exists(file))
+            return false;
+        return filesAttachments.remove(file);
+    }
+
+    @Override
+    public void attach(File file) {
+        filesAttachments.add(file);
+    }
+
+    @Override
+    public Collection<File> getAttachments() {
+        return filesAttachments;
     }
 
     @Override
@@ -39,6 +64,9 @@ public abstract class FileInstanceFactory extends AbstractInstanceFactory {
     @Override
     protected Set<Instance> load() {
         Set<File> files = loadFiles();
+
+        filesAttachments = files;
+
         if (files != null && !files.isEmpty()) {
             return files.stream()
                     .map(this::loadInstance)

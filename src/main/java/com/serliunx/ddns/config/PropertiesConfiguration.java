@@ -38,8 +38,8 @@ public class PropertiesConfiguration extends FileConfiguration {
             load();
         } catch (IOException e) {
             log.error("配置文件读取出现异常 => {}", e.toString());
-        }finally {
-            if(inputStream != null){
+        } finally {
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {

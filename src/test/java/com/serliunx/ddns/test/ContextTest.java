@@ -22,9 +22,9 @@ public class ContextTest {
     public void testGenericContext() {
         GenericInstanceContext genericInstanceContext = new GenericInstanceContext(true);
 
-        genericInstanceContext.addListableInstanceFactory(new XmlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));
-        genericInstanceContext.addListableInstanceFactory(new YamlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));
-        genericInstanceContext.addListableInstanceFactory(new JsonFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));
+//        genericInstanceContext.addListableInstanceFactory(new XmlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));
+//        genericInstanceContext.addListableInstanceFactory(new YamlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));
+//        genericInstanceContext.addListableInstanceFactory(new JsonFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));
 
         genericInstanceContext.refresh();
         genericInstanceContext.getInstances().forEach(System.out::println);

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public final class ReflectionUtils {
 
-    private ReflectionUtils(){throw new UnsupportedOperationException();}
+    private ReflectionUtils() {throw new UnsupportedOperationException();}
 
     /**
      * 获取当前类声明的所有字段
@@ -22,18 +22,18 @@ public final class ReflectionUtils {
      * @return 字段列表
      */
     public static Field[] getDeclaredFields(Class<?> clazz, boolean setAccessible) {
-        if(clazz == null){
+        if (clazz == null) {
             return null;
         }
         Field[] declaredFields = clazz.getDeclaredFields();
         Field[] declaredFieldsInSuper = getDeclaredFields(clazz.getSuperclass(), setAccessible);
-        if(declaredFieldsInSuper != null){
+        if (declaredFieldsInSuper != null) {
             Field[] newFields = new Field[declaredFields.length + declaredFieldsInSuper.length];
             System.arraycopy(declaredFields, 0, newFields, 0, declaredFields.length);
             System.arraycopy(declaredFieldsInSuper, 0, newFields, declaredFields.length, declaredFieldsInSuper.length);
             declaredFields = newFields;
         }
-        if(setAccessible){
+        if (setAccessible) {
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
             }
@@ -64,9 +64,9 @@ public final class ReflectionUtils {
         List<Field> srcField = getDeclaredFieldList(srcClass, true);
         List<Field> destField = getDeclaredFieldList(destClass, true);
         for (Field field : destField) {
-            if(onlyNull){
+            if (onlyNull) {
                 try {
-                    if(field.get(dest) != null){
+                    if (field.get(dest) != null) {
                         continue;
                     }
                 } catch (IllegalAccessException e) {
@@ -74,10 +74,10 @@ public final class ReflectionUtils {
                 }
             }
             for (Field sf : srcField) {
-                if(sf.getName().equals(field.getName())){
+                if (sf.getName().equals(field.getName())) {
                     try {
                         field.set(dest, sf.get(src));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
