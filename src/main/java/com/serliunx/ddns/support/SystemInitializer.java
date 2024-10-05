@@ -196,7 +196,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
         scheduledThreadPoolExecutor.shutdown();
 		try {
 			boolean result = scheduledThreadPoolExecutor.awaitTermination(5, TimeUnit.SECONDS);
-            if (result) {
+            if (!result) {
                 log.error("线程池无法在正常的时间范围内关闭, 将强制关闭线程池!");
                 if (!scheduledThreadPoolExecutor.isShutdown()) {
                     scheduledThreadPoolExecutor.shutdownNow();
