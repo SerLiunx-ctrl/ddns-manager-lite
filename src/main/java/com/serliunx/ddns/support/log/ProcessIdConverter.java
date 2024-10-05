@@ -7,6 +7,7 @@ import java.lang.management.ManagementFactory;
 
 /**
  * 日志变量%pid(进程id) 转换器
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/6/15

@@ -10,6 +10,7 @@ import java.util.Set;
 
 /**
  * 使用{@link Properties}实现的简单读取键值对形式的配置信息实现
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15

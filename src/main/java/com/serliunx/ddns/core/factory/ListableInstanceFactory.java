@@ -8,6 +8,7 @@ import java.util.Set;
 
 /**
  * 扩展型实自工厂接口, 定义了批量获取、筛选实例的方式.
+ *
  * @see InstanceFactory
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0

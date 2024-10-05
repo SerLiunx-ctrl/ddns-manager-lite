@@ -5,6 +5,7 @@ import com.serliunx.ddns.config.Configuration;
 /**
  * 配置信息上下文
  * <li> {@link Configuration}
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.1
  * @since 2024/7/8

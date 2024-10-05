@@ -2,6 +2,7 @@ package com.serliunx.ddns.exception;
 
 /**
  * 实例相关异常信息
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15

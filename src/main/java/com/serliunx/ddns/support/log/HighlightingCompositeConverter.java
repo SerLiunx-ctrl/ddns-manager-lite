@@ -8,6 +8,7 @@ import static ch.qos.logback.core.pattern.color.ANSIConstants.*;
 
 /**
  * 高亮颜色转换器
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.1
  * @since 2024/6/15

@@ -5,6 +5,7 @@ import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 
 /**
  * 系统启动配置器
+ *
  * @see SystemInitializer
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0

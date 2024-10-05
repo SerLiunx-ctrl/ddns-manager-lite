@@ -2,6 +2,7 @@ package com.serliunx.ddns.config;
 
 /**
  * 文件配置管理
+ *
  * @see PropertiesConfiguration
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0

@@ -8,6 +8,7 @@ import com.serliunx.ddns.core.instance.Instance;
 /**
  * 简单的实例工厂逻辑定义, 添加、获取实例.
  * <li> 属于顶层接口, 定义了通用行为: 如刷新和清理逻辑、排序规则等.
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15

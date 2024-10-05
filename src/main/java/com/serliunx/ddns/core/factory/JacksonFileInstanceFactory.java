@@ -12,6 +12,7 @@ import static com.serliunx.ddns.constant.InstanceClasses.match;
 
 /**
  * Jackson文件实例工厂, 使用jackson的ObjectMapper来分别处理json和xml
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15

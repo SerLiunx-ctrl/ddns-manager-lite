@@ -6,6 +6,7 @@ import com.serliunx.ddns.core.instance.Instance;
 
 /**
  * Jackson-Json文件实例工厂
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15

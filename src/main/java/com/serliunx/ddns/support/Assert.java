@@ -4,6 +4,7 @@ import java.util.Collection;
 
 /**
  * 断言
+ *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/5/15
@@ -17,8 +18,9 @@ public final class Assert {
     }
 
     public static void notNull(Object object, String msg) {
-        if(object == null)
+        if(object == null) {
             throw new NullPointerException(msg);
+        }
     }
 
     public static void notNull(Object...objects) {
