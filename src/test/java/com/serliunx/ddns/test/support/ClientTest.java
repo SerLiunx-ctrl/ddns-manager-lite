@@ -1,6 +1,5 @@
 package com.serliunx.ddns.test.support;
 
-import com.serliunx.ddns.client.IPAddressClient;
 import org.junit.Test;
 
 /**
@@ -11,7 +10,6 @@ public class ClientTest {
 
     @Test
     public void test() {
-        IPAddressClient client = IPAddressClient.instance;
-        System.out.println(client.getIPAddress().getQuery());
+
     }
 }

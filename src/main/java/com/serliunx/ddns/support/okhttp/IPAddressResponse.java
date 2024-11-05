@@ -1,4 +1,4 @@
-package com.serliunx.ddns.client.entity;
+package com.serliunx.ddns.support.okhttp;
 
 /**
  * IP地址查询响应

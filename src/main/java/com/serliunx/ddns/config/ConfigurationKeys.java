@@ -30,4 +30,9 @@ public final class ConfigurationKeys {
      * 阿里云解析线路
      */
     public static final String KEY_ALIYUN_ENDPOINT = "instance.aliyun.endpoint.url";
+
+    /**
+     * http请求超时时间(秒)
+     */
+    public static final String KEY_HTTP_OVERTIME = "system.http.overtime";
 }

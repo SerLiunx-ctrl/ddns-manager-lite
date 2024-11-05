@@ -17,7 +17,6 @@
         <logback.version>1.2.12</logback.version>
         <fasterxml.version>2.17.0</fasterxml.version>
         <snakeyaml.version>1.30</snakeyaml.version>
-        <feign.core.version>13.2.1</feign.core.version>
         <aliyundns.sdk.version>3.0.14</aliyundns.sdk.version>
         <tencent.dnspod.sdk.version>3.1.1002</tencent.dnspod.sdk.version>
     </properties>
@@ -52,23 +51,6 @@
             <groupId>com.tencentcloudapi</groupId>
             <artifactId>tencentcloud-sdk-java-dnspod</artifactId>
             <version>${tencent.dnspod.sdk.version}</version>
-        </dependency>
-        <!-- feign -->
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-core</artifactId>
-            <version>${feign.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-slf4j</artifactId>
-            <version>${feign.core.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

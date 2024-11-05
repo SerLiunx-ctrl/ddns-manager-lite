@@ -1,9 +1,12 @@
 package com.serliunx.ddns;
 
+import com.serliunx.ddns.config.Configuration;
 import com.serliunx.ddns.config.PropertiesConfiguration;
 import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.context.FileInstanceContext;
+import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.support.SystemInitializer;
+import com.serliunx.ddns.support.okhttp.HttpClient;
 
 /**
  * 启动类
@@ -14,17 +17,65 @@ import com.serliunx.ddns.support.SystemInitializer;
  */
 public final class ManagerLite {
 
+    /**
+     * 配置信息
+     */
+    private static Configuration configuration;
+    /**
+     * 实例容器
+     */
+    private static MultipleSourceInstanceContext instanceContext;
+    /**
+     * 系统初始化器
+     */
+    private static SystemInitializer systemInitializer;
+
     public static void main(String[] args) {
-        // 容器初始化
-        init();
+
+        // 配置初始化
+        initConfiguration();
+
+        // 相关工具初始化
+        initTools();
+
+        // 初始化实例容器
+        initContext();
+
+        // 系统初始化
+        initSystem();
     }
 
-    private static void init() {
-        SystemInitializer systemInitializer = SystemInitializer
+    /**
+     * 初始化实例容器
+     */
+    private static void initContext() {
+        instanceContext = new FileInstanceContext();
+    }
+
+    /**
+     * 配置初始化
+     */
+    private static void initConfiguration() {
+        configuration = new PropertiesConfiguration(SystemConstants.USER_SETTINGS_PROPERTIES_PATH);
+    }
+
+    /**
+     * 相关工具初始化
+     */
+    private static void initTools() {
+        // http 工具类初始化
+        HttpClient.init(configuration);
+    }
+
+    /**
+     * 系统初始化
+     */
+    private static void initSystem() {
+        systemInitializer = SystemInitializer
                 .configurer()
                 .clearCache(false)
-                .configuration(new PropertiesConfiguration(SystemConstants.USER_SETTINGS_PROPERTIES_PATH))
-                .instanceContext(new FileInstanceContext())
+                .configuration(configuration)
+                .instanceContext(instanceContext)
                 .done();
         systemInitializer.refresh();
     }

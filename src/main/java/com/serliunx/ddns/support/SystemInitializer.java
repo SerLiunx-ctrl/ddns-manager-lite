@@ -6,8 +6,8 @@ import com.serliunx.ddns.core.Clearable;
 import com.serliunx.ddns.core.Refreshable;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.core.instance.Instance;
-import com.serliunx.ddns.client.IPAddressClient;
-import com.serliunx.ddns.client.entity.IPAddressResponse;
+import com.serliunx.ddns.support.okhttp.IPAddressResponse;
+import com.serliunx.ddns.support.okhttp.HttpClient;
 import com.serliunx.ddns.thread.TaskThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,7 +169,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
         scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
             InstanceContextHolder.setAdditional("ip-update");
             log.info("正在尝试获取本机最新的IP地址.");
-            IPAddressResponse response = IPAddressClient.instance.getIPAddress();
+            IPAddressResponse response = HttpClient.getIPAddress();
             String ip;
             if(response != null
                     && (ip = response.getQuery()) != null) {

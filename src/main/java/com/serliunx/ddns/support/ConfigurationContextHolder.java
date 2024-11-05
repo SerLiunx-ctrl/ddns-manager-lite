@@ -12,7 +12,7 @@ import com.serliunx.ddns.config.Configuration;
  */
 public final class ConfigurationContextHolder {
 
-	private static final ThreadLocal<Configuration> CONFIGURATION_HOLDER = new ThreadLocal<>();
+	private static volatile Configuration configuration;
 
 	private ConfigurationContextHolder() {throw new UnsupportedOperationException();}
 
@@ -22,7 +22,7 @@ public final class ConfigurationContextHolder {
 	 * @return 配置信息
 	 */
 	public static Configuration getConfiguration() {
-		return CONFIGURATION_HOLDER.get();
+		return configuration;
 	}
 
 	/**
@@ -31,7 +31,10 @@ public final class ConfigurationContextHolder {
 	 *
 	 * @param configuration 配置信息
 	 */
-	public static void setConfiguration(Configuration configuration) {
-		CONFIGURATION_HOLDER.set(configuration);
+	public static synchronized void setConfiguration(Configuration configuration) {
+		if (ConfigurationContextHolder.configuration != null) {
+			return;
+		}
+		ConfigurationContextHolder.configuration = configuration;
 	}
 }
