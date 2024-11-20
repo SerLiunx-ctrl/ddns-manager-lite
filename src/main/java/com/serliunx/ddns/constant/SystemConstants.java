@@ -82,4 +82,9 @@ public final class SystemConstants {
      * 用户目录下的.yml配置文件
      */
     public static final String USER_SETTINGS_YAML_PATH = USER_DIR + File.separator + CONFIG_YAML_FILE;
+
+    /**
+     * 程序数据库
+     */
+    public static final String SQLITE_URL = "jdbc:sqlite:data.db";
 }
