@@ -6,7 +6,7 @@
 
     <groupId>com.serliunx.ddns</groupId>
     <artifactId>ddns-manager-lite</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-alpha</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,6 +19,8 @@
         <snakeyaml.version>1.30</snakeyaml.version>
         <aliyundns.sdk.version>3.0.14</aliyundns.sdk.version>
         <tencent.dnspod.sdk.version>3.1.1002</tencent.dnspod.sdk.version>
+        <junit.version>4.13.2</junit.version>
+        <sqlite.jdbc.version>3.47.0.0</sqlite.jdbc.version>
     </properties>
 
     <dependencies>
@@ -55,8 +57,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <!-- sqlite-jdbc -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite.jdbc.version}</version>
         </dependency>
     </dependencies>
 
