@@ -1,11 +1,16 @@
 package com.serliunx.ddns.support;
 
 import com.serliunx.ddns.config.Configuration;
+import com.serliunx.ddns.config.ConfigurationKeys;
+import com.serliunx.ddns.constant.IpProviderType;
 import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.Clearable;
 import com.serliunx.ddns.core.Refreshable;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.core.instance.Instance;
+import com.serliunx.ddns.support.ipprovider.IpApiProvider;
+import com.serliunx.ddns.support.ipprovider.Provider;
+import com.serliunx.ddns.support.ipprovider.ScheduledProvider;
 import com.serliunx.ddns.support.okhttp.IPAddressResponse;
 import com.serliunx.ddns.support.okhttp.HttpClient;
 import com.serliunx.ddns.thread.TaskThreadFactory;
@@ -46,6 +51,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
     private Set<Instance> instances;
     private final Map<String, ScheduledFuture<?>> runningInstances = new HashMap<>(64);
+    private ScheduledProvider scheduledProvider;
 
     SystemInitializer(Configuration configuration, MultipleSourceInstanceContext instanceContext, boolean clearCache) {
         this.configuration = configuration;
@@ -78,6 +84,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         // 获取核心线程数量, 默认为CPU核心数量
         int coreSize = configuration.getInteger(KEY_THREAD_POOL_CORE_SIZE, Runtime.getRuntime().availableProcessors());
+
+        // 初始化ip地址更新任务
+        initIpTask();
 
         // 初始化线程池
         initThreadPool(coreSize);
@@ -165,20 +174,6 @@ public final class SystemInitializer implements Refreshable, Clearable {
         // 初始化一个线程保活
         scheduledThreadPoolExecutor.submit(() -> {});
 
-        // 提交定时获取网络IP的定时任务
-        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
-            InstanceContextHolder.setAdditional("ip-update");
-            log.info("正在尝试获取本机最新的IP地址.");
-            IPAddressResponse response = HttpClient.getIPAddress();
-            String ip;
-            if(response != null
-                    && (ip = response.getQuery()) != null) {
-                NetworkContextHolder.setIpAddress(ip);
-                log.info("本机最新公网IP地址 => {}", ip);
-            }
-            InstanceContextHolder.clearAdditional();
-        }, 0, configuration.getLong(KEY_TASK_REFRESH_INTERVAL_IP, 300L), TimeUnit.SECONDS);
-
         // 添加进程结束钩子函数
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             InstanceContextHolder.setAdditional("stopping");
@@ -187,6 +182,21 @@ public final class SystemInitializer implements Refreshable, Clearable {
             log.info("已关闭.");
             InstanceContextHolder.clearAdditional();
         }, "DDNS-ShutDownHook"));
+    }
+
+    private void initIpTask() {
+        scheduledProvider = new ScheduledProvider(getInternalProvider(),
+                configuration.getLong(KEY_TASK_REFRESH_INTERVAL_IP, 300L));
+
+        scheduledProvider.whenUpdate(ip -> {
+            NetworkContextHolder.setIpAddress(ip);
+            log.info("本机最新公网IP地址 => {}", ip);
+        });
+    }
+
+    private Provider getInternalProvider() {
+        return configuration.getEnum(IpProviderType.class, ConfigurationKeys.KEY_IP_PROVIDER_TYPE,
+                IpProviderType.IP_API).getProvider();
     }
 
     private void checkAndCloseSafely() {

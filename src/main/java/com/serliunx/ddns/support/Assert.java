@@ -18,7 +18,7 @@ public final class Assert {
     }
 
     public static void notNull(Object object, String msg) {
-        if(object == null) {
+        if (object == null) {
             throw new NullPointerException(msg);
         }
     }
@@ -36,6 +36,12 @@ public final class Assert {
     }
 
     public static void isLargerThan(int source, int target) {
+        if (source <= target) {
+            throw new IllegalArgumentException(String.format("%s太小了, 它必须大于%s", source, target));
+        }
+    }
+
+    public static void isLargerThan(long source, long target) {
         if(source <= target) {
             throw new IllegalArgumentException(String.format("%s太小了, 它必须大于%s", source, target));
         }
@@ -43,13 +49,13 @@ public final class Assert {
 
     public static void notEmpty(Collection<?> collection) {
         notNull(collection);
-        if(collection.isEmpty())
+        if (collection.isEmpty())
             throw new IllegalArgumentException("参数不能为空!");
     }
 
     public static void notEmpty(CharSequence charSequence) {
         notNull(charSequence);
-        if(charSequence.length() == 0)
+        if (charSequence.length() == 0)
             throw new IllegalArgumentException("参数不能为空!");
     }
 }
