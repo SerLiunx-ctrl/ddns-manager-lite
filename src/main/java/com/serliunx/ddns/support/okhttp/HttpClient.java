@@ -26,8 +26,17 @@ public final class HttpClient {
 
 	private static final Logger log = LoggerFactory.getLogger(HttpClient.class);
 	private static final ObjectMapper JSON_MAPPER = new JsonMapper();
+	private static final int DEFAULT_OVERTIME = 3;
 
 	private HttpClient() {throw new UnsupportedOperationException();}
+
+	static {
+		CLIENT = new OkHttpClient.Builder()
+				.connectTimeout(DEFAULT_OVERTIME, TimeUnit.SECONDS)
+				.readTimeout(DEFAULT_OVERTIME, TimeUnit.SECONDS)
+				.writeTimeout(DEFAULT_OVERTIME, TimeUnit.SECONDS)
+				.build();
+	}
 
 	/**
 	 * 获取本机的ip地址
@@ -63,7 +72,7 @@ public final class HttpClient {
 	 * @param configuration 配置信息
 	 */
 	public static void init(Configuration configuration) {
-		Integer overtime = configuration.getInteger(ConfigurationKeys.KEY_HTTP_OVERTIME, 3);
+		Integer overtime = configuration.getInteger(ConfigurationKeys.KEY_HTTP_OVERTIME, DEFAULT_OVERTIME);
 
 		CLIENT = new OkHttpClient.Builder()
 				.connectTimeout(overtime, TimeUnit.SECONDS)

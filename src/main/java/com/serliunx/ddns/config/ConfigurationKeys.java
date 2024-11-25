@@ -35,4 +35,9 @@ public final class ConfigurationKeys {
      * http请求超时时间(秒)
      */
     public static final String KEY_HTTP_OVERTIME = "system.http.overtime";
+
+    /**
+     * ip地址提供器类型
+     */
+    public static final String KEY_IP_PROVIDER_TYPE = "system.ip.provider.type";
 }
