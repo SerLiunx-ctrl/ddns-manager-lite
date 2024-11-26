@@ -9,11 +9,13 @@ import java.util.Map;
 
 /**
  * yml/yaml格式的配置文件，目前用于语言文件
+ * TODO 待重构
  *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.0
  * @since 2024/6/17
  */
+@Deprecated
 public class YamlConfiguration extends FileConfiguration {
 
 	public YamlConfiguration(String path, boolean refresh) {
