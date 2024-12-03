@@ -1,4 +1,4 @@
-package com.serliunx.ddns.thread;
+package com.serliunx.ddns.support.thread;
 
 import com.serliunx.ddns.support.Assert;
 import org.jetbrains.annotations.NotNull;

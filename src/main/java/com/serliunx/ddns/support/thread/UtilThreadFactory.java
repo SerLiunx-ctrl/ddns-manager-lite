@@ -1,4 +1,4 @@
-package com.serliunx.ddns.thread;
+package com.serliunx.ddns.support.thread;
 
 /**
  * 同 {@link TaskThreadFactory}, 暂未使用.

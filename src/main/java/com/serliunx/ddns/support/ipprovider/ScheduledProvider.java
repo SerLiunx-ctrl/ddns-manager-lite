@@ -2,6 +2,7 @@ package com.serliunx.ddns.support.ipprovider;
 
 import com.serliunx.ddns.support.Assert;
 import com.serliunx.ddns.support.InstanceContextHolder;
+import com.serliunx.ddns.support.thread.ThreadFactoryBuilder;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -57,7 +58,9 @@ public class ScheduledProvider extends AbstractProvider {
 
     @Override
     public void init() {
-        poolExecutor = new ScheduledThreadPoolExecutor(2);
+        poolExecutor = new ScheduledThreadPoolExecutor(2, ThreadFactoryBuilder.builder()
+                .ofNamePattern("ip-provider-%s")
+        );
         // 提交
         submitTask();
     }
