@@ -5,8 +5,6 @@ import com.serliunx.ddns.support.ipprovider.Provider;
 import com.serliunx.ddns.support.ipprovider.ScheduledProvider;
 import org.junit.Test;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * 供应器测试
  *
@@ -25,7 +23,7 @@ public class ProviderTest {
     @Test
     public void testScheduledProvider() throws Exception {
         ScheduledProvider provider = new ScheduledProvider(new IpApiProvider(), 3);
-        provider.changeTimePeriod(10);
-        TimeUnit.SECONDS.sleep(60);
+        String ip = provider.get();
+        System.out.println(ip);
     }
 }
