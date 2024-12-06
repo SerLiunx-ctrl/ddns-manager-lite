@@ -1,5 +1,6 @@
 package com.serliunx.ddns.test.support;
 
+import com.serliunx.ddns.support.ipprovider.IcanhazipProvider;
 import com.serliunx.ddns.support.ipprovider.IpApiProvider;
 import com.serliunx.ddns.support.ipprovider.Provider;
 import com.serliunx.ddns.support.ipprovider.ScheduledProvider;
@@ -25,5 +26,11 @@ public class ProviderTest {
         ScheduledProvider provider = new ScheduledProvider(new IpApiProvider(), 3);
         String ip = provider.get();
         System.out.println(ip);
+    }
+
+    @Test
+    public void testIcanhazipProvider() {
+        Provider provider = new IcanhazipProvider();
+        System.out.println(provider.get());
     }
 }

@@ -1,12 +1,11 @@
 package com.serliunx.ddns.support.okhttp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.serliunx.ddns.config.Configuration;
 import com.serliunx.ddns.config.ConfigurationKeys;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +21,9 @@ import java.util.concurrent.TimeUnit;
  */
 public final class HttpClient {
 
-	private static OkHttpClient CLIENT = null;
+	private static OkHttpClient CLIENT;
 
 	private static final Logger log = LoggerFactory.getLogger(HttpClient.class);
-	private static final ObjectMapper JSON_MAPPER = new JsonMapper();
 	private static final int DEFAULT_OVERTIME = 3;
 
 	private HttpClient() {throw new UnsupportedOperationException();}
@@ -39,29 +37,28 @@ public final class HttpClient {
 	}
 
 	/**
-	 * 获取本机的ip地址
+	 * 发送GET请求
 	 *
-	 * @return 响应结果
+	 * @param url 请求地址
+	 * @return 响应
 	 */
-	public static IPAddressResponse getIPAddress() {
-		Request request = new Request.Builder()
-				.url("http://ip-api.com/json")
+	public static String httpGet(String url) {
+		final Request request = new Request.Builder()
+				.url(url)
 				.get()
 				.build();
 
 		try (Response response = CLIENT.newCall(request).execute()) {
-			if (!response.isSuccessful() || response.body() == null) {
+			if (!response.isSuccessful()
+					|| response.body() == null) {
 				return null;
 			}
 
-			String body = response.body().string();
-			if (body.isEmpty()) {
-				return null;
-			}
+			final ResponseBody responseBody = response.body();
 
-			return JSON_MAPPER.readValue(body, IPAddressResponse.class);
+            return responseBody.string();
 		} catch (Exception e) {
-			log.error("ip地址获取异常:", e);
+			log.error("http 接口异常:", e);
 		}
 		return null;
 	}

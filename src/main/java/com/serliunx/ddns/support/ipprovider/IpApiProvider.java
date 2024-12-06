@@ -1,5 +1,8 @@
 package com.serliunx.ddns.support.ipprovider;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.serliunx.ddns.support.okhttp.HttpClient;
 import com.serliunx.ddns.support.okhttp.IPAddressResponse;
 
@@ -13,12 +16,22 @@ import com.serliunx.ddns.support.okhttp.IPAddressResponse;
  */
 public final class IpApiProvider extends AbstractProvider {
 
+    private static final ObjectMapper JSON_MAPPER = new JsonMapper();
+
     @Override
     protected String doGet() {
-        IPAddressResponse response = HttpClient.getIPAddress();
-        if (response == null) {
+        final String response = HttpClient.httpGet("http://ip-api.com/json");
+        if (response == null
+                || response.isEmpty()) {
             return null;
         }
-        return response.getQuery();
+
+        try {
+            IPAddressResponse ipAddressResponse = JSON_MAPPER.readValue(response, IPAddressResponse.class);
+
+            return ipAddressResponse.getQuery();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

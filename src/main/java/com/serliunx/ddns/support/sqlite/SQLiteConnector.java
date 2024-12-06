@@ -20,10 +20,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public final class SQLiteConnector implements Refreshable {
 
     private volatile Connection connection;
+    private volatile boolean initialized = false;
 
     private final Lock initLock = new ReentrantLock();
-
-    private volatile boolean initialized = false;
 
     private static final Logger log = LoggerFactory.getLogger(SQLiteConnector.class);
     private static final SQLiteConnector INSTANCE = new SQLiteConnector();
@@ -53,6 +52,9 @@ public final class SQLiteConnector implements Refreshable {
             log.info("initialing sqlite connection.");
             connection = DriverManager.getConnection(SystemConstants.SQLITE_URL);
 
+            // 尝试创建数据库表, 只会执行一次
+            tryCreateTables();
+
             initialized = true;
             log.info("sqlite connection successfully initialized.");
         } catch (Exception e) {
@@ -60,6 +62,16 @@ public final class SQLiteConnector implements Refreshable {
             log.error("sql connection initialization exception: ", e);
         } finally {
             initLock.unlock();
+        }
+    }
+
+    /**
+     * 尝试创建数据库表
+     * <li> 不存在时创建
+     */
+    private void tryCreateTables() {
+        if (connection == null) {
+            throw new IllegalStateException("sql connection not initialized");
         }
     }
 

@@ -35,14 +35,25 @@ public final class ThreadFactoryBuilder {
      * @return 线程工厂
      */
     public ThreadFactory ofNamePattern(final String pattern) {
-        return new ThreadFactory() {
+        return new NamePatternThreadFactory(pattern);
+    }
 
-            private final AtomicInteger counter = new AtomicInteger(0);
+    /**
+     * 线程工厂之模板名称
+     */
+    private static class NamePatternThreadFactory implements ThreadFactory {
 
-            @Override
-            public Thread newThread(@NotNull Runnable r) {
-                return new Thread(r, String.format(pattern, counter.getAndIncrement()));
-            }
-        };
+        private final AtomicInteger counter = new AtomicInteger(0);
+
+        private final String pattern;
+
+        public NamePatternThreadFactory(String pattern) {
+            this.pattern = pattern;
+        }
+
+        @Override
+        public Thread newThread(@NotNull Runnable r) {
+            return new Thread(r, String.format(pattern, counter.getAndIncrement()));
+        }
     }
 }

@@ -5,11 +5,10 @@ import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.context.FileInstanceContext;
 import com.serliunx.ddns.core.context.GenericInstanceContext;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
-import com.serliunx.ddns.core.factory.JsonFileInstanceFactory;
-import com.serliunx.ddns.core.factory.XmlFileInstanceFactory;
-import com.serliunx.ddns.core.factory.YamlFileInstanceFactory;
+import com.serliunx.ddns.core.factory.*;
 import com.serliunx.ddns.core.instance.AliyunInstance;
 import com.serliunx.ddns.core.instance.Instance;
+import com.serliunx.ddns.support.sqlite.SQLiteConnector;
 import org.junit.Test;
 
 /**
@@ -33,13 +32,13 @@ public class ContextTest {
     }
 
     @Test
-    public void testFileContext(){
+    public void testFileContext() {
         FileInstanceContext context = new FileInstanceContext();
         context.getSortedListableInstanceFactories().forEach(System.out::println);
     }
 
     @Test
-    public void testEmptyContext(){
+    public void testEmptyContext() {
         GenericInstanceContext instanceContext = new GenericInstanceContext(false);
         instanceContext.addListableInstanceFactory(new YamlFileInstanceFactory(SystemConstants.USER_INSTANCE_DIR));
 
@@ -51,5 +50,15 @@ public class ContextTest {
         instanceContext.addInstance(instance);
 
         instanceContext.getInstances().forEach(System.out::println);
+    }
+
+    @Test
+    public void testGic1() {
+        MultipleSourceInstanceContext context = new GenericInstanceContext(true);
+        ListableInstanceFactory factory = new DatabaseInstanceFactory(SQLiteConnector.getInstance());
+
+        context.addListableInstanceFactory(factory);
+
+        context.refresh();
     }
 }
