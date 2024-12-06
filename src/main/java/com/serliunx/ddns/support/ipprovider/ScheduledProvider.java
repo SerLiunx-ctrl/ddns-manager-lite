@@ -38,6 +38,10 @@ public class ScheduledProvider extends AbstractProvider {
      * 处理器
      */
     private Consumer<String> valueConsumer = null;
+    /**
+     * 内置缓存
+     */
+    private volatile String internalCache = null;
 
     public ScheduledProvider(Provider internalProvider, long timePeriod) {
         Assert.notNull(internalProvider);
@@ -53,7 +57,7 @@ public class ScheduledProvider extends AbstractProvider {
 
     @Override
     public String get() {
-        return cache;
+        return internalCache;
     }
 
     @Override
@@ -105,7 +109,7 @@ public class ScheduledProvider extends AbstractProvider {
                 return;
             }
             InstanceContextHolder.setAdditional("ip-update");
-            cache = internalProvider.get();
+            internalCache = internalProvider.get();
 
             if (valueConsumer != null) {
                 valueConsumer.accept(cache);
