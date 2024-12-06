@@ -10,7 +10,7 @@ import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.core.instance.Instance;
 import com.serliunx.ddns.support.ipprovider.Provider;
 import com.serliunx.ddns.support.ipprovider.ScheduledProvider;
-import com.serliunx.ddns.support.thread.TaskThreadFactory;
+import com.serliunx.ddns.support.thread.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -166,7 +166,8 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
     private void initThreadPool(int coreSize) {
         Assert.isLargerThan(coreSize, 1);
-        scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(coreSize, new TaskThreadFactory());
+        scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(coreSize, ThreadFactoryBuilder.builder()
+                .ofNamePattern("ddns-task-%s"));
 
         // 初始化一个线程保活
         scheduledThreadPoolExecutor.submit(() -> {});

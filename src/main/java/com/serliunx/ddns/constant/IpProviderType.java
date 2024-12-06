@@ -1,5 +1,6 @@
 package com.serliunx.ddns.constant;
 
+import com.serliunx.ddns.support.ipprovider.IcanhazipProvider;
 import com.serliunx.ddns.support.ipprovider.IpApiProvider;
 import com.serliunx.ddns.support.ipprovider.Provider;
 
@@ -17,6 +18,11 @@ public enum IpProviderType {
      * <li> 国外的数据, 国内访问不稳定.
      */
     IP_API(new IpApiProvider()),
+
+    /**
+     * ip数据提供商 <a href="https://icanhazip.com/">icanhazip</a>
+     */
+    I_CAN_HAZ_IP(new IcanhazipProvider()),
 
     ;
 

@@ -112,7 +112,7 @@ public class ScheduledProvider extends AbstractProvider {
             internalCache = internalProvider.get();
 
             if (valueConsumer != null) {
-                valueConsumer.accept(cache);
+                valueConsumer.accept(internalCache);
             }
         }, 0, timePeriod, TimeUnit.SECONDS);
     }
