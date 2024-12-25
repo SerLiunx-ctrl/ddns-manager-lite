@@ -20,7 +20,7 @@ public abstract class AbstractConfiguration implements Configuration {
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
     protected final Map<String, String> valueMap = new LinkedHashMap<>(16);
-    private final Lock loadLock = new ReentrantLock();
+    protected final Lock loadLock = new ReentrantLock();
 
     public AbstractConfiguration() {}
 
