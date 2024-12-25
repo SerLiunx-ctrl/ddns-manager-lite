@@ -28,6 +28,12 @@ public final class NetworkContextHolder {
     private NetworkContextHolder() {throw new UnsupportedOperationException();}
 
     public static void setIpAddress(String i) {
+        if (i == null
+                || i.isEmpty()) {
+            log.error("IP 地址不能为空!");
+            return;
+        }
+        
         try {
             IP_LOCK.lock();
             IP_ADDRESS = i;
