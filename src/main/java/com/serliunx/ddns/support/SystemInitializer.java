@@ -1,7 +1,7 @@
 package com.serliunx.ddns.support;
 
 import com.serliunx.ddns.config.Configuration;
-import com.serliunx.ddns.config.ConfigurationKeys;
+import com.serliunx.ddns.constant.ConfigurationKeys;
 import com.serliunx.ddns.constant.IpProviderType;
 import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.Clearable;
@@ -27,8 +27,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.serliunx.ddns.config.ConfigurationKeys.KEY_TASK_REFRESH_INTERVAL_IP;
-import static com.serliunx.ddns.config.ConfigurationKeys.KEY_THREAD_POOL_CORE_SIZE;
+import static com.serliunx.ddns.constant.ConfigurationKeys.KEY_TASK_REFRESH_INTERVAL_IP;
+import static com.serliunx.ddns.constant.ConfigurationKeys.KEY_THREAD_POOL_CORE_SIZE;
 
 /**
  * 系统初始化
@@ -115,11 +115,17 @@ public final class SystemInitializer implements Refreshable, Clearable {
         return instances;
     }
 
+    /**
+     * 加载实例(不同的容器加载时机不同)
+     */
     private void loadInstances() {
         instances = instanceContext.getInstances();
         log.info("载入 {} 个实例.", instances.size());
     }
 
+    /**
+     * 资源释放
+     */
     @SuppressWarnings("SameParameterValue")
     private void releaseResource(String resourceName) {
         ClassLoader classLoader = SystemConstants.class.getClassLoader();
@@ -146,6 +152,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
         }
     }
 
+    /**
+     * 运行实例
+     */
     private void runInstances() {
         Assert.notNull(scheduledThreadPoolExecutor);
         Assert.notNull(instances);
@@ -164,6 +173,11 @@ public final class SystemInitializer implements Refreshable, Clearable {
         }
     }
 
+    /**
+     * 初始化线程池
+     *
+     * @param coreSize 线程池核心线程数量
+     */
     private void initThreadPool(int coreSize) {
         Assert.isLargerThan(coreSize, 1);
         scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(coreSize, ThreadFactoryBuilder.builder()
@@ -182,6 +196,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
         }, "DDNS-ShutDownHook"));
     }
 
+    /**
+     * 初始化定时获取IP地址的任务
+     */
     private void initIpTask() {
         scheduledProvider = new ScheduledProvider(getInternalProvider(),
                 configuration.getLong(KEY_TASK_REFRESH_INTERVAL_IP, 300L));
@@ -192,11 +209,19 @@ public final class SystemInitializer implements Refreshable, Clearable {
         });
     }
 
+    /**
+     * 获取内置的IP供应器（获取IP地址的方式）
+     * <p>
+     * 根据配置文件中的定义{@link ConfigurationKeys#KEY_IP_PROVIDER_TYPE}, 默认为{@link com.serliunx.ddns.support.ipprovider.IpApiProvider}
+     */
     private Provider getInternalProvider() {
         return configuration.getEnum(IpProviderType.class, ConfigurationKeys.KEY_IP_PROVIDER_TYPE,
                 IpProviderType.IP_API).getProvider();
     }
 
+    /**
+     * 关闭线程池逻辑
+     */
     private void checkAndCloseSafely() {
         if (scheduledThreadPoolExecutor == null)
             return;

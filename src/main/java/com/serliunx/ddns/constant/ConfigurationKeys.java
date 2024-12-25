@@ -1,4 +1,4 @@
-package com.serliunx.ddns.config;
+package com.serliunx.ddns.constant;
 
 /**
  * 配置文件键常量信息

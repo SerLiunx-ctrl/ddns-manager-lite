@@ -1,7 +1,7 @@
 package com.serliunx.ddns.support.okhttp;
 
 import com.serliunx.ddns.config.Configuration;
-import com.serliunx.ddns.config.ConfigurationKeys;
+import com.serliunx.ddns.constant.ConfigurationKeys;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

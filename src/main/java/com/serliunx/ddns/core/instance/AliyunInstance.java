@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static com.serliunx.ddns.config.ConfigurationKeys.KEY_ALIYUN_ENDPOINT;
+import static com.serliunx.ddns.constant.ConfigurationKeys.KEY_ALIYUN_ENDPOINT;
 import static com.serliunx.ddns.constant.SystemConstants.XML_ROOT_INSTANCE_NAME;
 
 /**
