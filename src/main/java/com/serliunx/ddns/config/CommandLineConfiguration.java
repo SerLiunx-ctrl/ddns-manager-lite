@@ -3,7 +3,10 @@ package com.serliunx.ddns.config;
 import com.serliunx.ddns.core.Combination;
 import com.serliunx.ddns.support.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 从启动命令中读取的配置信息

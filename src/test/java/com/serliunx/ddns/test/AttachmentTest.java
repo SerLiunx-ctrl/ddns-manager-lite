@@ -1,10 +1,7 @@
 package com.serliunx.ddns.test;
 
 import com.serliunx.ddns.constant.SystemConstants;
-import com.serliunx.ddns.core.Attachment;
-import com.serliunx.ddns.core.FileAttachment;
 import com.serliunx.ddns.core.factory.FileInstanceFactory;
-import com.serliunx.ddns.core.factory.JsonFileInstanceFactory;
 import com.serliunx.ddns.core.factory.YamlFileInstanceFactory;
 import org.junit.Test;
 

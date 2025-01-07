@@ -9,8 +9,6 @@ import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.support.SystemInitializer;
 import com.serliunx.ddns.support.okhttp.HttpClient;
 
-import java.util.Collections;
-
 /**
  * 启动类
  *

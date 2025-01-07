@@ -3,7 +3,6 @@ package com.serliunx.ddns.test;
 import com.serliunx.ddns.constant.InstanceType;
 import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.factory.DatabaseInstanceFactory;
-import com.serliunx.ddns.core.factory.InstanceFactory;
 import com.serliunx.ddns.core.factory.ListableInstanceFactory;
 import com.serliunx.ddns.core.factory.YamlFileInstanceFactory;
 import com.serliunx.ddns.core.instance.Instance;
