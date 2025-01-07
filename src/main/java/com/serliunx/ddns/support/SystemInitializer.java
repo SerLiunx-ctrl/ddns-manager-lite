@@ -10,6 +10,7 @@ import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.core.instance.Instance;
 import com.serliunx.ddns.support.ipprovider.Provider;
 import com.serliunx.ddns.support.ipprovider.ScheduledProvider;
+import com.serliunx.ddns.support.okhttp.HttpClient;
 import com.serliunx.ddns.support.thread.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
         // 刷新配置信息
         configuration.refresh();
         ConfigurationContextHolder.setConfiguration(configuration);
+
+        // 初始化工具类
+        HttpClient.init(configuration);
 
         // 获取核心线程数量, 默认为CPU核心数量
         int coreSize = configuration.getInteger(KEY_THREAD_POOL_CORE_SIZE, Runtime.getRuntime().availableProcessors());

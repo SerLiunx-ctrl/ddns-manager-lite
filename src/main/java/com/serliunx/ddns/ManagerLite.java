@@ -7,7 +7,6 @@ import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.context.FileInstanceContext;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.support.SystemInitializer;
-import com.serliunx.ddns.support.okhttp.HttpClient;
 
 /**
  * 启动类
@@ -36,9 +35,6 @@ public final class ManagerLite {
         // 配置初始化
         initConfiguration(args);
 
-        // 相关工具初始化
-        initTools();
-
         // 初始化实例容器
         initContext();
 
@@ -60,14 +56,6 @@ public final class ManagerLite {
         final CommandLineConfiguration cc = new CommandLineConfiguration(args);
         cc.from(new PropertiesConfiguration(SystemConstants.USER_SETTINGS_PROPERTIES_PATH));
         configuration = cc;
-    }
-
-    /**
-     * 相关工具初始化
-     */
-    private static void initTools() {
-        // http 工具类初始化
-        HttpClient.init(configuration);
     }
 
     /**
