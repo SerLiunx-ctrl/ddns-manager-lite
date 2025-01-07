@@ -40,34 +40,4 @@ public final class ConfigurationKeys {
      * ip地址提供器类型
      */
     public static final String KEY_IP_PROVIDER_TYPE = "system.ip.provider.type";
-
-    /**
-     * 是否启用HTTP代理
-     */
-    public static final String KEY_HTTP_PROXY_ENABLE = "system.http.proxy.enable";
-
-    /**
-     * HTTP代理主机地址
-     */
-    public static final String KEY_HTTP_PROXY_HOST = "system.http.proxy.host";
-
-    /**
-     * HTTP代理端口
-     */
-    public static final String KEY_HTTP_PROXY_PORT = "system.http.proxy.port";
-
-    /**
-     * HTTP代理是否需要认证
-     */
-    public static final String KEY_HTTP_PROXY_AUTH = "system.http.proxy.auth";
-
-    /**
-     * HTTP代理认证用户名
-     */
-    public static final String KEY_HTTP_PROXY_USERNAME = "system.http.proxy.username";
-
-    /**
-     * HTTP代理认证密码
-     */
-    public static final String KEY_HTTP_PROXY_PASSWORD = "system.http.proxy.password";
 }
