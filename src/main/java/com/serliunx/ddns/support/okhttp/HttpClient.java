@@ -2,13 +2,12 @@ package com.serliunx.ddns.support.okhttp;
 
 import com.serliunx.ddns.config.Configuration;
 import com.serliunx.ddns.constant.ConfigurationKeys;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,10 +68,35 @@ public final class HttpClient {
 	 * @param configuration 配置信息
 	 */
 	public static void init(Configuration configuration) {
-		Integer overtime = configuration.getInteger(ConfigurationKeys.KEY_HTTP_OVERTIME, DEFAULT_OVERTIME);
+		OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-		CLIENT = new OkHttpClient.Builder()
-				.connectTimeout(overtime, TimeUnit.SECONDS)
+		Integer overtime = configuration.getInteger(ConfigurationKeys.KEY_HTTP_OVERTIME, DEFAULT_OVERTIME);
+		boolean proxyEnable = configuration.getBoolean(ConfigurationKeys.KEY_HTTP_PROXY_ENABLE, false);
+		boolean authEnable = configuration.getBoolean(ConfigurationKeys.KEY_HTTP_PROXY_AUTH, false);
+		String host = configuration.getString(ConfigurationKeys.KEY_HTTP_PROXY_HOST);
+		Integer port = configuration.getInteger(ConfigurationKeys.KEY_HTTP_PROXY_PORT);
+		String username = configuration.getString(ConfigurationKeys.KEY_HTTP_PROXY_USERNAME);
+		String password = configuration.getString(ConfigurationKeys.KEY_HTTP_PROXY_PASSWORD);
+
+		// 配置代理
+		if (proxyEnable) {
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+
+			builder.proxy(proxy);
+
+			// 是否需要认证
+			if (authEnable) {
+				Authenticator authenticator = (route, response) -> {
+                    String credential = Credentials.basic(username, password);
+                    return response.request().newBuilder()
+                            .header("Proxy-Authorization", credential)
+                            .build();
+                };
+				builder.proxyAuthenticator(authenticator);
+			}
+		}
+
+		CLIENT = builder.connectTimeout(overtime, TimeUnit.SECONDS)
 				.readTimeout(overtime, TimeUnit.SECONDS)
 				.writeTimeout(overtime, TimeUnit.SECONDS)
 				.build();
