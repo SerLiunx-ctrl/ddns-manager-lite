@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * @version 1.0.3
  * @since 2024/11/25
  */
-public class ScheduledProvider extends AbstractProvider {
+public class ScheduledProvider extends AbstractProvider implements AutoCloseable {
 
     private final Provider internalProvider;
 
@@ -53,6 +53,11 @@ public class ScheduledProvider extends AbstractProvider {
 
     public ScheduledProvider(Provider internalProvider) {
         this(internalProvider, 60);
+    }
+
+    @Override
+    public void close() {
+        poolExecutor.shutdown();
     }
 
     @Override

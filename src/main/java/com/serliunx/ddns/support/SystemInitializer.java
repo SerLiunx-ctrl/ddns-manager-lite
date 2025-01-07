@@ -195,6 +195,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
             InstanceContextHolder.setAdditional("stopping");
             log.info("程序正在关闭中, 可能需要一定时间.");
             scheduledThreadPoolExecutor.shutdown();
+            scheduledProvider.close();
             log.info("已关闭.");
             InstanceContextHolder.clearAdditional();
         }, "DDNS-ShutDownHook"));
