@@ -109,7 +109,7 @@ public class ScheduledProvider extends AbstractProvider {
                 return;
             }
             InstanceContextHolder.setAdditional("ip-update");
-            internalCache = internalProvider.get();
+            internalCache = internalProvider.get().trim();
 
             if (valueConsumer != null) {
                 valueConsumer.accept(internalCache);
