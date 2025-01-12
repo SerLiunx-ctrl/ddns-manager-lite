@@ -6,6 +6,10 @@ import com.serliunx.ddns.support.ipprovider.Provider;
 import com.serliunx.ddns.support.ipprovider.ScheduledProvider;
 import org.junit.Test;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 /**
  * 供应器测试
  *
@@ -32,5 +36,17 @@ public class ProviderTest {
     public void testIcanhazipProvider() {
         Provider provider = new IcanhazipProvider();
         System.out.println(provider.get());
+    }
+
+    @Test
+    public void testScheduledProviderForRunnable() throws InterruptedException {
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ScheduledProvider provider = new ScheduledProvider(new IpApiProvider(), 3);
+        provider.close();
+
+        ses.scheduleAtFixedRate(provider, 0, 1000, TimeUnit.MILLISECONDS);
+        provider.whenUpdate(ip -> System.out.println("ip update: " + ip));
+
+        TimeUnit.SECONDS.sleep(120);
     }
 }
