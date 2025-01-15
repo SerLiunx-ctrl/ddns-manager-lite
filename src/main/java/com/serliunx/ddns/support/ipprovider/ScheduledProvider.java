@@ -12,12 +12,13 @@ import java.util.function.Consumer;
 /**
  * 自动更新的ip供应器
  * <li> 异步更新ip, 获取到的ip地址不一定为最新可用的。
+ * <li> 也可作为简单的任务提交到线程池中执行.
  *
  * @author <a href="mailto:serliunx@yeah.net">SerLiunx</a>
  * @version 1.0.3
  * @since 2024/11/25
  */
-public class ScheduledProvider extends AbstractProvider implements AutoCloseable {
+public class ScheduledProvider extends AbstractProvider implements AutoCloseable, Runnable {
 
     private final Provider internalProvider;
 
@@ -58,6 +59,11 @@ public class ScheduledProvider extends AbstractProvider implements AutoCloseable
     @Override
     public void close() {
         poolExecutor.shutdown();
+    }
+
+    @Override
+    public void run() {
+        doAction();
     }
 
     @Override
@@ -107,18 +113,23 @@ public class ScheduledProvider extends AbstractProvider implements AutoCloseable
      * 提交任务逻辑
      */
     private void submitTask() {
-        task = poolExecutor.scheduleAtFixedRate(() -> {
-            // 打断时, 终止已有的任务. (逻辑上不应该发生)
-            if (Thread.currentThread().isInterrupted()) {
-                log.debug("上一个ip更新任务已终止.");
-                return;
-            }
-            InstanceContextHolder.setAdditional("ip-update");
-            internalCache = internalProvider.get().trim();
+        task = poolExecutor.scheduleAtFixedRate(this::doAction, 0, timePeriod, TimeUnit.SECONDS);
+    }
 
-            if (valueConsumer != null) {
-                valueConsumer.accept(internalCache);
-            }
-        }, 0, timePeriod, TimeUnit.SECONDS);
+    /**
+     * 执行逻辑
+     */
+    private void doAction() {
+        // 打断时, 终止已有的任务. (逻辑上不应该发生)
+        if (Thread.currentThread().isInterrupted()) {
+            log.debug("上一个ip更新任务已终止.");
+            return;
+        }
+        InstanceContextHolder.setAdditional("ip-update");
+        internalCache = internalProvider.get().trim();
+
+        if (valueConsumer != null) {
+            valueConsumer.accept(internalCache);
+        }
     }
 }
