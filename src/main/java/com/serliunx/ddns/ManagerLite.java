@@ -14,6 +14,8 @@ import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
+import java.io.IOException;
+
 /**
  * 启动类
  *
@@ -36,7 +38,7 @@ public final class ManagerLite {
      */
     private static SystemInitializer systemInitializer;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         // 配置初始化
         initConfiguration(args);
@@ -47,7 +49,16 @@ public final class ManagerLite {
         // 系统初始化
         initSystem();
 
-        Terminal terminal = TerminalBuilder.builder().system(true).build();
+        Terminal terminal;
+        try {
+            terminal = TerminalBuilder.builder()
+                    .system(true)
+                    .build();
+        } catch (IOException e) {
+            // 不应该发生
+            System.exit(0);
+            throw new RuntimeException(e);
+        }
         LineReader lineReader = LineReaderBuilder.builder()
                 .terminal(terminal)
                 // 如果想记录历史命令，可以配置一个 History
@@ -60,19 +71,26 @@ public final class ManagerLite {
 
         while (true) {
             // 该方法会阻塞，直到用户敲回车
-            String line = lineReader.readLine(prompt);
+            try {
+                String cmd = lineReader.readLine(prompt);
 
-            // 当用户输入 exit 或 quit，就退出循环
-            if ("exit".equalsIgnoreCase(line)
-                    || "quit".equalsIgnoreCase(line)) {
-                break;
+                // 当用户输入 exit 或 quit，就退出循环
+                if ("exit".equalsIgnoreCase(cmd)) {
+                    break;
+                }
+                // 在这里可以对用户输入做进一步处理
+                terminal.flush();
+            } catch (Exception e) {
+                System.exit(0);
             }
-            // 在这里可以对用户输入做进一步处理
-            terminal.writer().println("You entered: " + line);
-            terminal.flush();
         }
 
-        terminal.close();
+        try {
+            System.exit(0);
+            terminal.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
