@@ -7,6 +7,12 @@ import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.context.FileInstanceContext;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.support.SystemInitializer;
+import com.serliunx.ddns.support.log.JLineAdaptAppender;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.impl.history.DefaultHistory;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 /**
  * 启动类
@@ -30,7 +36,7 @@ public final class ManagerLite {
      */
     private static SystemInitializer systemInitializer;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         // 配置初始化
         initConfiguration(args);
@@ -40,6 +46,33 @@ public final class ManagerLite {
 
         // 系统初始化
         initSystem();
+
+        Terminal terminal = TerminalBuilder.builder().system(true).build();
+        LineReader lineReader = LineReaderBuilder.builder()
+                .terminal(terminal)
+                // 如果想记录历史命令，可以配置一个 History
+                .history(new DefaultHistory())
+                .build();
+
+        JLineAdaptAppender.setLineReader(lineReader);
+
+        String prompt = "client> ";
+
+        while (true) {
+            // 该方法会阻塞，直到用户敲回车
+            String line = lineReader.readLine(prompt);
+
+            // 当用户输入 exit 或 quit，就退出循环
+            if ("exit".equalsIgnoreCase(line)
+                    || "quit".equalsIgnoreCase(line)) {
+                break;
+            }
+            // 在这里可以对用户输入做进一步处理
+            terminal.writer().println("You entered: " + line);
+            terminal.flush();
+        }
+
+        terminal.close();
     }
 
     /**

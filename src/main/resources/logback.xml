@@ -3,18 +3,15 @@
     <conversionRule conversionWord="instance" converterClass="com.serliunx.ddns.support.log.InstanceNameConverter"/>
     <conversionRule conversionWord="highlight" converterClass="com.serliunx.ddns.support.log.HighlightingCompositeConverter"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>
-                %boldGreen(%d{yyyy-MM-dd HH:mm:ss(SSS)}) %cyan([%pid]) %magenta([%15.15thread]) %green([%16.16instance]) %highlight([%-6level]) %boldCyan(%-36logger{32}): %msg%n
-            </pattern>
-        </encoder>
+    <appender name="JLINE" class="com.serliunx.ddns.support.log.JLineAdaptAppender">
+        <pattern>
+            %boldGreen(%d{yyyy-MM-dd HH:mm:ss(SSS)}) %cyan([%pid]) %magenta([%15.15thread]) %green([%16.16instance]) %highlight([%-6level]) %boldCyan(%-36logger{32}): %msg%n
+        </pattern>
     </appender>
 
     <logger name="com.serliunx.ddns" level="DEBUG"/>
-    <logger name="feign" level="DEBUG"/>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="JLINE" />
     </root>
 </configuration>
