@@ -6,13 +6,18 @@ import com.serliunx.ddns.config.PropertiesConfiguration;
 import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.context.FileInstanceContext;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
+import com.serliunx.ddns.support.InstanceContextHolder;
 import com.serliunx.ddns.support.SystemInitializer;
+import com.serliunx.ddns.support.command.CommandDispatcher;
+import com.serliunx.ddns.support.command.target.HelpCommand;
 import com.serliunx.ddns.support.log.JLineAdaptAppender;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -26,6 +31,11 @@ import java.io.IOException;
 public final class ManagerLite {
 
     /**
+     * 默认的日志输出
+     */
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(ManagerLite.class);
+
+    /**
      * 配置信息
      */
     private static Configuration configuration;
@@ -37,9 +47,19 @@ public final class ManagerLite {
      * 系统初始化器
      */
     private static SystemInitializer systemInitializer;
+    /**
+     * 指令调度
+     */
+    private static CommandDispatcher commandDispatcher;
+
+    /**
+     * 获取默认的日志输出
+     */
+    public static Logger getLogger() {
+        return DEFAULT_LOGGER;
+    }
 
     public static void main(String[] args) {
-
         // 配置初始化
         initConfiguration(args);
 
@@ -48,6 +68,9 @@ public final class ManagerLite {
 
         // 系统初始化
         initSystem();
+
+        // 指令初始化
+        initCommands();
 
         Terminal terminal;
         try {
@@ -67,30 +90,35 @@ public final class ManagerLite {
 
         JLineAdaptAppender.setLineReader(lineReader);
 
-        String prompt = "client> ";
+        final String prompt = "client> ";
 
+        InstanceContextHolder.setAdditional("command-process");
         while (true) {
             // 该方法会阻塞，直到用户敲回车
             try {
                 String cmd = lineReader.readLine(prompt);
 
-                // 当用户输入 exit 或 quit，就退出循环
+                // 当用户输入 exit，就退出循环
                 if ("exit".equalsIgnoreCase(cmd)) {
                     break;
                 }
-                // 在这里可以对用户输入做进一步处理
+                commandDispatcher.onCommand(cmd);
                 terminal.flush();
             } catch (Exception e) {
-                System.exit(0);
+                break;
             }
         }
 
-        try {
-            System.exit(0);
-            terminal.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        System.exit(0);
+    }
+
+    /**
+     * 指令初始化
+     */
+    private static void initCommands() {
+        commandDispatcher = CommandDispatcher.getInstance();
+        // help
+        commandDispatcher.register(new HelpCommand());
     }
 
     /**
