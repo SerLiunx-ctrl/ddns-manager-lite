@@ -10,6 +10,7 @@ import com.serliunx.ddns.support.InstanceContextHolder;
 import com.serliunx.ddns.support.SystemInitializer;
 import com.serliunx.ddns.support.command.CommandDispatcher;
 import com.serliunx.ddns.support.command.target.HelpCommand;
+import com.serliunx.ddns.support.command.target.ReloadCommand;
 import com.serliunx.ddns.support.log.JLineAdaptAppender;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -119,6 +120,8 @@ public final class ManagerLite {
         commandDispatcher = CommandDispatcher.getInstance();
         // help
         commandDispatcher.register(new HelpCommand());
+        // reload
+        commandDispatcher.register(new ReloadCommand(configuration));
     }
 
     /**

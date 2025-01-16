@@ -1,12 +1,11 @@
 package com.serliunx.ddns.support.command;
 
-import com.serliunx.ddns.ManagerLite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 指令调度器
@@ -26,7 +25,16 @@ public final class CommandDispatcher {
 	/**
 	 * 最顶层指令缓存
 	 */
-	private final Map<String, Command> commands = new ConcurrentHashMap<>(128);
+	private final Map<String, Command> commands = new LinkedHashMap<>(128);
+
+	/**
+	 * 获取所有已注册的指令
+	 *
+	 * @return	已注册的指令
+	 */
+	public Map<String, Command> getCommands() {
+		return commands;
+	}
 
 	/**
 	 * 指令注册
@@ -78,6 +86,16 @@ public final class CommandDispatcher {
 		String[] newArgs = new String[args.length - 1];
 		System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 		return newArgs;
+	}
+
+	/**
+	 * 检查是否存在参数
+	 *
+	 * @param args	参数
+	 * @return	参数长度大于0返回真, 否则返回假
+	 */
+	public static boolean hasArgs(String[] args) {
+		return args.length > 0;
 	}
 
 	/**
