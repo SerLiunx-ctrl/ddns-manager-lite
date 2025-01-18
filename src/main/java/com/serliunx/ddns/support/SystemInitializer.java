@@ -247,4 +247,11 @@ public final class SystemInitializer implements Refreshable, Clearable {
             runningInstances.clear();
         }
 	}
+
+    /**
+     * 获取定时IP供应器
+     */
+    public ScheduledProvider getScheduledProvider() {
+        return scheduledProvider;
+    }
 }

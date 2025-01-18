@@ -46,7 +46,7 @@ public class HelpCommand extends AbstractCommand {
 				}
 				log.info("{}\t-\t{}\t-\t{}", k, v.getDescription(), v.getUsage());
 			});
-			log.info("exit\t-\t退出程序\t-\texit");
+			log.info("exit\t-\t退出程序\t-\tstop");
 			log.info("");
 			log.info("使用 help <指令> 来查看更详细的帮助信息.");
 		}

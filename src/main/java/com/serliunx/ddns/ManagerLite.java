@@ -95,12 +95,10 @@ public final class ManagerLite {
 
         InstanceContextHolder.setAdditional("command-process");
         while (true) {
-            // 该方法会阻塞，直到用户敲回车
             try {
                 String cmd = lineReader.readLine(prompt);
 
-                // 当用户输入 exit，就退出循环
-                if ("exit".equalsIgnoreCase(cmd)) {
+                if ("stop".equalsIgnoreCase(cmd)) {
                     break;
                 }
                 commandDispatcher.onCommand(cmd);
@@ -121,7 +119,7 @@ public final class ManagerLite {
         // help
         commandDispatcher.register(new HelpCommand());
         // reload
-        commandDispatcher.register(new ReloadCommand(configuration));
+        commandDispatcher.register(new ReloadCommand(configuration, systemInitializer));
     }
 
     /**
