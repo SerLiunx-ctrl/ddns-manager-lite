@@ -38,22 +38,25 @@ public final class CommandDispatcher {
 
 	/**
 	 * 指令注册
+	 *
 	 * @param command	指令
 	 */
-	public void register(Command command) {
+	public synchronized void register(Command command) {
 		commands.put(command.getName(), command);
 	}
 
 	/**
 	 * 指令反注册
+	 *
 	 * @param command	指令
 	 */
-	public void unregister(Command command) {
+	public synchronized void unregister(Command command) {
 		commands.remove(command.getName());
 	}
 
 	/**
 	 * 处理输入的指令
+	 *
 	 * @param input	指令
 	 */
 	public void onCommand(String input) {
