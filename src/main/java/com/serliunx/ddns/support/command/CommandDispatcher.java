@@ -92,16 +92,6 @@ public final class CommandDispatcher {
 	}
 
 	/**
-	 * 检查是否存在参数
-	 *
-	 * @param args	参数
-	 * @return	参数长度大于0返回真, 否则返回假
-	 */
-	public static boolean hasArgs(String[] args) {
-		return args.length > 0;
-	}
-
-	/**
 	 * 获取实例
 	 */
 	public static CommandDispatcher getInstance() {

@@ -21,7 +21,7 @@ public abstract class AbstractConfiguration implements Configuration {
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
     protected final Map<String, String> valueMap = new LinkedHashMap<>(16);
-    protected final Lock loadLock = new ReentrantLock();
+    protected final Lock contextLock = new ReentrantLock();
 
     public AbstractConfiguration() {}
 
@@ -112,6 +112,33 @@ public abstract class AbstractConfiguration implements Configuration {
     }
 
     @Override
+    public boolean modify(String key, Object value) {
+        try {
+            contextLock.lock();
+            if (!valueMap.containsKey(key))
+                return false;
+            valueMap.put(key, String.valueOf(value));
+            return true;
+        } finally {
+            contextLock.unlock();
+        }
+    }
+
+    @Override
+    public void modify(String key, Object value, boolean createIfAbsent) {
+        try {
+            contextLock.lock();
+            if (!valueMap.containsKey(key)) {
+                if (createIfAbsent)
+                    valueMap.put(key, String.valueOf(value));
+            } else
+                valueMap.put(key, String.valueOf(value));
+        } finally {
+            contextLock.unlock();
+        }
+    }
+
+    @Override
     public int getPriority() {
         return Integer.MAX_VALUE;
     }
@@ -121,12 +148,12 @@ public abstract class AbstractConfiguration implements Configuration {
      */
     protected void load() {
         try {
-            loadLock.lock();
+            contextLock.lock();
             // 清空原有的配置信息
             valueMap.clear();
             load0();
         }finally {
-            loadLock.unlock();
+            contextLock.unlock();
         }
     }
 

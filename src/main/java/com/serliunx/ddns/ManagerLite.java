@@ -9,6 +9,7 @@ import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
 import com.serliunx.ddns.support.InstanceContextHolder;
 import com.serliunx.ddns.support.SystemInitializer;
 import com.serliunx.ddns.support.command.CommandDispatcher;
+import com.serliunx.ddns.support.command.target.ConfigCommand;
 import com.serliunx.ddns.support.command.target.HelpCommand;
 import com.serliunx.ddns.support.command.target.ReloadCommand;
 import com.serliunx.ddns.support.log.JLineAdaptAppender;
@@ -120,6 +121,8 @@ public final class ManagerLite {
         commandDispatcher.register(new HelpCommand());
         // reload
         commandDispatcher.register(new ReloadCommand(configuration, systemInitializer));
+        // config
+        commandDispatcher.register(new ConfigCommand(configuration));
     }
 
     /**

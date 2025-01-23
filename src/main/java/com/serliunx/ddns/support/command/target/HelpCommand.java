@@ -1,14 +1,10 @@
 package com.serliunx.ddns.support.command.target;
 
-import com.serliunx.ddns.ManagerLite;
 import com.serliunx.ddns.support.command.AbstractCommand;
 import com.serliunx.ddns.support.command.Command;
 import com.serliunx.ddns.support.command.CommandDispatcher;
-import org.slf4j.Logger;
 
 import java.util.Map;
-
-import static com.serliunx.ddns.support.command.CommandDispatcher.hasArgs;
 
 /**
  * 指令: help
@@ -18,8 +14,6 @@ import static com.serliunx.ddns.support.command.CommandDispatcher.hasArgs;
  * @since 2025/1/15
  */
 public class HelpCommand extends AbstractCommand {
-
-	private static final Logger log = ManagerLite.getLogger();
 
 	public HelpCommand() {
 		super("help", null, "查看帮助信息", "help <指令>");

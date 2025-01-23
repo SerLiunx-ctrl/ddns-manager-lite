@@ -1,5 +1,8 @@
 package com.serliunx.ddns.support.command;
 
+import com.serliunx.ddns.ManagerLite;
+import org.slf4j.Logger;
+
 import java.util.List;
 
 /**
@@ -16,6 +19,8 @@ public abstract class AbstractCommand implements Command {
 	private final List<Command> subCommands;
 	private final String description;
 	private final String usage;
+
+	protected final Logger log = ManagerLite.getLogger();
 
 	public AbstractCommand(String name, List<Command> subCommands, String description, String usage) {
 		this.name = name;
@@ -42,5 +47,9 @@ public abstract class AbstractCommand implements Command {
 	@Override
 	public String getUsage() {
 		return usage;
+	}
+
+	protected boolean hasArgs(String[] args) {
+		return args.length > 0;
 	}
 }

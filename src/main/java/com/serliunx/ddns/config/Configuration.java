@@ -100,4 +100,23 @@ public interface Configuration extends Refreshable, Priority {
      * @return 配置文件所有成功加载的键值对
      */
     Map<String, String> getAllKeyAndValue();
+
+    /**
+     * 修改配置项（锁）
+     *
+     * @param key   配置键
+     * @param value 新的值
+     * @return  成功修改返回真, 否则返回假; 指定键不存在时则修改失败
+     */
+    boolean modify(String key, Object value);
+
+    /**
+     * 修改配置项（锁）
+     * <li> 指定配置键不存在时则会根绝是否需要创建而新增
+     *
+     * @param key               配置键
+     * @param value             新的值
+     * @param createIfAbsent    是否在不存在指定键时创建
+     */
+    void modify(String key, Object value, boolean createIfAbsent);
 }
