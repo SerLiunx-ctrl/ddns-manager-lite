@@ -5,10 +5,10 @@ import com.serliunx.ddns.support.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 
 /**
  * 配置信息的抽象实现, 定义公共逻辑
@@ -19,9 +19,28 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class AbstractConfiguration implements Configuration {
 
+    /**
+     * 日志
+     */
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
+    /**
+     * 配置值存储
+     */
     protected final Map<String, String> valueMap = new LinkedHashMap<>(16);
+    /**
+     * 上下文更改锁
+     */
     protected final Lock contextLock = new ReentrantLock();
+    /**
+     * 监听器
+     * <li> 仅初始化时做增删改操作.
+     */
+    protected final Map<String, List<ConfigListener>> listeners = new HashMap<>(16);
+
+    /**
+     * 监听所有配置键的监听器标识符
+     */
+    public static final String ALL_KEYS_LISTENERS_TAG = "ALL_KEYS_LISTENERS_TAG";
 
     public AbstractConfiguration() {}
 
@@ -117,8 +136,17 @@ public abstract class AbstractConfiguration implements Configuration {
             contextLock.lock();
             if (!valueMap.containsKey(key))
                 return false;
-            valueMap.put(key, String.valueOf(value));
-            return true;
+            String oldVal = valueMap.get(key);
+            String newVal = String.valueOf(value);
+            valueMap.put(key, newVal);
+
+			try {
+				invokeListeners(key, oldVal, newVal);
+			} catch (Exception e) {
+				log.warn("监听器执行出现异常 => {}", e.getMessage());
+			}
+
+			return true;
         } finally {
             contextLock.unlock();
         }
@@ -128,14 +156,49 @@ public abstract class AbstractConfiguration implements Configuration {
     public void modify(String key, Object value, boolean createIfAbsent) {
         try {
             contextLock.lock();
+            boolean invoke = false;
+            String oldVal = valueMap.get(key);
+            String newVal = String.valueOf(value);
             if (!valueMap.containsKey(key)) {
-                if (createIfAbsent)
-                    valueMap.put(key, String.valueOf(value));
-            } else
-                valueMap.put(key, String.valueOf(value));
+                if (createIfAbsent) {
+                    valueMap.put(key, newVal);
+                    invoke = true;
+                }
+            } else {
+                valueMap.put(key, newVal);
+                invoke = true;
+            }
+
+            if (!invoke)
+                return;
+            try {
+                invokeListeners(key, oldVal, newVal);
+            } catch (Exception e) {
+                log.warn("监听器执行出现异常[CIA] => {}", e.getMessage());
+            }
         } finally {
             contextLock.unlock();
         }
+    }
+
+    @Override
+    public void addListener(ConfigListener listener) {
+        Collection<String> keys = listener.interestedIn();
+        Assert.notNull(keys);
+        if (keys.isEmpty()) {
+            listeners.computeIfAbsent(ALL_KEYS_LISTENERS_TAG, key -> new ArrayList<>())
+                    .add(listener);
+        } else {
+            keys.forEach(k -> {
+                listeners.computeIfAbsent(k, k1 -> new ArrayList<>())
+                        .add(listener);
+            });
+        }
+    }
+
+    @Override
+    public Map<String, List<ConfigListener>> getListeners() {
+        return null;
     }
 
     @Override
@@ -177,4 +240,22 @@ public abstract class AbstractConfiguration implements Configuration {
      * 载入逻辑
      */
     protected abstract void load0();
+
+    /**
+     * 触发监听器
+     */
+    private void invokeListeners(String key, Object oldVal, Object newVal) throws Exception {
+        // 触发监听了所有配置项的监听器
+        List<ConfigListener> all = listeners.get(ALL_KEYS_LISTENERS_TAG);
+        for (ConfigListener cl : all) {
+            cl.onChanged(this, key, oldVal, newVal);
+        }
+        // 触发其他监听器
+        List<ConfigListener> listenerList = listeners.get(key);
+        if (listenerList == null || listenerList.isEmpty())
+            return;
+        for (ConfigListener cl : listenerList) {
+            cl.onChanged(this, key, oldVal, newVal);
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.serliunx.ddns.config;
 import com.serliunx.ddns.core.Priority;
 import com.serliunx.ddns.core.Refreshable;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -119,4 +120,18 @@ public interface Configuration extends Refreshable, Priority {
      * @param createIfAbsent    是否在不存在指定键时创建
      */
     void modify(String key, Object value, boolean createIfAbsent);
+
+    /**
+     * 添加配置监听器
+     *
+     * @param listener  监听器
+     */
+    void addListener(ConfigListener listener);
+
+    /**
+     * 获取所有配置监听器
+     *
+     * @return  所有监听器
+     */
+    Map<String, List<ConfigListener>> getListeners();
 }

@@ -3,6 +3,8 @@ package com.serliunx.ddns;
 import com.serliunx.ddns.config.CommandLineConfiguration;
 import com.serliunx.ddns.config.Configuration;
 import com.serliunx.ddns.config.PropertiesConfiguration;
+import com.serliunx.ddns.config.listener.IpRefreshIntervalListener;
+import com.serliunx.ddns.config.listener.NotificationConfigListener;
 import com.serliunx.ddns.constant.SystemConstants;
 import com.serliunx.ddns.core.context.FileInstanceContext;
 import com.serliunx.ddns.core.context.MultipleSourceInstanceContext;
@@ -71,6 +73,9 @@ public final class ManagerLite {
         // 系统初始化
         initSystem();
 
+        // 配置监听器初始化
+        initConfigurationListeners();
+
         // 指令初始化
         initCommands();
 
@@ -110,6 +115,16 @@ public final class ManagerLite {
         }
 
         System.exit(0);
+    }
+
+    /**
+     * 配置监听器初始化
+     */
+    private static void initConfigurationListeners() {
+        // 配置监听器：IP更新间隔变动
+        configuration.addListener(new IpRefreshIntervalListener(systemInitializer.getScheduledProvider()));
+        // 配置监听器：通知变更
+        configuration.addListener(new NotificationConfigListener());
     }
 
     /**
