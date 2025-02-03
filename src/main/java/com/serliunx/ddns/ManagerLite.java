@@ -15,15 +15,20 @@ import com.serliunx.ddns.support.command.target.ConfigCommand;
 import com.serliunx.ddns.support.command.target.HelpCommand;
 import com.serliunx.ddns.support.command.target.ReloadCommand;
 import com.serliunx.ddns.support.log.JLineAdaptAppender;
+import com.serliunx.ddns.support.thread.ThreadFactoryBuilder;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import javax.smartcardio.TerminalFactory;
 import java.io.IOException;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * 启动类
@@ -64,6 +69,10 @@ public final class ManagerLite {
     }
 
     public static void main(String[] args) {
+        // 初始化slf4j日志桥接
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        SLF4JBridgeHandler.install();
+
         // 配置初始化
         initConfiguration(args);
 
