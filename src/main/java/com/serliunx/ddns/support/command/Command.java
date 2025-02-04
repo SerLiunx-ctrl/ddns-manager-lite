@@ -1,5 +1,10 @@
 package com.serliunx.ddns.support.command;
 
+import org.jline.reader.Candidate;
+import org.jline.reader.LineReader;
+import org.jline.reader.ParsedLine;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,4 +46,24 @@ public interface Command {
 	 * 获取该指令的用法
 	 */
 	String getUsage();
+
+	/**
+	 * 获取参数列表
+	 *
+	 * @return	参数
+	 */
+	default List<String> getArgs() {
+		return new ArrayList<>();
+	}
+
+	/**
+	 * 命令参数补全
+	 *
+	 * @param reader		Jline的LineReader{@link LineReader}
+	 * @param line			当前命令行的内容
+	 * @param candidates	候选参数列表
+	 */
+	default void onComplete(LineReader reader, ParsedLine line, int index, List<Candidate> candidates) {
+		// do nothing by default.
+	}
 }

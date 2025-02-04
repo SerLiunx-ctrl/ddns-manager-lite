@@ -2,6 +2,13 @@ package com.serliunx.ddns.support.command.target;
 
 import com.serliunx.ddns.config.Configuration;
 import com.serliunx.ddns.support.command.AbstractCommand;
+import org.jline.reader.Candidate;
+import org.jline.reader.LineReader;
+import org.jline.reader.ParsedLine;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 指令: config
@@ -32,5 +39,38 @@ public class ConfigCommand extends AbstractCommand {
         final String target = args[0];
         final String value = args[1];
         return configuration.modify(target, value);
+    }
+
+    @Override
+    public List<String> getArgs() {
+        final Map<String, String> allKeyAndValue;
+        if (configuration == null ||
+                (allKeyAndValue = configuration.getAllKeyAndValue()) == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(allKeyAndValue.keySet());
+    }
+
+    @Override
+    public void onComplete(LineReader reader, ParsedLine line, int index, List<Candidate> candidates) {
+        if (index < 1) {
+            return;
+        }
+
+        final String currentWord = line.word();
+
+        // 补全配置键
+        if (index == 1) {
+            final Map<String, String> allKeyAndValue;
+            if (configuration == null ||
+                    (allKeyAndValue = configuration.getAllKeyAndValue()) == null) {
+                return;
+            }
+            allKeyAndValue.keySet().forEach(k -> {
+                if (k.startsWith(currentWord)) {
+                    candidates.add(new Candidate(k));
+                }
+            });
+        }
     }
 }
