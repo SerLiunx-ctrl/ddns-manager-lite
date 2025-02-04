@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Function;
 
 /**
  * 配置信息的抽象实现, 定义公共逻辑
