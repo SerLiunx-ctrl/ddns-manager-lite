@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.serliunx.ddns.support.ConsoleStyleHelper.coloredPrintf;
+
 /**
  * 指令: help
  *
@@ -31,29 +33,32 @@ public class HelpCommand extends AbstractCommand {
 		if (hasArgs(args)) {
 			final String cmd = args[0];
 			final Command command = commands.get(cmd);
+			System.out.println();
 			if (command == null) {
-				System.out.printf("无法找到指令 %s 的相关信息, 请使用 help 查看可用的指令及帮助!%n", cmd);
+				coloredPrintf("&1无法找到指令 %s 的相关信息, 请使用 help 查看可用的指令及帮助!%n", cmd);
 			} else {
 				List<Command> subCommands = command.getSubCommands();
 				if (subCommands == null ||
 						subCommands.isEmpty()) {
-					System.out.printf("指令:%s - %s - %s%n", cmd, command.getDescription(), command.getUsage());
+					coloredPrintf("&2%s&r - &6%s&r - &5%s%n", cmd, command.getDescription(), command.getUsage());
 				} else {
 					subCommands.forEach(c -> {
-						System.out.printf("%s - %s - %s%n", c.getName(), c.getDescription(), c.getUsage());
+						coloredPrintf("&2%s&r - &6%s&r - &5%s%n", c.getName(), c.getDescription(), c.getUsage());
 					});
 				}
 			}
+			System.out.println();
 		} else {
+			System.out.println();
 			commands.forEach((k, v) -> {
 				// 忽略 help 自身
 				if (k.equals(getName())) {
 					return;
 				}
-				System.out.printf("%s - %s - %s%n", k, v.getDescription(), v.getUsage());
+				coloredPrintf("&2%s&r\t - &6%s&r - &5%s%n", k, v.getDescription(), v.getUsage());
 			});
 			System.out.println();
-			System.out.println("使用 help <指令> 来查看更详细的帮助信息.");
+			coloredPrintf("&6&l使用 help <指令> 来查看更详细的帮助信息.");
 		}
 		return true;
 	}

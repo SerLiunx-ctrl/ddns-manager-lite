@@ -109,7 +109,7 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
 
     @Override
     public Set<Instance> getInstances() {
-        return instanceMap == null ? Collections.emptySet() : new HashSet<>(instanceMap.values());
+        return instanceMap == null ? Collections.emptySet() : new LinkedHashSet<>(instanceMap.values());
     }
 
     @Override

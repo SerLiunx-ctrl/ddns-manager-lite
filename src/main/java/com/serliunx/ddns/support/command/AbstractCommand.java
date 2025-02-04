@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.serliunx.ddns.support.ConsoleStyleHelper.coloredPrintf;
+
 /**
  * 指令的抽象实现
  * <li> 实现公共逻辑及定义具体逻辑
@@ -68,8 +70,10 @@ public abstract class AbstractCommand implements Command {
 	@Override
 	public boolean onCommand(String[] args) {
 		if (!hasArgs(args) ||
-				args.length < 2) {
-			log.warn("用法 => {}", getUsage());
+				args.length < 1) {
+			System.out.println();
+			coloredPrintf("&2用法 =>&r &6%s", getUsage());
+			System.out.println();
 			return true;
 		}
 

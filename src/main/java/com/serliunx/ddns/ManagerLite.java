@@ -16,6 +16,7 @@ import com.serliunx.ddns.support.command.target.HelpCommand;
 import com.serliunx.ddns.support.command.target.ReloadCommand;
 import com.serliunx.ddns.support.command.target.StopCommand;
 import com.serliunx.ddns.support.command.target.config.ConfigCommand;
+import com.serliunx.ddns.support.command.target.instance.InstanceCommand;
 import com.serliunx.ddns.support.log.JLineAdaptAppender;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -143,6 +144,8 @@ public final class ManagerLite {
         commandDispatcher.register(new ConfigCommand(configuration));
         // stop
         commandDispatcher.register(new StopCommand());
+        // instance
+        commandDispatcher.register(new InstanceCommand(systemInitializer));
     }
 
     /**

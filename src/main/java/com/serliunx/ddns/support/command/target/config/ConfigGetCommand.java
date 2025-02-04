@@ -8,6 +8,8 @@ import org.jline.reader.ParsedLine;
 
 import java.util.List;
 
+import static com.serliunx.ddns.support.ConsoleStyleHelper.coloredPrintf;
+
 /**
  * 指令: config get
  *
@@ -31,7 +33,9 @@ public final class ConfigGetCommand extends AbstractCommand {
 	public boolean onCommand(String[] args) {
 		if (!hasArgs(args) ||
 				args.length < 1) {
-			log.warn("用法 => {}", getUsage());
+			System.out.println();
+			coloredPrintf("&2用法 =>&r &6%s", getUsage());
+			System.out.println();
 			return true;
 		}
 		System.out.println(configuration.getString(args[0]));

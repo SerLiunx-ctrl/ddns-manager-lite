@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.serliunx.ddns.support.ConsoleStyleHelper.coloredPrintf;
+
 /**
  * 指令调度器
  *
@@ -70,11 +72,13 @@ public final class CommandDispatcher {
 
 		Command command = commands.get(cmd);
 		if (command == null) {
-			logger.warn("未知指令: {}, 请输入 help 查看帮助!", cmd);
+			System.out.println();
+			coloredPrintf("&1未知指令&r: &2%s&r, &1请输入 &3help&r &1查看帮助!", cmd);
+			System.out.println();
 			return;
 		}
 		if (!command.onCommand(splitArgs(args))) {
-			logger.error("指令执行出现了错误: {}", Arrays.toString(args));
+			coloredPrintf("&1指令执行出现了错误:&r &5%s", Arrays.toString(args));
 		}
 	}
 
