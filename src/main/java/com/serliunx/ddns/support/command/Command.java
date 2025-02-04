@@ -38,6 +38,13 @@ public interface Command {
 	List<Command> getSubCommands();
 
 	/**
+	 * 添加子命令
+	 *
+	 * @param command	子命令
+	 */
+	void addSubCommand(Command command);
+
+	/**
 	 * 获取该指令的描述
 	 */
 	String getDescription();

@@ -28,14 +28,21 @@ public class HelpCommand extends AbstractCommand {
 	public boolean onCommand(String[] args) {
 		final Map<String, Command> commands = getAllCommands();
 
-		log.info("==========================================");
 		if (hasArgs(args)) {
 			final String cmd = args[0];
 			final Command command = commands.get(cmd);
 			if (command == null) {
-				log.warn("无法找到指令 {} 的相关信息, 请使用 help 查看可用的指令及帮助!", cmd);
+				System.out.printf("无法找到指令 %s 的相关信息, 请使用 help 查看可用的指令及帮助!%n", cmd);
 			} else {
-				log.info("指令:{} - {} - {}", cmd, command.getDescription(), command.getUsage());
+				List<Command> subCommands = command.getSubCommands();
+				if (subCommands == null ||
+						subCommands.isEmpty()) {
+					System.out.printf("指令:%s - %s - %s%n", cmd, command.getDescription(), command.getUsage());
+				} else {
+					subCommands.forEach(c -> {
+						System.out.printf("%s - %s - %s%n", c.getName(), c.getDescription(), c.getUsage());
+					});
+				}
 			}
 		} else {
 			commands.forEach((k, v) -> {
@@ -43,12 +50,11 @@ public class HelpCommand extends AbstractCommand {
 				if (k.equals(getName())) {
 					return;
 				}
-				log.info("{} - {} - {}", k, v.getDescription(), v.getUsage());
+				System.out.printf("%s - %s - %s%n", k, v.getDescription(), v.getUsage());
 			});
-			log.info("");
-			log.info("使用 help <指令> 来查看更详细的帮助信息.");
+			System.out.println();
+			System.out.println("使用 help <指令> 来查看更详细的帮助信息.");
 		}
-		log.info("==========================================");
 		return true;
 	}
 
