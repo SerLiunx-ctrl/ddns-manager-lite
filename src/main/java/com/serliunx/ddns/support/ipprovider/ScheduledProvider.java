@@ -113,20 +113,29 @@ public class ScheduledProvider extends AbstractProvider implements AutoCloseable
      * 提交任务逻辑
      */
     private void submitTask() {
-        task = poolExecutor.scheduleAtFixedRate(this::doAction, 0, timePeriod, TimeUnit.SECONDS);
+        task = poolExecutor.scheduleAtFixedRate(this, 0, timePeriod, TimeUnit.SECONDS);
     }
 
     /**
      * 执行逻辑
      */
-    private void doAction() {
+    private synchronized void doAction() {
         // 打断时, 终止已有的任务. (逻辑上不应该发生)
         if (Thread.currentThread().isInterrupted()) {
             log.debug("上一个ip更新任务已终止.");
             return;
         }
         InstanceContextHolder.setAdditional("ip-update");
-        internalCache = internalProvider.get().trim();
+        String rawValue = internalProvider.get();
+        if (rawValue == null || rawValue.isEmpty()) {
+            internalCache = null;
+        } else {
+            internalCache = rawValue;
+        }
+
+        if (internalCache != null) {
+            internalCache = internalCache.trim();
+        }
 
         if (valueConsumer != null) {
             valueConsumer.accept(internalCache);

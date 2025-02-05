@@ -210,7 +210,7 @@ public final class SystemInitializer implements Refreshable, Clearable {
 
         scheduledProvider.whenUpdate(ip -> {
             NetworkContextHolder.setIpAddress(ip);
-            log.info("本机最新公网IP地址 => {}", ip);
+            log.debug("本机最新公网IP地址 => {}", ip);
         });
     }
 
