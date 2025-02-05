@@ -49,15 +49,7 @@ public class HelpCommand extends AbstractCommand {
 			}
 			System.out.println();
 		} else {
-			System.out.println();
-			commands.forEach((k, v) -> {
-				// 忽略 help 自身
-				if (k.equals(getName())) {
-					return;
-				}
-				coloredPrintf("&2%s&r\t - &6%s&r - &5%s%n", k, v.getDescription(), v.getUsage());
-			});
-			System.out.println();
+			printCommandDetails(commands);
 			coloredPrintf("&6&l使用 help <指令> 来查看更详细的帮助信息.");
 		}
 		return true;
@@ -83,16 +75,15 @@ public class HelpCommand extends AbstractCommand {
 
 		final String currentWord = line.word();
 
-		if (index == 1) {
-			commands.keySet().forEach(k -> {
-				if (k.equals("help")) {
-					return;
-				}
-				if (k.startsWith(currentWord)) {
-					candidates.add(new Candidate(k));
-				}
-			});
-		}
+		if (index != 1)
+			return;
+
+		commands.keySet().forEach(k -> {
+			if (k.startsWith(currentWord) &&
+					!k.equals("help")) {
+				candidates.add(new Candidate(k));
+			}
+		});
 	}
 
 	/**
@@ -100,5 +91,34 @@ public class HelpCommand extends AbstractCommand {
 	 */
 	private Map<String, Command> getAllCommands() {
 		return CommandDispatcher.getInstance().getCommands();
+	}
+
+	/**
+	 * 输出指令详细信息, 包括子命令及参数信息.
+	 *
+	 * @param commands 指令集合
+	 */
+	private void printCommandDetails(final Map<String, Command> commands) {
+		if (commands == null || commands.isEmpty())
+			return;
+		System.out.println();
+		System.out.println();
+		commands.forEach((k, v) -> {
+			coloredPrintf("&2%s&r - &6%s&r", k, v.getDescription());
+			coloredPrintf("\t&5用法:&r &3%s", v.getUsage());
+			final List<Command> subCommands = v.getSubCommands();
+			if (subCommands == null || subCommands.isEmpty()) {
+				coloredPrintf("\t&5参数:&r 无");
+			} else {
+				coloredPrintf("\t&5参数:");
+				subCommands.forEach(c -> {
+					coloredPrintf("\t&2%s&r - &6%s&r", c.getName(), c.getDescription());
+					coloredPrintf("\t\t&5用法:&r &3%s", c.getUsage());
+				});
+			}
+			System.out.println();
+		});
+		System.out.println();
+		System.out.println();
 	}
 }
