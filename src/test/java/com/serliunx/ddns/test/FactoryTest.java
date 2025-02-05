@@ -2,11 +2,9 @@ package com.serliunx.ddns.test;
 
 import com.serliunx.ddns.constant.InstanceType;
 import com.serliunx.ddns.constant.SystemConstants;
-import com.serliunx.ddns.core.factory.DatabaseInstanceFactory;
 import com.serliunx.ddns.core.factory.ListableInstanceFactory;
 import com.serliunx.ddns.core.factory.YamlFileInstanceFactory;
 import com.serliunx.ddns.core.instance.Instance;
-import com.serliunx.ddns.support.sqlite.SQLiteConnector;
 import org.junit.Test;
 
 import java.util.Map;
@@ -28,11 +26,5 @@ public class FactoryTest {
         instances.forEach((k, v) -> {
             System.out.println(k + ": " + v);
         });
-    }
-
-    @Test
-    public void testDatabaseFactory() {
-        ListableInstanceFactory factory = new DatabaseInstanceFactory(SQLiteConnector.getInstance());
-        factory.refresh();
     }
 }
