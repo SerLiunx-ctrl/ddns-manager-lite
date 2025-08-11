@@ -34,9 +34,9 @@ public class ReloadCommand extends AbstractCommand {
     @Override
     public boolean onCommand(String[] args) {
         log.info("正在重新载入配置文件...");
-        if (configuration == null) {
+        if (configuration == null)
             return false;
-        }
+
         long oldIpInterval = getIpInterval();
         configuration.refresh();
 
@@ -61,8 +61,7 @@ public class ReloadCommand extends AbstractCommand {
         final ScheduledProvider scheduledProvider = systemInitializer.getScheduledProvider();
         final long newIpInterval = getIpInterval();
         if (scheduledProvider != null &&
-                oldIpInterval != newIpInterval) {
+                oldIpInterval != newIpInterval)
             scheduledProvider.changeTimePeriod(newIpInterval);
-        }
     }
 }

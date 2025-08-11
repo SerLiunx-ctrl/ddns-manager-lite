@@ -87,14 +87,13 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
             instanceLock.lock();
             String name = instance.getName();
             Instance instanceExists = instanceMap.get(name);
-            if (instanceExists != null) {
+            if (instanceExists != null)
                 throw new InstanceExistsException("该实例已存在!", name, instanceExists);
-            } else {
+            else
                 instanceMap.put(name, instance);
-            }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             instanceLock.unlock();
         }
     }
@@ -147,7 +146,7 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
      */
     protected void clearCache() {
         if (cacheInstanceMap != null
-                && !cacheInstanceMap.isEmpty()){
+                && !cacheInstanceMap.isEmpty()) {
             final int size = cacheInstanceMap.size();
             cacheInstanceMap.clear();
             // 清理实例工厂的缓存信息
@@ -167,16 +166,17 @@ public abstract class AbstractInstanceContext implements InstanceContext, Multip
         return instances.stream()
                 .filter(i -> !InstanceType.INHERITED.equals(i.getType()))
                 .peek(i -> {
-                    String fatherName = i.getFatherName();
-                    if (fatherName != null && !fatherName.isEmpty()) {
-                        Instance fatherInstance = cacheInstanceMap.get(fatherName);
-                        if (fatherInstance != null) {
-                            try {
-                                ReflectionUtils.copyField(fatherInstance, i, true);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
+                    final String fatherName = i.getFatherName();
+                    final Instance fatherInstance;
+                    if (fatherName == null || fatherName.isEmpty() ||
+                            (fatherInstance = cacheInstanceMap.get(fatherName)) == null) {
+                        return;
+                    }
+
+                    try {
+                        ReflectionUtils.copyField(fatherInstance, i, true);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
                 })
                 .collect(Collectors.toCollection(HashSet::new));

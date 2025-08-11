@@ -48,9 +48,9 @@ public class YamlFileInstanceFactory extends FileInstanceFactory {
             Yaml yaml = new Yaml();
             Map<String, Object> valueMap = yaml.load(instanceInputStream);
             InstanceType type = null;
-            if (valueMap.get(TYPE_FIELD) != null) {
+            if (valueMap.get(TYPE_FIELD) != null)
                 type = InstanceType.valueOf((String) valueMap.get(TYPE_FIELD));
-            }
+
             if (type == null) {
                 logger.error("文件 {} 读取失败, 可能是缺少关键参数.", file.getName());
                 return null;
@@ -67,9 +67,8 @@ public class YamlFileInstanceFactory extends FileInstanceFactory {
             throw new RuntimeException(e);
         } finally {
             try {
-                if (instanceInputStream != null) {
+                if (instanceInputStream != null)
                     instanceInputStream.close();
-                }
             } catch (IOException e) {
                 logger.error("文件读取出现异常.");
             }
@@ -85,9 +84,8 @@ public class YamlFileInstanceFactory extends FileInstanceFactory {
     protected Instance buildInstance(Instance instance, Map<String, Object> valueMap) {
         Field[] declaredFields = ReflectionUtils.getDeclaredFields(instance.getClass(), true);
         for (Field f : declaredFields) {
-            if (Modifier.isStatic(f.getModifiers())) {
+            if (Modifier.isStatic(f.getModifiers()))
                 continue;
-            }
             Object value = valueMap.get(f.getName());
             f.setAccessible(true);
             try {
@@ -97,9 +95,8 @@ public class YamlFileInstanceFactory extends FileInstanceFactory {
                     f.set(instance, Enum.valueOf((Class<? extends Enum>) clazz, (String) value));
                     continue;
                 }
-                if (value != null) {
+                if (value != null)
                     f.set(instance, value);
-                }
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             } finally {

@@ -31,12 +31,12 @@ public abstract class JacksonFileInstanceFactory extends FileInstanceFactory {
 
     @Override
     protected Instance loadInstance(File file) {
-        try{
+        try {
             JsonNode root = objectMapper.readTree(file);
             String rootName = root.get(SystemConstants.TYPE_FIELD).asText(); //根据类型去装配实例信息
             InstanceType instanceType = InstanceType.valueOf(rootName);
             return post(objectMapper.treeToValue(root, match(instanceType)));
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

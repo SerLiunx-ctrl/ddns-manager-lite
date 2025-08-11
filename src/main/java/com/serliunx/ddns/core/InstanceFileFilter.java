@@ -24,9 +24,8 @@ public final class InstanceFileFilter implements FileFilter {
         if (!pathname.isFile())
             return false;
         for (String suffix : fileSuffix) {
-            if (pathname.getName().endsWith(suffix)) {
+            if (pathname.getName().endsWith(suffix))
                 return true;
-            }
         }
         return false;
     }

@@ -80,19 +80,16 @@ public abstract class AbstractCommand implements Command {
 		final String subCommand = args[0];
 		List<Command> subCommands = getSubCommands();
 		for (Command command : subCommands) {
-			if (command.getName().equalsIgnoreCase(subCommand)) {
+			if (command.getName().equalsIgnoreCase(subCommand))
 				return command.onCommand(CommandDispatcher.splitArgs(args));
-			}
 		}
 		return false;
 	}
 
 	@Override
 	public List<String> getArgs() {
-		if (subCommands == null ||
-				subCommands.isEmpty()) {
+		if (subCommands == null || subCommands.isEmpty())
 			return new ArrayList<>();
-		}
 
 		return subCommands.stream()
 				.map(Command::getName)
@@ -101,18 +98,16 @@ public abstract class AbstractCommand implements Command {
 
 	@Override
 	public void onComplete(LineReader reader, ParsedLine line, int index, List<Candidate> candidates) {
-		if (index < 1) {
+		if (index < 1)
 			return;
-		}
 
 		final String currentWord = line.word();
 		// 补全子命令
 		final List<Command> subCommands = getSubCommands();
 		if (index == 1) {
 			subCommands.forEach(c -> {
-				if (c.getName().startsWith(currentWord)) {
+				if (c.getName().startsWith(currentWord))
 					candidates.add(new Candidate(c.getName()));
-				}
 			});
 		} else { // 交给子命令补全
 			for (Command c : subCommands) {

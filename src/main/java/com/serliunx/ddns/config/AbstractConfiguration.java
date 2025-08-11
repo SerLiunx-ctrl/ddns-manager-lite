@@ -111,7 +111,7 @@ public abstract class AbstractConfiguration implements Configuration {
         T value = null;
         try {
             value = getEnum(clazz, key);
-        }catch (Exception ignored){}
+        } catch (Exception ignored){}
         return value == null ? defaultValue : value;
     }
 
@@ -184,14 +184,10 @@ public abstract class AbstractConfiguration implements Configuration {
     public void addListener(ConfigListener listener) {
         Collection<String> keys = listener.interestedIn();
         Assert.notNull(keys);
-        if (keys.isEmpty()) {
-            listeners.computeIfAbsent(ALL_KEYS_LISTENERS_TAG, key -> new ArrayList<>())
-                    .add(listener);
-        } else {
-            keys.forEach(k -> {
-                listeners.computeIfAbsent(k, k1 -> new ArrayList<>())
-                        .add(listener);
-            });
+        if (keys.isEmpty())
+            listeners.computeIfAbsent(ALL_KEYS_LISTENERS_TAG, key -> new ArrayList<>()).add(listener);
+        else {
+            keys.forEach(k -> listeners.computeIfAbsent(k, k1 -> new ArrayList<>()).add(listener));
         }
     }
 
@@ -214,7 +210,7 @@ public abstract class AbstractConfiguration implements Configuration {
             // 清空原有的配置信息
             valueMap.clear();
             load0();
-        }finally {
+        } finally {
             contextLock.unlock();
         }
     }
@@ -224,9 +220,7 @@ public abstract class AbstractConfiguration implements Configuration {
      */
     protected void printDetails(){
         log.info("=====配置信息=====");
-        valueMap.forEach((k, v) -> {
-            log.info("{} = {}", k, v);
-        });
+        valueMap.forEach((k, v) -> log.info("{} = {}", k, v));
         log.info("=================");
     }
 
@@ -246,15 +240,14 @@ public abstract class AbstractConfiguration implements Configuration {
     private void invokeListeners(String key, Object oldVal, Object newVal) throws Exception {
         // 触发监听了所有配置项的监听器
         List<ConfigListener> all = listeners.get(ALL_KEYS_LISTENERS_TAG);
-        for (ConfigListener cl : all) {
+        for (ConfigListener cl : all)
             cl.onChanged(this, key, oldVal, newVal);
-        }
+
         // 触发其他监听器
         List<ConfigListener> listenerList = listeners.get(key);
         if (listenerList == null || listenerList.isEmpty())
             return;
-        for (ConfigListener cl : listenerList) {
+        for (ConfigListener cl : listenerList)
             cl.onChanged(this, key, oldVal, newVal);
-        }
     }
 }

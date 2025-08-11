@@ -25,9 +25,9 @@ final class ConfigCommandHelper {
 	static List<String> getArgs(Configuration configuration) {
 		final Map<String, String> allKeyAndValue;
 		if (configuration == null ||
-				(allKeyAndValue = configuration.getAllKeyAndValue()) == null) {
+				(allKeyAndValue = configuration.getAllKeyAndValue()) == null)
 			return new ArrayList<>();
-		}
+
 		return new ArrayList<>(allKeyAndValue.keySet());
 	}
 
@@ -41,13 +41,12 @@ final class ConfigCommandHelper {
 	static void completeConfigKeys(Configuration configuration, String currentWord, List<Candidate> candidates) {
 		final Map<String, String> allKeyAndValue;
 		if (configuration == null ||
-				(allKeyAndValue = configuration.getAllKeyAndValue()) == null) {
+				(allKeyAndValue = configuration.getAllKeyAndValue()) == null)
 			return;
-		}
+
 		allKeyAndValue.keySet().forEach(k -> {
-			if (k.startsWith(currentWord)) {
+			if (k.startsWith(currentWord))
 				candidates.add(new Candidate(k));
-			}
 		});
 	}
 }

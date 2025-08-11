@@ -34,17 +34,14 @@ public class HelpCommand extends AbstractCommand {
 			final String cmd = args[0];
 			final Command command = commands.get(cmd);
 			System.out.println();
-			if (command == null) {
+			if (command == null)
 				coloredPrintf("&1无法找到指令 %s 的相关信息, 请使用 help 查看可用的指令及帮助!%n", cmd);
-			} else {
+			else {
 				List<Command> subCommands = command.getSubCommands();
-				if (subCommands == null ||
-						subCommands.isEmpty()) {
+				if (subCommands == null || subCommands.isEmpty())
 					coloredPrintf("&2%s&r - &6%s&r - &5%s%n", cmd, command.getDescription(), command.getUsage());
-				} else {
-					subCommands.forEach(c -> {
-						coloredPrintf("&2%s&r - &6%s&r - &5%s%n", c.getName(), c.getDescription(), c.getUsage());
-					});
+				else {
+					subCommands.forEach(c -> coloredPrintf("&2%s&r - &6%s&r - &5%s%n", c.getName(), c.getDescription(), c.getUsage()));
 				}
 			}
 			System.out.println();
@@ -58,20 +55,17 @@ public class HelpCommand extends AbstractCommand {
 	@Override
 	public List<String> getArgs() {
 		final Map<String, Command> commands = getAllCommands();
-		if (commands == null ||
-				commands.isEmpty()) {
+		if (commands == null || commands.isEmpty())
 			return new ArrayList<>();
-		}
+
 		return new ArrayList<>(commands.keySet());
 	}
 
 	@Override
 	public void onComplete(LineReader reader, ParsedLine line, int index, List<Candidate> candidates) {
 		final Map<String, Command> commands = getAllCommands();
-		if (commands == null ||
-				commands.isEmpty() || index < 1) {
+		if (commands == null || commands.isEmpty() || index < 1)
 			return;
-		}
 
 		final String currentWord = line.word();
 
@@ -79,10 +73,8 @@ public class HelpCommand extends AbstractCommand {
 			return;
 
 		commands.keySet().forEach(k -> {
-			if (k.startsWith(currentWord) &&
-					!k.equals("help")) {
+			if (k.startsWith(currentWord) && !k.equals("help"))
 				candidates.add(new Candidate(k));
-			}
 		});
 	}
 
@@ -107,9 +99,9 @@ public class HelpCommand extends AbstractCommand {
 			coloredPrintf("&2%s&r - &6%s&r", k, v.getDescription());
 			coloredPrintf("\t&5用法:&r &3%s", v.getUsage());
 			final List<Command> subCommands = v.getSubCommands();
-			if (subCommands == null || subCommands.isEmpty()) {
+			if (subCommands == null || subCommands.isEmpty())
 				coloredPrintf("\t&5参数:&r 无");
-			} else {
+			else {
 				coloredPrintf("\t&5参数:");
 				subCommands.forEach(c -> {
 					coloredPrintf("\t&2%s&r - &6%s&r", c.getName(), c.getDescription());

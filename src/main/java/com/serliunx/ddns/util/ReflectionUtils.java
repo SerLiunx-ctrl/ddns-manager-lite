@@ -18,14 +18,14 @@ public final class ReflectionUtils {
     /**
      * 获取当前类声明的所有字段
      * <li> 包括父类
+     *
      * @param clazz 类对象
      * @param setAccessible 是否将字段的可访问性
      * @return 字段列表
      */
     public static Field[] getDeclaredFields(Class<?> clazz, boolean setAccessible) {
-        if (clazz == null) {
+        if (clazz == null)
             return null;
-        }
         Field[] declaredFields = clazz.getDeclaredFields();
         Field[] declaredFieldsInSuper = getDeclaredFields(clazz.getSuperclass(), setAccessible);
         if (declaredFieldsInSuper != null) {
@@ -35,9 +35,8 @@ public final class ReflectionUtils {
             declaredFields = newFields;
         }
         if (setAccessible) {
-            for (Field declaredField : declaredFields) {
+            for (Field declaredField : declaredFields)
                 declaredField.setAccessible(true);
-            }
         }
         return declaredFields;
     }
@@ -45,6 +44,7 @@ public final class ReflectionUtils {
     /**
      * 获取当前类声明的所有字段
      * <li> 包括父类
+     *
      * @param clazz 类对象
      * @param setAccessible 是否将字段的可访问性
      * @return 字段列表
@@ -55,6 +55,7 @@ public final class ReflectionUtils {
 
     /**
      * 复制两个对象的同名属性
+     *
      * @param src 源对象
      * @param dest 目标对象
      * @param onlyNull 是否仅复制源对象不为空的属性
@@ -67,9 +68,8 @@ public final class ReflectionUtils {
         for (Field field : destField) {
             if (onlyNull) {
                 try {
-                    if (field.get(dest) != null) {
+                    if (field.get(dest) != null)
                         continue;
-                    }
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }

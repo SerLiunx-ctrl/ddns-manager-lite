@@ -41,12 +41,12 @@ public final class ConsoleStyleHelper {
 	 * @param args		参数
 	 */
 	public static void coloredPrintf(String format, final Object... args) {
-		if (!format.endsWith("%n")) {
+		if (!format.endsWith("%n"))
 			format = format + "%n";
-		}
-		if (!format.endsWith("&r")) {
+
+		if (!format.endsWith("&r"))
 			format = format + "&r";
-		}
+
 		System.out.printf(replaceStyleCode(format), args);
 	}
 

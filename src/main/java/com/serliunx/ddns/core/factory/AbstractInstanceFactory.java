@@ -43,9 +43,9 @@ public abstract class AbstractInstanceFactory implements InstanceFactory, Listab
 
     @Override
     public Map<String, Instance> getInstanceOfType(InstanceType type) {
-        if (instanceMap == null) {
+        if (instanceMap == null)
             return Collections.emptyMap();
-        }
+
         return instanceMap.values()
                 .stream()
                 .filter(i -> i.getType().equals(type))

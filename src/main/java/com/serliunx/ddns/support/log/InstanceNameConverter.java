@@ -18,9 +18,9 @@ public class InstanceNameConverter extends ClassicConverter {
 	public String convert(ILoggingEvent event) {
 		Instance instance = InstanceContextHolder.getInstance();
 		String content;
-		if (instance != null) {
+		if (instance != null)
 			content = instance.getName();
-		} else {
+		else {
 			content = InstanceContextHolder.getAdditional();
 			return content == null ? "----" : content;
 		}

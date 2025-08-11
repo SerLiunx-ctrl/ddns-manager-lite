@@ -95,19 +95,16 @@ public abstract class FileInstanceFactory extends AbstractInstanceFactory implem
      */
     private Set<File> loadFiles() {
         File pathFile = new File(instanceDir);
-        if (!pathFile.exists()) {
-            boolean result = pathFile.mkdirs();
-            if (!result) {
-                throw new IllegalArgumentException("create path failed");
-            }
-        }
-        if (!pathFile.isDirectory()) {
+        if (!pathFile.exists() && !pathFile.mkdirs())
+            throw new IllegalArgumentException("create path failed");
+
+        if (!pathFile.isDirectory())
             throw new IllegalArgumentException("path is not a directory");
-        }
+
         File[] files = pathFile.listFiles(new InstanceFileFilter(fileSuffix()));
-        if (files == null || files.length == 0) {
+        if (files == null || files.length == 0)
             return Collections.emptySet();
-        }
+
         return Arrays.stream(files).collect(Collectors.toCollection(HashSet::new));
     }
 }

@@ -50,9 +50,8 @@ public final class HttpClient {
 
 		try (Response response = CLIENT.newCall(request).execute()) {
 			if (!response.isSuccessful()
-					|| response.body() == null) {
+					|| response.body() == null)
 				return null;
-			}
 
 			final ResponseBody responseBody = response.body();
 

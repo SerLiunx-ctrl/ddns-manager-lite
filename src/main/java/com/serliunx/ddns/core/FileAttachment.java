@@ -17,13 +17,12 @@ public interface FileAttachment extends Attachment<File> {
 	 */
 	default boolean isAllDirectories() {
 		Collection<File> files = getAttachments();
-		if (files == null || files.isEmpty()) {
+		if (files == null || files.isEmpty())
 			return false;
-		}
+
 		for (File file : files) {
-			if (!file.isDirectory()) {
+			if (!file.isDirectory())
 				return false;
-			}
 		}
 		return true;
 	}

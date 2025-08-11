@@ -108,7 +108,7 @@ public abstract class AbstractInstance implements Instance {
     public boolean validate() {
         InstanceContextHolder.setInstance(this);
         // 校验通用参数, 具体子类的参数交由子类校验
-        if(name == null || name.isEmpty() || interval <= 0 || type == null){
+        if (name == null || name.isEmpty() || interval <= 0 || type == null) {
             return false;
         }
         boolean result = validate0();

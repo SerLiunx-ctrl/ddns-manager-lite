@@ -44,9 +44,8 @@ public final class SQLiteConnector implements Refreshable {
             return;
         }
 
-        if (!initLock.tryLock()) {
+        if (!initLock.tryLock())
             log.error("sql connection already initialing");
-        }
 
         try {
             log.info("initialing sqlite connection.");
@@ -70,9 +69,8 @@ public final class SQLiteConnector implements Refreshable {
      * <li> 不存在时创建
      */
     private void tryCreateTables() {
-        if (connection == null) {
+        if (connection == null)
             throw new IllegalStateException("sql connection not initialized");
-        }
     }
 
     /**

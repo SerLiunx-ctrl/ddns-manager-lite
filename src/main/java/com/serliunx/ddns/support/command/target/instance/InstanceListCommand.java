@@ -31,9 +31,7 @@ public final class InstanceListCommand extends AbstractCommand {
 		Set<Instance> instances = systemInitializer.getInstances();
 		System.out.println();
 
-		instances.forEach(i -> {
-			ConsoleStyleHelper.coloredPrintf("&2%s&r(&3%s&r)", i.getName(), i.getType());
-		});
+		instances.forEach(i -> ConsoleStyleHelper.coloredPrintf("&2%s&r(&3%s&r)", i.getName(), i.getType()));
 
 		System.out.println();
 		return true;

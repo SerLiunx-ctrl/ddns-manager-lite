@@ -127,18 +127,14 @@ public class ScheduledProvider extends AbstractProvider implements AutoCloseable
         }
         InstanceContextHolder.setAdditional("ip-update");
         String rawValue = internalProvider.get();
-        if (rawValue == null || rawValue.isEmpty()) {
+        if (rawValue == null || rawValue.isEmpty())
             internalCache = null;
-        } else {
+        else
             internalCache = rawValue;
-        }
 
-        if (internalCache != null) {
+        if (internalCache != null)
             internalCache = internalCache.trim();
-        }
-
-        if (valueConsumer != null) {
+        if (valueConsumer != null)
             valueConsumer.accept(internalCache);
-        }
     }
 }

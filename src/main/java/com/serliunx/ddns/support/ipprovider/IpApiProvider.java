@@ -22,9 +22,8 @@ public final class IpApiProvider extends AbstractProvider {
     protected String doGet() {
         final String response = HttpClient.httpGet("http://ip-api.com/json");
         if (response == null
-                || response.isEmpty()) {
+                || response.isEmpty())
             return null;
-        }
 
         try {
             IPAddressResponse ipAddressResponse = JSON_MAPPER.readValue(response, IPAddressResponse.class);

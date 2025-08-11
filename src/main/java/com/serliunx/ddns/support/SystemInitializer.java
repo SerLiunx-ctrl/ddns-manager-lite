@@ -99,9 +99,9 @@ public final class SystemInitializer implements Refreshable, Clearable {
         runInstances();
 
         // 清理实例、配置缓存, 正常情况下读取一次就不需要了
-        if (clearCache) {
+        if (clearCache)
             clear();
-        }
+
         log.info("初始化完成!");
         InstanceContextHolder.clearAdditional();
     }
@@ -146,9 +146,8 @@ public final class SystemInitializer implements Refreshable, Clearable {
             byte[] buffer = new byte[1024];
             int bytesRead;
             if (inputStream != null) {
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                while ((bytesRead = inputStream.read(buffer)) != -1)
                     outputStream.write(buffer, 0, bytesRead);
-                }
             }
             outputStream.close();
         } catch (Exception e) {
@@ -236,9 +235,8 @@ public final class SystemInitializer implements Refreshable, Clearable {
 			boolean result = scheduledThreadPoolExecutor.awaitTermination(5, TimeUnit.SECONDS);
             if (!result) {
                 log.error("线程池无法在正常的时间范围内关闭, 将强制关闭线程池!");
-                if (!scheduledThreadPoolExecutor.isShutdown()) {
+                if (!scheduledThreadPoolExecutor.isShutdown())
                     scheduledThreadPoolExecutor.shutdownNow();
-                }
             }
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);

@@ -18,33 +18,28 @@ public final class Assert {
     }
 
     public static void notNull(Object object, String msg) {
-        if (object == null) {
+        if (object == null)
             throw new NullPointerException(msg);
-        }
     }
 
     public static void notNull(Object...objects) {
-        for (Object object : objects) {
+        for (Object object : objects)
             notNull(object);
-        }
     }
 
     public static void isPositive(int i) {
-        if(i <= 0) {
+        if (i <= 0)
             throw new IllegalArgumentException("指定参数必须大于0!");
-        }
     }
 
     public static void isLargerThan(int source, int target) {
-        if (source <= target) {
+        if (source <= target)
             throw new IllegalArgumentException(String.format("%s太小了, 它必须大于%s", source, target));
-        }
     }
 
     public static void isLargerThan(long source, long target) {
-        if(source <= target) {
+        if (source <= target)
             throw new IllegalArgumentException(String.format("%s太小了, 它必须大于%s", source, target));
-        }
     }
 
     public static void notEmpty(Collection<?> collection) {

@@ -33,11 +33,10 @@ public interface InstanceFactory extends Priority, Comparable<InstanceFactory>, 
 
     @Override
     default int compareTo(InstanceFactory o) {
-        if (getPriority() < o.getPriority()) {
+        if (getPriority() < o.getPriority())
             return 1;
-        } else if (this.getPriority() > o.getPriority()) {
+        else if (this.getPriority() > o.getPriority())
             return -1;
-        }
         return 0;
     }
 }

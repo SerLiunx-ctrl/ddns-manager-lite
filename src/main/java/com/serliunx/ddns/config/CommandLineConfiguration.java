@@ -84,14 +84,12 @@ public final class CommandLineConfiguration extends AbstractConfiguration implem
 
     @Override
     protected void refresh0() {
-        if (sourceArgs == null) {
+        if (sourceArgs == null)
             return;
-        }
 
         for (String arg : sourceArgs) {
-            if (!arg.startsWith(TAG)) {
+            if (!arg.startsWith(TAG))
                 continue;
-            }
             String key = arg.substring(TAG.length(), arg.indexOf(EQUAL));
             String value = arg.substring(arg.indexOf(EQUAL) + 1);
             cache.put(key, value);
@@ -127,9 +125,8 @@ public final class CommandLineConfiguration extends AbstractConfiguration implem
 
             final Map<String, String> keyValue = configuration.getAllKeyAndValue();
             keyValue.forEach((k, v) -> {
-                if (!cache.containsKey(k)) {
+                if (!cache.containsKey(k))
                     cache.put(k, v);
-                }
             });
         }
     }

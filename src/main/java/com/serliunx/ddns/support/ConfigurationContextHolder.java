@@ -32,9 +32,9 @@ public final class ConfigurationContextHolder {
 	 * @param configuration 配置信息
 	 */
 	public static synchronized void setConfiguration(Configuration configuration) {
-		if (ConfigurationContextHolder.configuration != null) {
+		if (ConfigurationContextHolder.configuration != null)
 			return;
-		}
+
 		ConfigurationContextHolder.configuration = configuration;
 	}
 }

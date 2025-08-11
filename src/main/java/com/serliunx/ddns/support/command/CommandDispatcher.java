@@ -1,8 +1,5 @@
 package com.serliunx.ddns.support.command;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,7 +15,6 @@ import static com.serliunx.ddns.support.ConsoleStyleHelper.coloredPrintf;
  */
 public final class CommandDispatcher {
 
-	private static final Logger logger = LoggerFactory.getLogger(CommandDispatcher.class);
 	private static final CommandDispatcher INSTANCE = new CommandDispatcher();
 
 	// private-ctor
@@ -62,10 +58,8 @@ public final class CommandDispatcher {
 	 * @param input	指令
 	 */
 	public void onCommand(String input) {
-		if (input == null ||
-				input.isEmpty()) {
+		if (input == null || input.isEmpty())
 			return;
-		}
 
 		String[] args = input.split(" ");
 		String cmd = args[0];
@@ -77,9 +71,8 @@ public final class CommandDispatcher {
 			System.out.println();
 			return;
 		}
-		if (!command.onCommand(splitArgs(args))) {
+		if (!command.onCommand(splitArgs(args)))
 			coloredPrintf("&1指令执行出现了错误:&r &5%s", Arrays.toString(args));
-		}
 	}
 
 	/**

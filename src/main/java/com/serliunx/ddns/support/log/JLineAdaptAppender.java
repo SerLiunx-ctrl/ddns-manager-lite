@@ -44,9 +44,8 @@ public final class JLineAdaptAppender extends AppenderBase<ILoggingEvent> {
         if (lineReader != null) {
             String formattedLog = layout.doLayout(event);
             lineReader.printAbove(formattedLog);
-        } else {
+        } else
             System.out.print(layout.doLayout(event));
-        }
     }
 
     /**

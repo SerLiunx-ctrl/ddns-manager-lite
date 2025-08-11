@@ -114,9 +114,9 @@ public class AliyunInstance extends AbstractInstance {
         CompletableFuture<UpdateDomainRecordResponse> requestResponse = client.updateDomainRecord(request);
         try {
             requestResponse.whenComplete((v, t) -> {
-                if (t != null) { //出现异常
+                if (t != null) //出现异常
                     log.error("出现异常 {} : {}", t.getCause(), t.getMessage());
-                } else {
+                else {
                     String result = null;
                     try {
                         result = jsonMapper.writeValueAsString(v.getBody());
@@ -140,9 +140,8 @@ public class AliyunInstance extends AbstractInstance {
         try {
             DescribeDomainRecordInfoResponse response = responseCompletableFuture.get(5, TimeUnit.SECONDS);
             DescribeDomainRecordInfoResponseBody body = response.getBody();
-            if (body != null) {
+            if (body != null)
                 return body.getValue();
-            }
             return null;
         } catch (InterruptedException | ExecutionException e) {
             log.error("出现了不应该出现的异常 => {}", e.getMessage());

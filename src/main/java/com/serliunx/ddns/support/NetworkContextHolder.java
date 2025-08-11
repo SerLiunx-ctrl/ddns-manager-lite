@@ -50,9 +50,8 @@ public final class NetworkContextHolder {
         try {
             IP_LOCK.lock();
             IP_ADDRESS = i;
-            if (IP_CONTEXT_WAIT_LATCH.getCount() > 0) {
+            if (IP_CONTEXT_WAIT_LATCH.getCount() > 0)
                 IP_CONTEXT_WAIT_LATCH.countDown();
-            }
         } finally {
             FAILED_COUNTS.set(0);
             IP_LOCK.unlock();
@@ -71,9 +70,8 @@ public final class NetworkContextHolder {
             log.warn("更新失败次数过多, 不在返回IP地址直到下次成功更新!");
             return null;
         }
-        if (IP_ADDRESS != null) {
+        if (IP_ADDRESS != null)
             return IP_ADDRESS;
-        }
         try {
             if (!IP_CONTEXT_WAIT_LATCH.await(IP_CONTEXT_TIME_OUT, TimeUnit.SECONDS)) {
                 log.error("IP地址获取超时.");
