@@ -106,7 +106,7 @@ public final class ManagerLite {
 
         JLineAdaptAppender.setLineReader(lineReader);
 
-        final String prompt = "client> ";
+        final String prompt = System.getProperty("user.name") + "@ddns-manager-lite> ";
 
         InstanceContextHolder.setAdditional("command-process");
 
@@ -119,6 +119,7 @@ public final class ManagerLite {
                 break;
             }
         }
+        System.out.println("如需要退出, 请使用Ctrl + C确认!");
     }
 
     /**

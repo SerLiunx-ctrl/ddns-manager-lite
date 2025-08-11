@@ -5,12 +5,8 @@ import com.serliunx.ddns.support.Assert;
 import com.serliunx.ddns.support.ConsoleStyleHelper;
 import com.serliunx.ddns.support.SystemInitializer;
 import com.serliunx.ddns.support.command.AbstractCommand;
-import org.jline.reader.Candidate;
-import org.jline.reader.LineReader;
-import org.jline.reader.ParsedLine;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,15 +37,5 @@ public final class InstanceListCommand extends AbstractCommand {
 
 		System.out.println();
 		return true;
-	}
-
-	@Override
-	public List<String> getArgs() {
-		return null;
-	}
-
-	@Override
-	public void onComplete(LineReader reader, ParsedLine line, int index, List<Candidate> candidates) {
-		//do nothing for list
 	}
 }
