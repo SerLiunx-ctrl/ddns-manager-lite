@@ -6,7 +6,7 @@
 
     <groupId>com.serliunx.ddns</groupId>
     <artifactId>ddns-manager-lite</artifactId>
-    <version>1.0.3-alpha</version>
+    <version>1.0.4-alpha</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
